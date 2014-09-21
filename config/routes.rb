@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-
-
   root 'highways#index'
   resources :highways
 
