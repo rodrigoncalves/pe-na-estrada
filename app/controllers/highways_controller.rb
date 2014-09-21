@@ -1,6 +1,6 @@
 class HighwaysController < ApplicationController
 
-  def show
+  def index
 
 
   end

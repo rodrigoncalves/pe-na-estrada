@@ -11,14 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919182519) do
+ActiveRecord::Schema.define(version: 20140921162947) do
 
-  create_table "highways", force: true do |t|
+  create_table "accidents", force: true do |t|
     t.string   "latitude"
     t.string   "longitude"
     t.string   "uf"
     t.integer  "km"
     t.string   "br"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "highways", force: true do |t|
+    t.string   "idBr"
+    t.integer  "mileage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "routes", force: true do |t|
+    t.string   "origin"
+    t.string   "destination"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

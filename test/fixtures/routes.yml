@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  idBr: MyString
-  mileage: 1
+  origin: MyString
+  destination: MyString
 
 two:
-  idBr: MyString
-  mileage: 1
+  origin: MyString
+  destination: MyString
