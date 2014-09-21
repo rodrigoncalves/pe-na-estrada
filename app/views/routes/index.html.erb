@@ -9,14 +9,16 @@
 </div>
 
 <script > 
+
+/* ESSE BLOCO DEIXEI COMENTADO PORQUE É SÓ O MARCADOR
 handler = Gmaps.build('Google');
 handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
   markers = handler.addMarkers([
     {
-      "lat": 0,
-      "lng": 0,
+      "lat": -17.476447103654177,
+      "lng": -765.87888125,
       "picture": {
-        "url": "https://addons.cdn.mozilla.net/img/uploads/addon_icons/13/13028-64.png",
+        "url": "http://www.vivahistoria.org/resources/widgetkit_widgets_map.png",
         "width":  36,
         "height": 36
       },
@@ -26,9 +28,23 @@ handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
   handler.bounds.extendWith(markers);
   handler.fitMapToBounds();
 });
+*/
+function initialize() {
+  var mapOptions = {
+    zoom: 5,
+    center: new google.maps.LatLng(-15.453695287170715, -409.5702874999999)
+  };
+
+  var map = new google.maps.Map(document.getElementById('map'),
+      mapOptions);
+}
+
+initialize();
 
 var directionsDisplay = new google.maps.DirectionsRenderer();
 var directionsService = new google.maps.DirectionsService();
+
+setTimeout(function(){google.maps.event.removeListener(zoomChangeBoundsListener)}, 2000);
 
 function calcRoute() {
   var origin      = new google.maps.LatLng(41.850033, -87.6500523);
