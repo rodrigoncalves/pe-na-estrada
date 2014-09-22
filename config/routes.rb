@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   resources :routes
   resources :accidents
+
+  resources :home
   
   resources :accidents do
     collection { post :import }
