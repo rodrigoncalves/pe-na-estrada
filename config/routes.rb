@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
 
   root 'routes#index'
-  resources :highways
 
+  resources :highways
   resources :routes
   resources :accidents
 
   resources :home
+  resources :region
+  resources :ranking
   
   resources :accidents do
     collection { post :import }

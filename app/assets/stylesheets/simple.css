@@ -13,6 +13,7 @@ main {
 
   /* Added to give space to the menu bar */
   padding-top: 50px;
+  padding-left: 30px;
   
   width: 100%;
   }
