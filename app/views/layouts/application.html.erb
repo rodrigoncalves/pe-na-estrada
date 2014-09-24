@@ -1,15 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Pé na Estrada</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-  
-</head>
-<body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<%= yield %>
-
-</body>
+    <!-- Set the default page title as "Pe na estrada" -->
+    <title><%= content_for?(:title) ? yield(:title) : "Pe na estrada" %></title>
+    
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pe na estrada" %>">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    
+    <header class="navbar navbar-fixed-top">
+      
+      <nav class="navbar-inner">
+        <div class="container">
+          <%= render 'layouts/navigation' %>
+        </div>
+      </nav>
+    
+    </header>
+    
+    <main role="main">
+      <%= render 'layouts/messages' %>
+      <%= yield %>
+    </main>
+    
+  </body>
 </html>

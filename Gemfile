@@ -41,6 +41,10 @@ gem 'unicorn'
 
 gem 'therubyracer'
 
+group :development do
+  gem 'rails_layout'
+end
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
