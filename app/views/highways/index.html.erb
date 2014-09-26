@@ -1,7 +1,44 @@
+<!-- Set the page title to "Rodovias" -->
+<% content_for :title do %>Rodovias<% end %>
+
+<div class="row container panel panel-default panel-body">
+<div class="container">
+<div class="panel panel-default">
+<div class="panel-body">
 <div style= 'text-align:center'>
+
     <h1>Rodovias</h1>
-
-
-    
 </div>
 
+<%= link_to raw("<i class=\"icon-white icon-bullhorn\">Importar dados</i>"),
+		new_highway_path,
+		class: "btn btn-primary btn-small" %>
+
+<br><br>
+
+<table class="table table-hover">	
+	<thread>
+	  <tr>
+	    <th>BR</th>
+	    <th>Km</th>
+	  </tr>
+	</thread>
+	<tbody>
+	  <% @highways.each do |h| %>
+	    <tr>
+	      <td><%= h.idBr %></td>
+	      <td><%= h.mileage %></td>
+	    </tr>
+	  <% end %>
+	</tbody>
+</table>
+
+<%= link_to raw("<i class=\"icon-white icon-bullhorn\">Importar dados</i>"),
+		new_highway_path,
+		class: "btn btn-primary btn-small" %>
+
+<br><br>
+</div>
+</div>
+</div>
+</div>

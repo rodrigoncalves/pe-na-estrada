@@ -1,26 +1,7 @@
+
+<!-- Set the page title to "Acidentes" -->
+<% content_for :title do %>Acidentes<% end %>
+
 <div style= 'text-align:center'>
     <h1>Acidentes</h1>
 </div>
-
-<h3>Importar dados de acidentes333</h3>
-<%= form_tag import_accidents_path, multipart: true do%>
-  <%= file_field_tag :file%>
-  <%= submit_tag "Importar" %>
-<%end%>
-
-<br>
-
-<thread>
-	<tr>
-		<th>BR</th>
-		<th>Km</th>
-	</tr>
-</thread>
-<tbody>
-	<% @accidents.each do |a| %>
-		<tr>
-			<td><%= a.br %></td>
-			<td><%= a.km %></td>
-		</tr>
-	<% end %>
-</tbody>

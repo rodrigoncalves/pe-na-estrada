@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resources :home
   
-  resources :accidents do
+  resources :highways do
     collection { post :import }
   end
 
