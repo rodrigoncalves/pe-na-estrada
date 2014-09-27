@@ -2,19 +2,16 @@
 
 class RoutesController < ApplicationController
 
-
 	def new
   		@route = Route.new
 	end
 
 	def create
+		
 		@route = Route.new(origin_params)
 
-		@my_test = origin_params
-
-		puts ">>>>>>>>>>>>>>>>>>>>>>>"
-		puts @my_test
-		puts ">>>>>>>>>>>>>>>>>>>>>>>"
+		@test_origem = @route.origin
+		@test_destino = @route.destination
 
 		render :new
 	
@@ -38,9 +35,6 @@ class RoutesController < ApplicationController
 	def origin_params
   		params.require(:route).permit(:origin, :destination)
   	end
- 	
-	
-
 
 end
 

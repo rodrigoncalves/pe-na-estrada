@@ -28,8 +28,7 @@
     
     <span class="label label-default">Origem</span>
     <div class="input-group">
-   
-       
+          
        <%= text_field_tag 'origem', @test_origem %>
 
       </div><!-- /input-group -->
@@ -52,7 +51,9 @@
   </div><!-- /.col-lg-6 -->
 
 </div><!-- /.row -->
+    
     <input type="submit" value ="Procurar">
+
 <div class="row">
 
   <div class="col-lg-6">
@@ -67,8 +68,9 @@
 </div><!-- /.row -->
 
 <!-- End o fields Origin and Destination -->
- <%= hidden_field_tag 'origin' , @test_origem %>
- <%= hidden_field_tag 'destino' , @test_destino %>
+
+<%= hidden_field_tag 'origin' , @test_origem %>
+<%= hidden_field_tag 'destino' , @test_destino%>
 
 <script type="text/javascript" > 
 var directionsDisplay = new google.maps.DirectionsRenderer();
