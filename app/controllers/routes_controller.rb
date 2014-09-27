@@ -3,7 +3,9 @@
 class RoutesController < ApplicationController
 
 	def new
+  		
   		@route = Route.new
+
 	end
 
 	def create
@@ -18,22 +20,21 @@ class RoutesController < ApplicationController
   	end
 
   	def show
+  		
   		@route = Route.find_by_id(params[:id].to_i)
+
   	end
 
   	def index
-
-  		puts ">>>>>>>>>>>>>>>>"
-  		
-  		puts = " >>>> AQUI #{@test_origem}"
-
-  		puts ">>>>>>>>>>>>"
-  		
+		
 		@routes = Route.all
+
 	end
   	
 	def origin_params
+  		
   		params.require(:route).permit(:origin, :destination)
+  		
   	end
 
 end

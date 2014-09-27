@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root 'routes#index'
+  root 'routes#new'
 
   resources :highways
   resources :routes
