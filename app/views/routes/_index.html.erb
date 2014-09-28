@@ -13,6 +13,9 @@
 <%= simple_form_for @route do |o| %>
 	
 	<br>
+	<br>
+	<br>
+	<br>
 	<span class="label label-primary">Origem</span>
 	<div class="row">
 		
@@ -133,6 +136,7 @@ function calcRoute() {
     	}
     else{
     	directionsDisplay.setDirections(response);
+    	initialize();
     }
  });
 }
