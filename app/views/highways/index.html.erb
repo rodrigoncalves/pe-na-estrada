@@ -1,6 +1,29 @@
 <!-- Set the page title to "Rodovias" -->
 <% content_for :title do %>Rodovias<% end %>
 
+<div class="row">
+  
+  <div class="col-lg-6">
+    
+    <span class="label label-default">Pesquisa</span>
+    <div class="input-group">
+          
+       <%= text_field_tag 'search', @highwayInformedByUser %>
+
+      </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+
+</div><!-- /.row -->
+
+<input type="submit" value ="Procurar">
+
+
+
+<br>
+<%= "O nome da rodovia #{@highwayInformedByUser}"%>
+
+
+
 <div class="row container panel panel-default panel-body">
 <div class="container">
 <div class="panel panel-default">

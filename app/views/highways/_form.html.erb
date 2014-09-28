@@ -1,0 +1,19 @@
+
+<%= simple_form_for @highway do |o| %>
+
+	<div class="form-horizontal">
+		  <%= o.input :idBr %>
+	</div><br>
+
+	<div>
+		  <%= o.button :submit %>
+	</div>
+
+<% end %>
+
+
+<h1>
+	
+	<%= "O usuario digitou #{@highwayInformedByUser}" %>
+
+</h1>
