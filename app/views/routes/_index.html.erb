@@ -2,23 +2,6 @@
 
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' type='text/javascript'></script>
 
-<!-- Implements the search bar for a highway on the to of the map -->
-<br>
-<div class="page-reader" align="center">
-  <div class="input-group" style="width: 450px;">
-    
-    <!-- IRA MUDAR ESSE TEXT_FIELD (COLOCAR FORM) -->
-
-    <input type="text" class="form-control" placeholder="Pesquisar por Rodovia">
-      <span class="input-group-addon">
-        <button class="btn btn-default" type="button">
-          <span class="glyphicon glyphicon-search"></span>
-        </button>
-      </span>
-
-  </div>
-</div>
-<!-- End of search bar for a highway -->
 
 <!-- Instantiate the map on the screen -->
 <div style='width: 800px;'>
@@ -87,29 +70,52 @@
 
 <script type="text/javascript" >
 
-	var directionsDisplay = new google.maps.DirectionsRenderer();
-	var directionsService = new google.maps.DirectionsService();
+google.maps.event.addDomListener(window, 'load', initialize);
 
-	function calcRoute() {
-	  var origin      = $("#origin").val();
-	  var destination = $("#destino").val();
-	  var request = {
-	      origin:      origin,
-	      destination: destination,
-	      travelMode:  google.maps.TravelMode.DRIVING
-	  };
-	  directionsService.route(request, function(response, status) {
-	    if (status == google.maps.DirectionsStatus.OK) {
-	      directionsDisplay.setDirections(response);
-	    }
-	  });
-	}
+var directionsDisplay = new google.maps.DirectionsRenderer();
+var directionsService = new google.maps.DirectionsService();
 
+function initialize() 
+{
+  var mapOptions = 
+  {
+    zoom: 5,
+    center: new google.maps.LatLng(-15.453695287170715, -409.5702874999999)
+  };
+
+  var map = new google.maps.Map(document.getElementById('directions'),
+      mapOptions);
+   directionsDisplay.setMap(map);
+
+}
+
+initialize();
+
+function calcRoute() {
+  var origin      = $("#origin").val();
+  var destination = $("#destino").val();
+  var request = {
+      origin:      origin,
+      destination: destination,
+	  travelMode:  google.maps.TravelMode.DRIVING
+	 };
+  	
+  	directionsService.route(request, function(response, status) {
+
+    if (status == google.maps.DirectionsStatus.OK) {
+     	directionsDisplay.setDirections(response);
+     	directionsDisplay.setPanel(origin);
+    	}
+    else{
+    	directionsDisplay.setDirections(response);
+    }
+ });
+}
 	calcRoute();
 
-	var handler = Gmaps.build('Google');
-	handler.buildMap({ internal: {id: 'directions'}}, function(){
-	  directionsDisplay.setMap(handler.getMap());
-	});
-	    
+var handler = Gmaps.build('Google');
+handler.buildMap({ internal: {id: 'directions'}}, function(){
+  directionsDisplay.setMap(handler.getMap());
+});
+
 </script>
