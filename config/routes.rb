@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :region
   resources :ranking
   
-  resources :accidents do
+  resources :highways do
     collection { post :import }
   end
 
