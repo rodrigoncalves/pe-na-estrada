@@ -26,9 +26,9 @@
 						
 							<div class="form-horizontal">
 								  <%= h.input :idBr, label: false,
-								  					 placeholder:'Informe uma rodovia para pesquisar',
+								  					 placeholder:'Informe o número de uma rodovia para pesquisar',
 								  			   		 required: true,
-								  			   		 :input_html => {:size => 30, :maxlenght => 3} %>
+								  			   		 :input_html => {:size => 40, :maxlenght => 3} %>
 							</div>
 
 							<br>
@@ -49,33 +49,64 @@
 			<!-- Compare the highway informed by user with highways registered on DB -->
 			<% @highways.each do |r| %>
 				
-				<%if r.idBr == @highwayInformedByUser %>
-					
-					<br>
-					<br>
-					<div class="container" style="width: 300px;">
-						<div class="panel panel-success">
-						  
-							<div class="panel-heading">
-								
-								<h1 class="panel-title" style="text-align: center">
-									<%= "BR-#{r.idBr} "%>
-								</h1>
-
-							 </div>
+				<% if r.idBr == @highwayInformedByUser %>
+					<% if r.mileage.blank? == false %>
+						
+						<br>
+						<br>
+						<div class="container" style="width: 300px;">
+							<div class="panel panel-success">
 							  
-							<div class="panel-body">
-								
-								<h3 style="text-align: center">
-									<span class="label label-success" >
-										<%= "Extensão total: #{r.mileage} Km" %>
-									</span>
-								</h3>
+								<div class="panel-heading">
+									
+									<h1 class="panel-title" style="text-align: center">
+										<%= "BR-#{r.idBr} "%>
+									</h1>
+
+								 </div>
+								  
+								<div class="panel-body">
+									
+									<h3 style="text-align: center">
+										<span class="label label-success" >
+											<%= "Extensão total: #{r.mileage} Km" %>
+										</span>
+									</h3>
+
+								</div>
 
 							</div>
-
 						</div>
-					</div>
+
+					<% else %>
+
+						<br>
+						<br>
+						<div class="container" style="width: 500px;">
+							<div class="panel panel-danger">
+							  
+								<div class="panel-heading">
+									
+									<h1 class="panel-title" style="text-align: center">
+										<%= "BR-#{r.idBr} "%>
+									</h1>
+
+								 </div>
+								  
+								<div class="panel-body">
+																		
+									<h3 style="text-align: center">
+										<span class="label label-danger" >
+											<%= "Extensão total: Sem informações no momento" %>
+										</span>
+									</h3>
+								
+								</div>
+
+							</div>
+						</div>
+
+					<% end %>
 
 			    <% end %>
 

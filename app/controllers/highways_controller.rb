@@ -4,7 +4,7 @@ class HighwaysController < ApplicationController
 
 		@highways = Highway.all
 		@highways2 = Highway.new
-		
+
 	end
 
 	def show
@@ -19,9 +19,24 @@ class HighwaysController < ApplicationController
 
 		@highways2 = Highway.new(origin_params)
 
-		@highwayInformedByUser = @highways2.idBr
+		@highwayInformedByUser = checkHighwayNumber(@highways2.idBr)
 
 		render :index
+
+  	end
+
+  	# Check if the user typed a '0' on highway number first character
+  	def checkHighwayNumber (highwayNumber)
+
+  		if highwayNumber.at(0) == "0"
+
+  			highwayNumber = highwayNumber.from(1)
+
+  		else
+  			# Nothing to do
+  		end
+
+  		return highwayNumber
 
   	end
 
