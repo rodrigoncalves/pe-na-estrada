@@ -5,5 +5,9 @@ class Highway < ActiveRecord::Base
 			Highway.create! row.to_hash
 		end
 	end
+	
 
+	def self.search(query)
+  		where("idBr like ?", :query=> "%#{query}%")
+  	end
 end

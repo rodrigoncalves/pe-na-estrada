@@ -1,5 +1,46 @@
 <!-- Set the page title to "Rodovias" -->
 <% content_for :title do %>Rodovias<% end %>
+<br><br><br><br><br><br>
+
+<%= form_tag(highways_path, :method => "get", id: "search-form") do %>
+  <%= text_field_tag :search, params[:search], placeholder: "Search Users" %>
+  <%= submit_tag "Search", :name => nil %>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
 
 <div class="row container panel panel-default panel-body">
 	<div class="container">
@@ -12,10 +53,6 @@
 			    </h1>
 			</div>
 
-			<!-- Search bar for a highway -->
-			<%= simple_form_for @highways2 do |h|%>
-				
-				<br>
 				<span class="label label-success">Pesquisar Rodovia</span>
 				<div class="row">
 					
@@ -24,97 +61,25 @@
 						<div class="input-group">
 						
 							<div class="form-horizontal">
-								  <%= h.input :idBr, label: false,
-								  					 placeholder:'Informe o número de uma rodovia para pesquisar',
-								  			   		 required: true,
-								  			   		 :input_html => {:size => 40, :maxlenght => 3} %>
+								<%= form_tag(highways_path, :method => "get", id: "search-form") do %>
+								<%= text_field_tag :search, params[:search], placeholder: "Pesquisar por rodovia" %>
+								  	
+								<% end %>
 							</div>
 
 							<br>
 
-						</div><!-- /input-group -->
-
-					</div> <!-- /.col-lg-6 -->
-
-				</div> <!-- /.row -->
-
-				<div>
-					<%= h.button :submit, "Pesquisar" %>
-				</div>
-
-			<% end %>
-			<!-- End of search bar for a highway form -->
-
-			<!-- Compare the highway informed by user with highways registered on DB -->
-			<% @highways.each do |r| %>
-				
-				<% if r.idBr == @highwayInformedByUser %>
-					<% if r.mileage.blank? == false %>
-						
-						<br>
-						<br>
-						<div class="container" style="width: 300px;">
-							<div class="panel panel-success">
-							  
-								<div class="panel-heading">
-									
-									<h1 class="panel-title" style="text-align: center">
-										<%= "BR-#{r.idBr} "%>
-									</h1>
-
-								 </div>
-								  
-								<div class="panel-body">
-									
-									<h3 style="text-align: center">
-										<span class="label label-success" >
-											<%= "Extensão total: #{r.mileage} Km" %>
-										</span>
-									</h3>
-
-								</div>
-
-							</div>
 						</div>
 
-					<% else %>
+					</div>
 
-						<br>
-						<br>
-						<div class="container" style="width: 500px;">
-							<div class="panel panel-danger">
-							  
-								<div class="panel-heading">
-									
-									<h1 class="panel-title" style="text-align: center">
-										<%= "BR-#{r.idBr} "%>
-									</h1>
+				</div> 
 
-								 </div>
-								  
-								<div class="panel-body">
-																		
-									<h3 style="text-align: center">
-										<span class="label label-danger" >
-											<%= "Extensão total: Sem informações no momento" %>
-										</span>
-									</h3>
-								
-								</div>
+			<%= submit_tag "Pesquisar", :name => nil %>
 
-							</div>
-						</div>
-
-					<% end %>
-
-			    <% end %>
-
-			<% end %>
-
-			<br>
+			</div>
 		</div>
-
 	</div>
 </div>
 
-
+<%= "O nome da rodovia #{@highways}"%>-->
