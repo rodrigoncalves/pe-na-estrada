@@ -11,20 +11,3 @@
   <%= file_field_tag :file%>
   <%= submit_tag "Importar" %>
 <%end%>
-
-<br>
-
-<thread>
-	<tr>
-		<th>BR</th>
-		<th>Km</th>
-	</tr>
-</thread>
-<tbody>
-	<% @accidents.each do |a| %>
-		<tr>
-			<td><%= a.br %></td>
-			<td><%= a.km %></td>
-		</tr>
-	<% end %>
-</tbody>
