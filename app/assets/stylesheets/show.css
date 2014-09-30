@@ -16,4 +16,6 @@
 	margin-left:275px;
 	margin-top:-460px;
 	text-align:center;
+	overflow: auto;
+	height: 590px;
 }
