@@ -14,7 +14,7 @@
 			</div>
 
 			<!-- Search bar for a highway -->
-			<%= simple_form_for @highways2 do |h|%>
+			<%= form_tag highways_path, :method => "post" , id: "search-highway-form" do%>
 				
 				<br>
 				<span class="label label-success">Pesquisar Rodovia</span>
@@ -25,10 +25,11 @@
 						<div class="input-group">
 						
 							<div class="form-horizontal">
-								  <%= h.input :idBr, label: false,
-								  					 placeholder:'Informe o número de uma rodovia para pesquisar',
-								  			   		 required: true,
-								  			   		 :input_html => {:size => 40, :maxlenght => 3} %>
+								  <%= text_field_tag :highway_search, 
+									params[:highway_search],
+									placeholder: "Informe uma rodovia",
+									required: true,
+									:input_html => {:size => 40, :maxlenght => 3} %>
 							</div>
 
 							<br>
@@ -40,7 +41,7 @@
 				</div> <!-- /.row -->
 
 				<div>
-					<%= h.button :submit, "Pesquisar" %>
+					<%= submit_tag "Pesquisar", :name => nil%>
 				</div>
 
 			<% end %>
@@ -49,7 +50,7 @@
 			<!-- Compare the highway informed by user with highways registered on DB -->
 			<% @highways.each do |r| %>
 				
-				<% if r.idBr == @highwayInformedByUser %>
+				<% if r.idBr == @highway_informed_by_user %>
 					<% if r.mileage.blank? == false %>
 						
 						<br>
@@ -108,11 +109,12 @@
 
 					<% end %>
 
-			    <% end %>
+			   	 <% end %>
 
 			<% end %>
 
 			<br>
+
 		</div>
 
 	</div>

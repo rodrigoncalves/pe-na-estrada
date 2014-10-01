@@ -3,51 +3,54 @@ class HighwaysController < ApplicationController
 	def index
 
 		@highways = Highway.all
-		@highways2 = Highway.new
 
-	end
-
-	def show
-	end
-
-	def new
 	end
 
 	def create
 
 		@highways = Highway.all
 
-		@highways2 = Highway.new(origin_params)
-
-		@highwayInformedByUser = checkHighwayNumber(@highways2.idBr)
+		@highway_informed_by_user = check_highway_number(params[:highway_search])
 
 		render :index
 
   	end
 
+
+  	# Count the number of highways registered on DB
+  	def count_number_of_highways
+  		
+  		@highways = Highway.all
+  		number_of_highways = 0
+
+  		@highways.each do |h|
+  			number_of_highways = number_of_highways + 1
+  		end	
+
+  		return number_of_highways
+
+  	end
+
   	# Check if the user typed a '0' on highway number first character
-  	def checkHighwayNumber (highwayNumber)
+  	def check_highway_number (highway_number)
 
-  		if highwayNumber.at(0) == "0"
+  		if highway_number.at(0) == "0"
 
-  			highwayNumber = highwayNumber.from(1)
+  			highway_number = highway_number.from(1)
 
   		else
   			# Nothing to do
   		end
 
-  		return highwayNumber
+  		return highway_number
 
   	end
 
 	def import
+		
 		Highway.import(params[:file])
 		redirect_to highways_path, notice: "Dados das rodovias importados com sucesso!"
+
 	end
 
-	def origin_params
-  		
-  		params.require(:highway).permit(:idBr)
-  		
-  	end
 end
