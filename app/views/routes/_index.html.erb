@@ -64,7 +64,7 @@
 	</div> <!-- /.row -->
 
 	<div>
-		<%= o.button :submit, "Traçar Rota" %>
+		<%= o.button :submit, "Traçar Rota Padrão" %>
 	</div>
 
 <% end %>
@@ -94,7 +94,6 @@ function initialize()
   {
     zoom: 5,
     center: new google.maps.LatLng(-15.453695287170715, -409.5702874999999),
-    
     // Removes the default features of the map
     disableDefaultUI: true,
 
@@ -129,8 +128,9 @@ function initialize()
   });
 
   calcRoute();
-}
 
+
+}
 function calcRoute() {
 
   var origin      = $("#origin").val();
@@ -140,13 +140,32 @@ function calcRoute() {
       destination: destination,
 	  travelMode:  google.maps.TravelMode.DRIVING
 	 };
-  	
   	directionsService.route(request, function(response, status) {
 
     if (status == google.maps.DirectionsStatus.OK) {
      	directionsDisplay.setDirections(response);
    //  	directionsDisplay.setPanel(origin);
     	}
+    else if (status == 'ZERO_RESULTS' || status == 'INVALID_REQUEST') {
+      alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" 
+            + destination + "'. \n Digite novamente.");
+    }
+    else if (status == 'UNKNOWN_ERROR' || status == 'REQUEST_DENIED') {
+        alert('Erro inesperado');
+    }
+    else if(status == 'OVER_QUERY_LIMIT'){
+        alert('Erro inesperado'); 
+    }
+    else if(status == 'NOT_FOUND'){
+        if(origin == ""){
+            
+        }
+        else{
+                    alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" 
+                      + destination  + "'. \n Digite novamente.");
+        }
+
+    }
     else{
     	directionsDisplay.setDirections(response);
     	initialize();
