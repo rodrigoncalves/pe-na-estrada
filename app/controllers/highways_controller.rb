@@ -2,8 +2,8 @@ class HighwaysController < ApplicationController
 
 	def index
 
-		if params[:search]
-		    @highway = Highway.search_for_highway(params[:search])
+		if params[:highway_search]
+		    @highway = Highway.search_for_highway(check_highway_number(params[:highway_search]))
 		else
 		    @highway = nil
 		end
