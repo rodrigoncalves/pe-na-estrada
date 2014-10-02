@@ -47,64 +47,83 @@
 			<% end %>
 			<!-- End of search bar for a highway form -->
 
+
 				
 			<% if !@highway.blank? %>
-				<% if @highway.mileage.blank? == false %>
-					
-					<br>
-					<br>
-					<div class="container" style="width: 300px;">
-						<div class="panel panel-success">
-						  
-							<div class="panel-heading">
-								
-								<h1 class="panel-title" style="text-align: center">
-									<%= "BR-#{@highway.idBr} "%>
-								</h1>
 
-							 </div>
+			<div align="center">
+				<h3><span class="label label-info">
+					<%="Rodovias com '#{@search_highway_form_result}' no nome:" %>
+				</span></h3>	
+			</div>
+
+				<% @highway.each do |highway| %>
+					<% if highway.mileage.blank? == false %>
+						
+						<br>
+						<br>
+						<div class="container" style="width: 300px;">
+							<div class="panel panel-success">
 							  
-							<div class="panel-body">
-								
-								<h3 style="text-align: center">
-									<span class="label label-success" >
-										<%= "Extensão total: #{@highway.mileage} Km" %>
-									</span>
-								</h3>
+								<div class="panel-heading">
+									
+									<h1 class="panel-title" style="text-align: center">
+										<%= "BR-#{highway.idBr} "%>
+									</h1>
+
+								 </div>
+								  
+								<div class="panel-body">
+									
+									<h3 style="text-align: center">
+										<span class="label label-success" >
+											<%= "Extensão total: #{highway.mileage} Km" %>
+										</span>
+									</h3>
+
+								</div>
 
 							</div>
-
 						</div>
-					</div>
 
-				<% else %>
+					<% else %>
 
-					<br>
-					<br>
-					<div class="container" style="width: 500px;">
-						<div class="panel panel-danger">
-						  
-							<div class="panel-heading">
-								
-								<h1 class="panel-title" style="text-align: center">
-									<%= "BR-#{@highway.idBr} "%>
-								</h1>
-
-							 </div>
+						<br>
+						<br>
+						<div class="container" style="width: 500px;">
+							<div class="panel panel-danger">
 							  
-							<div class="panel-body">
-																	
-								<h3 style="text-align: center">
-									<span class="label label-danger" >
-										<%= "Extensão total: Sem informações no momento" %>
-									</span>
-								</h3>
-							
+								<div class="panel-heading">
+									
+									<h1 class="panel-title" style="text-align: center">
+										<%= "BR-#{highway.idBr} "%>
+									</h1>
+
+								 </div>
+								  
+								<div class="panel-body">
+																		
+									<h3 style="text-align: center">
+										<span class="label label-danger" >
+											<%= "Extensão total: Sem informações no momento" %>
+										</span>
+									</h3>
+								
+								</div>
+
 							</div>
-
 						</div>
-					</div>
 
+					<% end %>
+
+				<% end %>
+			
+			<% else %>
+				<% if !@param_exists %>
+					<br><br>
+					<div class="alert alert-danger" role="alert" style="text-align: center;">
+						Nenhuma rodovia com esse nome ou parte dele. Digite novamente.
+					</div>
 				<% end %>
 
 		   	 <% end %>

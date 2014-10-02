@@ -7,7 +7,7 @@ class Highway < ActiveRecord::Base
 	end
 
 	def self.search_for_highway(id_to_search)
-  		where("idBr LIKE ?", "%#{id_to_search}%").first
+  		where("idBr LIKE ?", "%#{id_to_search}%")
   	end
   	
 end

@@ -2,8 +2,12 @@ class HighwaysController < ApplicationController
 
 	def index
 
-		if params[:highway_search]
-		    @highway = Highway.search_for_highway(check_highway_number(params[:highway_search]))
+            @search_highway_form_result = params[:highway_search]
+
+            @param_exists = check_highway_exists (@search_highway_form_result)
+
+		if @search_highway_form_result
+		    @highway = Highway.search_for_highway(check_highway_number(@search_highway_form_result))
 		else
 		    @highway = nil
 		end
@@ -23,6 +27,16 @@ class HighwaysController < ApplicationController
   		return number_of_highways
 
   	end
+
+      def check_highway_exists (highway_to_check)
+
+            if Highway.exists?(['idBr LIKE ?', "%#{highway_to_check}%"])
+                return true
+            else
+                return false
+            end
+
+      end
 
   	# Check if the user typed a '0' on highway number first character
   	def check_highway_number (highway_number)
