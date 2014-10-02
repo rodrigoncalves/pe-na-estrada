@@ -2,9 +2,10 @@
 
 class RoutesController < ApplicationController
 
-	def new
-  		
-  		@route = Route.new
+
+  	def index
+		
+		@route = Route.new
 
 	end
 
@@ -12,25 +13,13 @@ class RoutesController < ApplicationController
 		
 		@route = Route.new(origin_params)
 
-		@test_origem = @route.origin
-		@test_destino = @route.destination
+		@origin_informed_by_user = @route.origin
+		@destination_informed_by_user = @route.destination
 
-		render :new
+		render :index
 	
   	end
-
-  	def show
-  		
-  		@route = Route.find_by_id(params[:id].to_i)
-
-  	end
-
-  	def index
-		
-		@routes = Route.all
-
-	end
-  	
+   	
 	def origin_params
   		
   		params.require(:route).permit(:origin, :destination)

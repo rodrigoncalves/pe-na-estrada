@@ -1,8 +1,21 @@
-#directions{
+#directions
+{
 	position:absolute;
 	top:80%;
 	left:50%;
-	margin-left:-400px;
-	margin-top:-400px;
+	margin-left:-385px;
+	margin-top:-460px;
 	text-align:center;
+}
+
+#directionsPanel
+{
+	position:absolute;
+	top:80%;
+	left:50%;
+	margin-left:275px;
+	margin-top:-460px;
+	text-align:center;
+	overflow: auto;
+	height: 590px;
 }
