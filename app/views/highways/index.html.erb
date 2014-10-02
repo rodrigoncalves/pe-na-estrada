@@ -1,52 +1,15 @@
+
 <!-- Set the page title to "Rodovias" -->
 <% content_for :title do %>Rodovias<% end %>
 <br><br><br><br><br><br>
 
-<%= form_tag(highways_path, :method => "get", id: "search-form") do %>
-  <%= text_field_tag :search, params[:search], placeholder: "Search Users" %>
-  <%= submit_tag "Search", :name => nil %>
+	<%= form_tag highways_path, :method => "get", id: "search-form" do %>
+	  <%= text_field_tag :search, params[:search], placeholder: "Informe uma rodovia" %>
+	  <%= submit_tag "Pesquisar", :name => nil %>
 <% end %>
 
+<%if !@highway.blank? %>
+	<%="O nome da rodovia #{@highway.idBr}"%><br>
+	<%="A extensao da rodovia #{@highway.mileage}"%><br><br>
+<% end %>
 
-
-<div class="row container panel panel-default panel-body">
-	<div class="container">
-
-		<div class="panel-body">
-
-			<div class="page-header">
-			    <h1>Rodovias<br>
-			    	<small>Pesquise aqui por uma rodovia federal</small>
-			    </h1>
-			</div>
-
-				<span class="label label-success">Pesquisar Rodovia</span>
-				<div class="row">
-					
-					<div class="col-lg-6">
-						
-						<div class="input-group">
-						
-							<div class="form-horizontal">
-								<%= form_tag(highways_path, :method => "get", id: "search-form") do %>
-								<%= text_field_tag :search, params[:search], placeholder: "Pesquisar por rodovia" %>
-								  	
-								<% end %>
-							</div>
-
-							<br>
-
-						</div>
-
-					</div>
-
-				</div> 
-
-			<%= submit_tag "Pesquisar", :name => nil %>
-
-			</div>
-		</div>
-	</div>
-</div>
-
-<%= "O nome da rodovia #{@highways}"%>
