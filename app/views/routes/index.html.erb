@@ -7,13 +7,12 @@
 
 <!-- Instantiate the map on the screen -->
 <div style='width: 800px;'>
-	<div id="directions" style='width: 650px; height: 600px;'></div>
+	<div id="directions" style='width: 55%; height: 90%;'></div>
 </div>
-
-    
+ 
 <!-- Form to take origin and destination to trace route -->
 <%= simple_form_for @route do |o| %>
-	
+<div id="form">	
 	<br>
 	<br>
 	<br>
@@ -66,8 +65,11 @@
 	<div>
 		<%= o.button :submit, "Traçar Rota Padrão" %>
 	</div>
-
+</div>
 <% end %>
+
+
+
 <!-- End of origin and destination form -->
 
 <%= hidden_field_tag 'origin' , @origin_informed_by_user %>
