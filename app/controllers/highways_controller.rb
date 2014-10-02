@@ -2,6 +2,8 @@ class HighwaysController < ApplicationController
 
 	def index
 
+         #highways = Highway.all  #for parser
+
             @search_highway_form_result = params[:highway_search]
 
             @param_exists = check_highway_exists (@search_highway_form_result)
@@ -53,4 +55,13 @@ class HighwaysController < ApplicationController
 
   	end
 
+  def new
+    
+  end
+
+  # Method used for parser
+  def import
+    Highway.import(params[:file])
+    redirect_to highways_path, notice: "Dados rodovias importados com sucesso!"
+  end
 end

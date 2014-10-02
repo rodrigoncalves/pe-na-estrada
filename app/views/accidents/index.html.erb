@@ -1,22 +1,19 @@
-<table class="table table-hover">
-<thread>
- <tr>
+<!-- Set the page title to "Ranking" -->
+<% content_for :title do %>Ranking<% end %>
+<div align="center">
+<h2>Ranking das Rodovias Federais</h2>
 
- 	 <th>Estado</th>
-	 <th>BR</th>
-	 <th>Km do acidente</th>
- </tr>
- </thread>
 
- <tbody>
-
-<% @accidents.each do |h| %>
- <tr>
- 	 <td><%= h.uf %></td>	
-	 <td><%= h.br %></td>
-	 <td><%= h.km %></td>
-
+<table border="2">
+	<%position = 1%>
+	<%@accident.each do |br, conta|%>
+	<tr>
+	<td><%= " #{position} º" %> </td>
+	<td><%= "BR: #{br}" %> </td>
+	<td><%= "Número de Acidentes: #{conta}"%></td>
 	</tr>
- <% end %>
- </tbody>
+	<%position = position + 1%>
+	<%end%>
 </table>
+
+</div>
