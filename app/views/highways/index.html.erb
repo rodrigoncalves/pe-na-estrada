@@ -1,15 +1,66 @@
 
 <!-- Set the page title to "Rodovias" -->
 <% content_for :title do %>Rodovias<% end %>
-<br><br><br><br><br><br>
+<br>
 
-	<%= form_tag highways_path, :method => "get", id: "search-form" do %>
-	  <%= text_field_tag :search, params[:search], placeholder: "Informe uma rodovia" %>
-	  <%= submit_tag "Pesquisar", :name => nil %>
-<% end %>
+<div class="row container panel panel-default panel-body">
+	<div class="container">
 
-<%if !@highway.blank? %>
-	<%="O nome da rodovia #{@highway.idBr}"%><br>
-	<%="A extensao da rodovia #{@highway.mileage}"%><br><br>
-<% end %>
+		<div class="panel-body">
+
+			<div class="page-header">
+			    <h1>Rodovias<br>
+			    	<small>Pesquise aqui por uma rodovia federal</small>
+			    </h1>
+			</div>
+				<span class="label label-success">Pesquisar Rodovia</span>
+				<div class="row">
+					
+					<div class="col-lg-6">
+						
+						<div class="input-group">
+							<div class="form-horizontal">
+								<%= form_tag highways_path, :method => "get", id: "search-form" do %>
+								  <%= text_field_tag :search, params[:search], placeholder: "Informe uma rodovia" %>
+								  <%= submit_tag "Pesquisar", :name => nil %>
+								<% end %>
+							</div>
+							
+
+						</div><!-- /input-group -->
+
+					</div> <!-- /.col-lg-6 -->
+
+				</div>
+				<%if !@highway.blank? %>
+					<div class="container" style="width: 300px;">
+						<div class="panel panel-success">
+							<div class="panel-heading">
+												
+								<h1 class="panel-title" style="text-align: center">
+									<%= "BR-#{@highway.idBr} "%>
+								</h1>
+
+							 </div>
+
+							<div class="panel-body">
+												
+								<h3 style="text-align: center">
+									<span class="label label-success" >
+										<%="Extensao de #{@highway.mileage} Km"%>
+									</span>
+								</h3>
+
+							</div>
+						</div>
+
+					</div>
+			<% end %>
+
+		</div><!-- /input-group -->
+
+	</div> <!-- /.col-lg-6 -->
+
+</div>
+
 
