@@ -71,7 +71,7 @@
 <!-- End of origin and destination form -->
 
 <%= hidden_field_tag 'origin' , @origin_informed_by_user %>
-<%= hidden_field_tag 'destino' , @destination_informed_by_user%>
+<%= hidden_field_tag 'destination' , @destination_informed_by_user%>
 
 <script type="text/javascript" >
 
@@ -134,7 +134,7 @@ function initialize()
 function calcRoute() {
 
   var origin      = $("#origin").val();
-  var destination = $("#destino").val();
+  var destination = $("#destination").val();
   var request = {
       origin:      origin,
       destination: destination,
@@ -189,12 +189,25 @@ var handler = Gmaps.build('Google');
 handler.buildMap({ internal: {id: 'directions'}}, function()
 {
   directionsDisplay.setMap(handler.getMap());
+  initialize();
 });
 
 </script>
 
 <body>
-    <div id="directionsPanel" style="float:right;width:27%;height 100%">
-    <p>Distância total: <span id="total"></span></p>
-    </div>
+    
+    <% if @origin_informed_by_user != nil || @destination_informed_by_user != nil  # || status != google.maps.DirectionsStatus.OK%>
+        
+        <div id="directionsPanel" style="float:right;width:27%;height 100%">
+              
+              <p>
+                    <h4><span class="label label-success">
+                        Distância total: <span id="total"></span>
+                    </span></h4>
+              </p>
+
+        </div>
+
+    <% end %>
+
 </body>
