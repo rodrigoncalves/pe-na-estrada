@@ -7,8 +7,4 @@ class Accident < ActiveRecord::Base
 		end
 	end
 
-	def self.search_for_accident(br_to_search)
-		where("br LIKE ?", "%#{br_to_search}%")
-	end
-
 end

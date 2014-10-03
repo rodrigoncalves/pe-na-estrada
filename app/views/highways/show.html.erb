@@ -1,0 +1,29 @@
+<!-- Set the page title to "Ranking" -->
+<% content_for :title do %>Ranking<% end %>
+<div align="center">
+<h2>Ranking das Rodovias Federais</h2>
+
+<table class="table table-hover" align="center">
+ <thread>
+ <tr>
+ <th>Posição</th>
+ <th>BR</th>
+ <th>Número de Acidentes/Km</th>
+ </tr>
+ </thread>
+ <tbody>
+ <%position = 1%>
+ <% @highway.each do |h| %>
+ <% if h.accidentsRate != 0.0 %>
+	 <tr>
+	 <td><%= " #{position} º" %> </td>
+	 <td><%= h.idBr %></td>
+	 <td><%= h.accidentsRate %></td>
+	 	<%position = position + 1%>
+	 <%end%>	
+ <% end %>
+ </tbody>
+</table>
+
+
+</div>
