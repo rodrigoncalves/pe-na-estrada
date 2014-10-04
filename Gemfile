@@ -1,8 +1,13 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.5'
+
+# Simplecov coverage analysis tool
+gem 'simplecov', :require => false, :group => :test
+
+gem 'capybara'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -46,6 +51,14 @@ gem 'simple_form'
 
 group :development do
   gem 'rails_layout'
+end
+
+group :test do
+  gem 'shoulda-matchers', require: false
+end
+
+group :test do
+  gem 'shoulda'
 end
 
 # Use Capistrano for deployment

@@ -92,10 +92,10 @@
 		
 		<% else %>
 			
-			<% if !@param_exists %>
+			<% if !@highway_number_exists && @highway_informed_by_user != nil %>
 				<br><br>
 				<div class="alert alert-danger" role="alert" style="text-align: center;">
-					Nenhuma rodovia com esse nome ou parte dele. Digite novamente.
+					Nenhuma rodovia com esse nome ou parte dele. Cheque o número digitado (Digite apenas os dígitos da rodovia).
 				</div>
 			<% end %>
 

@@ -1,36 +1,48 @@
 class HighwaysController < ApplicationController
 
-	def index
+      MAX_HIGHWAY_NUMBER_LENGHT = 3
+      
+    	def index
 
-         #highways = Highway.all  #for parser
+            @highway_informed_by_user = params[:highway_search]
 
-            @search_highway_form_result = params[:highway_search]
-
-            @param_exists = check_highway_exists (@search_highway_form_result)
-
-		if @search_highway_form_result
-		    @highway = Highway.search_for_highway(check_highway_number(@search_highway_form_result))
-		else
-		    @highway = nil
-		end
+            if check_highway_number_lenght (@highway_informed_by_user)
+                 @highway_number_exists = check_highway_exists (@highway_informed_by_user)
+            else
+                  @highway_number_exists = false
+            end
+   
+          	 if @highway_informed_by_user
+		      @highway = Highway.search_for_highway(check_highway_number(@highway_informed_by_user))
+		 else
+		      @highway = nil
+		 end
 
 	end
 
-	# Count the number of highways registered on DB
-  	def count_number_of_highways
-  		
-  		@highways = Highway.all
-  		number_of_highways = 0
+      # Check the lenght of the highway number informed
+      def check_highway_number_lenght highway_number
+            
+           if !highway_number.blank?
+             
+                 highway_number_lenght = highway_number.size
 
-  		@highways.each do |h|
-  			number_of_highways = number_of_highways + 1
-  		end	
+                 puts highway_number_lenght
 
-  		return number_of_highways
+                 if  highway_number_lenght > MAX_HIGHWAY_NUMBER_LENGHT
+                      return false
+                 else
+                      return true
+                 end
 
-  	end
+           else
+                 return false
+           end
 
-      def check_highway_exists (highway_to_check)
+      end
+
+      # Check if a highway exists on DB
+      def check_highway_exists highway_to_check
 
             if Highway.exists?(['idBr LIKE ?', "%#{highway_to_check}%"])
                 return true
@@ -40,18 +52,24 @@ class HighwaysController < ApplicationController
 
       end
 
-  	# Check if the user typed a '0' on highway number first character
-  	def check_highway_number (highway_number)
+  	# Ignore '0's on left on highway number
+  	def check_highway_number highway_number
 
-  		if highway_number.at(0) == "0"
+           if !highway_number.blank?
+                 
+                 i = 0
 
-  			highway_number = highway_number.from(1)
+                 while highway_number.at(i) == "0"
+                  
+           			highway_number = highway_number.from(i+1)
 
-  		else
-  			# Nothing to do
-  		end
+                 end
 
-  		return highway_number
+                 return highway_number
+
+           else
+      		return highway_number
+           end
 
   	end
 
@@ -61,7 +79,8 @@ class HighwaysController < ApplicationController
 
   # Method used for parser
   def import
-    Highway.import(params[:file])
-    redirect_to highways_path, notice: "Dados rodovias importados com sucesso!"
+      Highway.import(params[:file])
+      redirect_to highways_path, notice: "Dados rodovias importados com sucesso!"
   end
+
 end
