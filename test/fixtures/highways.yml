@@ -1,13 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  idBr: "111"
+  idBr: "121"
   mileage: 1500
 
 two:
-  idBr: "987"
-  mileage: 2570
-
-three:
   idBr: "987"
   mileage: 2570

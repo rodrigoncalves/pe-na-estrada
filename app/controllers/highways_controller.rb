@@ -6,7 +6,7 @@ class HighwaysController < ApplicationController
 
             @highway_informed_by_user = params[:highway_search]
 
-            if check_highway_number_lenght (@highway_informed_by_user)
+            if check_highway_number_length (@highway_informed_by_user)
                  @highway_number_exists = check_highway_exists (@highway_informed_by_user)
             else
                   @highway_number_exists = false
@@ -21,7 +21,7 @@ class HighwaysController < ApplicationController
 	end
 
       # Check the lenght of the highway number informed
-      def check_highway_number_lenght highway_number
+      def check_highway_number_length highway_number
             
            if !highway_number.blank?
              
