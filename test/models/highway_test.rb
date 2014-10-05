@@ -7,6 +7,7 @@ class HighwayTest < ActiveSupport::TestCase
 		@highway = Highway.new
 	end
 
+	# Based on fixtures
 	test "Test if are at least one highway is registered on DB" do
 
 		assert_instance_of Highway, Highway.first, "Object on DB not correspond to it's expected class"
@@ -14,6 +15,14 @@ class HighwayTest < ActiveSupport::TestCase
 
 	end
 
+	# Based on fixtures
+	test "Should be equal to 2 the quantity of Highway objects on DB" do
+
+		assert_equal 3, Highway.count, "Registered data does not match the actual quantity registered"
+
+	end
+
+	# Based on fixtures
 	test "Test if all idBr's registered is present" do
 
 		@highways.each do |highway|
@@ -21,6 +30,27 @@ class HighwayTest < ActiveSupport::TestCase
 			assert highway.idBr.present?, "idBr  must be present!"
 
 		end
+
+	end
+
+	# Test validates_uniqueness_of :idBr
+	test "Should not save duplicated data on DB" do
+
+		@highway.idBr = "121"
+		@highway.mileage = "1500"
+
+		assert_not @highway.save, "This idBr already exists. Cannot save duplicated idBr"
+
+	end
+
+	# Begin tests to 'validates_presence_of :idBr
+	
+	test "Should save a valid Highway object" do
+
+		@highway.idBr = "131"
+		@highway.mileage = 1234
+
+		assert @highway.save, "Could not save this object"
 
 	end
 
@@ -52,7 +82,9 @@ class HighwayTest < ActiveSupport::TestCase
 		assert_not @highway.save, "Cannot save with a null idBr"
 
 	end
+	# End of tests to 'validates_presence_of :idBr'
 
+	# Begin tests to 'validates_length_of :idBr'
 	test "Should save an Highway object with an idBr in the range 2..3 of length. Test the maximum edge." do
 
 		@highway.idBr = "111"
@@ -84,7 +116,9 @@ class HighwayTest < ActiveSupport::TestCase
 		assert_not @highway.save, "Too long idBr. Cannot save an idBr with a length greater than 3 caracters"
 
 	end
+	#End of tests to 'validates_length_of :idBr'
 
+	# Begin tests to 'validates_numericality_of :mileage'
 	test "Should save an Highway object with a mileage greater than 1" do
 
 		@highway.idBr = "111"
@@ -129,6 +163,7 @@ class HighwayTest < ActiveSupport::TestCase
 		assert @highway.save, "Could not save a null mileage"
 
 	end
+	# End of tests to 'validates_numericality_of :mileage'
 
 	test "Test the 'search_for_highway' method" do
 
