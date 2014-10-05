@@ -18,7 +18,7 @@ class HighwayTest < ActiveSupport::TestCase
 	# Based on fixtures
 	test "Should be equal to 2 the quantity of Highway objects on DB" do
 
-		assert_equal 3, Highway.count, "Registered data does not match the actual quantity registered"
+		assert_equal 2, Highway.count, "Registered data does not match the actual quantity registered"
 
 	end
 
