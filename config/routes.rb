@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :highways
   resources :routes
+
   resources :accidents
 
   resources :home
@@ -17,6 +18,8 @@ Rails.application.routes.draw do
   resources :accidents do
     collection { post :import }
   end
+
+   get '/routes/trace' => 'routes#trace', as: :trace
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

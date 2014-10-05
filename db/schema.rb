@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140921162947) do
+ActiveRecord::Schema.define(version: 20141004131520) do
 
   create_table "accidents", force: true do |t|
     t.string   "latitude"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140921162947) do
     t.integer  "mileage"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "accidentsRate"
   end
 
   create_table "routes", force: true do |t|
@@ -35,6 +36,7 @@ ActiveRecord::Schema.define(version: 20140921162947) do
     t.string   "destination"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "address"
   end
 
 end

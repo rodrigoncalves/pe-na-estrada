@@ -1,10 +1,7 @@
 class AccidentsController < ApplicationController
 
 	def index
-		@highways = Highway.all
-		@accident = Accident.group(:br).count
-		@accidents = Accident.all.order(:br)
-
+	
 	end
 
 	def new
