@@ -1,33 +1,59 @@
 class HighwaysController < ApplicationController
 
-      MAX_HIGHWAY_NUMBER_LENGHT = 3
+      MAX_HIGHWAY_NUMBER_LENGTH = 3
       
     	def index
 
-	         @highway_informed_by_user = params[:highway_search]
+	        @highway_informed_by_user = params[:highway_search]
 
-	         if check_highway_number_length (@highway_informed_by_user)
-	              @highway_number_exists = check_highway_exists (@highway_informed_by_user)
-	         else
-	               @highway_number_exists = false
-	         end
-	   
-	       	 if @highway_informed_by_user
-		      @highway = Highway.search_for_highway(check_highway_number(@highway_informed_by_user))
-		 else
-		      @highway = nil
-		 end
+	        @highway_number_exists = check_length_and_if_exists (@highway_informed_by_user)
+
+	   	@highway = setup_highway (@highway_informed_by_user)
 
 	end
 
-      	# Check the lenght of the highway number informed
+	# Set up the instance variable '@highway' on index with the result from 'search_for_highway' method
+	def setup_highway highway
+
+		if highway
+		 	search_for_highway (highway)
+		else
+		 	return nil
+		end
+
+	end
+
+	# Check the length of a highway informed and if it exists on DB
+	def check_length_and_if_exists highway_to_check
+
+		length_is_ok =  check_highway_number_length (highway_to_check)
+
+		if length_is_ok
+	         	check_highway_exists (highway_to_check)
+	        else
+	        		return false
+	        end
+
+	end
+
+	# Search for a highway on DB
+	def search_for_highway highway_to_search
+
+		highway_cleaned = check_highway_number(highway_to_search)
+
+		Highway.search_for_highway(highway_cleaned)
+
+	end
+
+
+      	# Check the length of the highway number informed
       	def check_highway_number_length highway_number
             
 	        if !highway_number.blank?
 	          
-	              highway_number_lenght = highway_number.size
+	              highway_number_length = highway_number.size
 
-	              if  highway_number_lenght > MAX_HIGHWAY_NUMBER_LENGHT
+	              if  highway_number_length > MAX_HIGHWAY_NUMBER_LENGTH
 	                   return false
 	              else
 	                   return true
@@ -42,7 +68,7 @@ class HighwaysController < ApplicationController
       	# Check if a highway exists on DB
       	def check_highway_exists highway_to_check
 
-		if Highway.exists?(['idBr LIKE ?', "%#{highway_to_check}%"])
+		if Highway.exists_highway(highway_to_check)
 			return true
 		else
 			return false
