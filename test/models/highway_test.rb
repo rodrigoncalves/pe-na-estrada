@@ -175,7 +175,46 @@ class HighwayTest < ActiveSupport::TestCase
 	end
 	# End of tests to 'validates_numericality_of :mileage'
 
-	test "Test the 'search_for_highway' method" do
+	test "Test the 'exists_highway' method" do
+
+		# Passing first fixture 
+		@highway_exists_result_first = Highway.exists_highway "121"
+		
+		# Passing second fixture
+		@highway_exists_result_second = Highway.exists_highway "987"
+
+		# Passing a unregistered highway
+		@highway_exists_result_third = Highway.exists_highway "123"
+
+		# Passing a invalid highway idBr
+		@highway_exists_result_fourth = Highway.exists_highway "!Jkfsd"
+
+		assert @highway_exists_result_first, "This highway informed does not exists on DB"
+		assert @highway_exists_result_second, "This highway informed does not exists on DB"
+		assert_not @highway_exists_result_third, "This highway informed should not exists on DB"
+		assert_not @highway_exists_result_fourth, "This highway informed should not exists on DB"
+
+	end
+
+	test "Test the 'exists_highway' method with nil argument" do
+
+		# Using a unregistered highway
+		@highway_exists_result = Highway.exists_highway nil
+
+		assert_not @highway_exists_result, "Should not exists a nil highway idBr on DB"
+		
+	end
+
+	test "Test the 'exists_highway' method with empty argument" do
+
+		# Using a unregistered highway
+		@highway_exists_result = Highway.exists_highway ""
+
+		assert_not @highway_exists_result, "Should not exists an empty highway idBr on DB"
+		
+	end
+
+	test "Test the 'search_for_highway' method with valid argument" do
 
 		@highway_search_result = Highway.search_for_highway "121"
 
@@ -189,6 +228,51 @@ class HighwayTest < ActiveSupport::TestCase
 			assert_instance_of Fixnum, highway.mileage, "The Highway object mileage from search is not a Fixnum"
 			assert_equal highway.idBr, "121", "The idBr got is not the same that was registered"
 			assert_equal highway.mileage, 1500, "The mileage got is not the same that was registered"
+
+		end
+
+	end
+
+	test "Test the 'search_for_highway' method with an unregistred highway" do
+
+		@highway_search_result = Highway.search_for_highway "123"
+
+		assert_kind_of ActiveRecord::Relation, @highway_search_result, "Not a instance of ActiveRecord::Relation returned from the method 'search_for_highway'"
+		assert_nil @highway_search_result.first, "This relation should be nill."
+
+	end
+
+	test "Test the 'search_for_highway' method with a empty highway. Should be return all highways o DB." do
+
+		@highway_search_result = Highway.search_for_highway ""
+
+		assert_kind_of ActiveRecord::Relation, @highway_search_result, "Not a instance of ActiveRecord::Relation returned from the method 'search_for_highway'"
+		
+		assert_equal 2, Highway.count, "Should be equal to the quantity of registers on DB"
+
+		@highway_search_result.each do |highway|
+
+			assert_not_nil highway, "This object should not be null"
+			assert_not_nil highway.idBr, "The idBr should not be null"
+			assert_instance_of String, highway.idBr, "The idBr should be a String."
+
+		end
+
+	end
+
+	test "Test the 'search_for_highway' method with a null highway. Should be return all highways o DB." do
+
+		@highway_search_result = Highway.search_for_highway nil
+
+		assert_kind_of ActiveRecord::Relation, @highway_search_result, "Not a instance of ActiveRecord::Relation returned from the method 'search_for_highway'"
+		
+		assert_equal 2, Highway.count, "Should be equal to the quantity of registers on DB"
+
+		@highway_search_result.each do |highway|
+
+			assert_not_nil highway, "This object should not be null"
+			assert_not_nil highway.idBr, "The idBr should not be null"
+			assert_instance_of String, highway.idBr, "The idBr should be a String."
 
 		end
 
