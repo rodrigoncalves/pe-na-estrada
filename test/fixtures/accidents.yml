@@ -8,8 +8,8 @@ one:
   br: MyString
 
 two:
-  latitude: MyString
-  longitude: MyString
-  uf: MyString
-  km: 1
-  br: MyString
+  latitude:
+  longitude:
+  uf:
+  km:
+  br:
