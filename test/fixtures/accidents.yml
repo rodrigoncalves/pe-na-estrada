@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  latitude: MyString
-  longitude: MyString
-  uf: MyString
+  latitude: "MyString"
+  longitude: "MyString"
+  uf: "MyString"
   km: 1
-  br: MyString
+  br: "MyString"
 
 two:
   latitude:

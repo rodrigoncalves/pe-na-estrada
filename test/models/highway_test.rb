@@ -33,6 +33,16 @@ class HighwayTest < ActiveSupport::TestCase
 
 	end
 
+	# Based on fixtures
+	test "Test if the instance on fixtures matches" do
+
+		assert_equal "121", highways(:one).idBr, "idBr from first fixture does not matches with the previous instantiated."
+		assert_equal 1500, highways(:one).mileage, "mileage from first fixture does not matches with the previous instantiated."
+		assert_equal "987", highways(:two).idBr, "idBr from second fixture does not matches with the previous instantiated."
+		assert_equal 2570, highways(:two).mileage, "mileage from second fixture does not matches with the previous instantiated."
+
+	end
+
 	# Test validates_uniqueness_of :idBr
 	test "Should not save duplicated data on DB" do
 
