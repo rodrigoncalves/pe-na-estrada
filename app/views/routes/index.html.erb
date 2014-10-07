@@ -1,62 +1,59 @@
 <script src="//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry"></script>
-
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js'></script>
-
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=pt-BR"></script>
 <script src="/assets/google_maps_api.js?body=1"></script>
 
 <!-- Instantiate the map on the screen -->
 <div style='width: 800px;'>
-	<div id="directions" style='width: 55%; height: 90%;'></div>
+  <div id="directions" style='width: 55%; height: 90%;'></div>
 </div>
  
 <!-- Form to take origin and destination to trace route -->
 <%= simple_form_for @route, 
-				    :url => url_for(:action => 'trace_route', 
-				    				:controller => 'routes'),
-				    :method => 'post' do |o| %>
+            :url => url_for(:action => 'trace_route', 
+                            :controller => 'routes'),
+            :method => 'post' do |o| %>
 
-<div id="form">	
-	<br>
-	<br>
-	<br>
-	<br>
-	<span class="label label-primary">Origem</span>
-	<div class="row">
-		
-		<div class="col-lg-6">
-		<div class="input-group">	
-		<div class="form-horizontal">
-		  <%= o.input :origin, label: false,
+<div id="form"> 
+  <br>
+  <br>
+  <br>
+  <br>
+  <span class="label label-primary">Origem</span>
+  <div class="row">
+    
+    <div class="col-lg-6">
+    <div class="input-group"> 
+    <div class="form-horizontal">
+      <%= o.input :origin, label: false,
                   placeholder:'Informe uma origem',
                   required: true,
                   :input_html => {:size => 25} %>
-		</div>
-    </div><!-- /input-group -->
-    </div> <!-- /.col-lg-6 -->
-  </div> <!-- /.row -->
-	<br>
+    </div>
+    </div>
+    </div>
+  </div>
+  <br>
 
-	<!--  -->
-	<span class="label label-primary">Destino</span>
-	<div class="row">
+  <span class="label label-primary">Destino</span>
+  <div class="row">
 
-		<div class="col-lg-6">
-			<div class="input-group">
-			<div class="form-horizontal">
-  			<%= o.input :destination, label: false,
-  			   		   	  placeholder:'Informe um destino',
-  			   		   	  required: true,
-  			   		   	  :input_html => {:size => 25}%>
-		</div>
-    </div><!-- /input-group -->
-    </div> <!-- /.col-lg-6 -->
-  </div> <!-- /.row -->
-	<br>
+    <div class="col-lg-6">
+      <div class="input-group">
+      <div class="form-horizontal">
+        <%= o.input :destination, label: false,
+                    placeholder:'Informe um destino',
+                    required: true,
+                    :input_html => {:size => 25}%>
+    </div>
+    </div>
+    </div>
+  </div>
+  <br>
 
-	<div>
-		<%= o.button :submit, "Traçar Rota Padrão"%>
-	</div>
+  <div>
+    <%= o.button :submit, "Traçar Rota Padrão"%>
+  </div>
 </div>
 <% end %>
 

@@ -16,27 +16,26 @@
 </ul>
 </div>
 <table class="table table-hover" align="center">
- <thread>
- <tr>
- <th>Posição</th>
- <th>BR</th>
- <th>Número de Acidentes/Km</th>
- </tr>
- </thread>
- <tbody>
+<thread>
+<tr>
+<th>Posição</th>
+<th>BR</th>
+<th>Número de Acidentes/Km</th>
+</tr>
+</thread>
+<tbody>
 
- <%position = 1%>
- <% @highway.each do |h| %>
- <% if h.accidentsRate != 0.0 %>
-	 <tr>
-	 <td><%= " #{position} º" %> </td>
-	 <td><%= h.idBr %></td>
-	 <td><%= h.accidentsRate %></td>
-	 	<%position = position + 1%>
-	 <%end%>	
- <% end %>
- </tbody>
+<%position = 1%>
+<% @highway.each do |h| %>
+  <% if h.accidentsRate != 0.0 %>
+    <tr></tr>
+    <td><%= " #{position} º" %> </td>
+    <td><%= h.idBr %></td>
+    <td><%= h.accidentsRate %></td>
+      <%position = position + 1%>
+  <% end %>
+<% end %>
+</tbody>
 </table>
-
 
 </div>
