@@ -3,6 +3,18 @@
 <div align="center">
 <h2>Ranking das Rodovias Federais</h2>
 
+
+ <div class="dropdown" id="rateTypes">
+ Você está visualizando o ranking na taxa de:
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+    Acidentes/KM
+    <span class="caret"></span>
+  </button>
+ <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Taxa 2</a></li>
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Taxa 3</a></li>
+</ul>
+</div>
 <table class="table table-hover" align="center">
  <thread>
  <tr>
@@ -12,6 +24,7 @@
  </tr>
  </thread>
  <tbody>
+
  <%position = 1%>
  <% @highway.each do |h| %>
  <% if h.accidentsRate != 0.0 %>

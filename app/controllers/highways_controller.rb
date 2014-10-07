@@ -100,31 +100,53 @@ class HighwaysController < ApplicationController
 	def new
 		
 	end
-	
-	def show
+
+	def count_accidents_by_highway
 		@accident = Accident.group(:br).count
+	end
+
+
+	def order_accidents_by_accidentsRate
 		@highway = Highway.all.order(:accidentsRate).reverse_order
-		@highways = Highway.all
-			
+	end
+	
+	def calculate_accidentsRate accidents_number, mileage_highway
+
+		if mileage_highway.blank?
+			rate = 0.0
+		else
+			rate = accidents_number/mileage_highway.to_f
+		end
+
+		return rate
+	end
+
+	def find_highway_to_accident
+		
+		order_accidents_by_accidentsRate
+		count_accidents_by_highway
+
 		br_accident = nil
 		count_accident = nil
-		mileage_br = nil
+		mileage_br = nil	
+
 		@accident.each do |br, count|
-			br_accident = br
-			count_accident = count.to_s
+		br_accident = br
 			@highways.each do |h|
-				mileage_br = h.mileage.to_s
+			mileage_br = h.mileage.to_s
 				if h.idBr == br_accident
-					if mileage_br.blank?
-						h.accidentsRate = 0.0
-						h.save
-					else
-						h.accidentsRate = count_accident.to_f/mileage_br.to_f
-						h.save
-					end
+					h.accidentsRate = calculate_accidentsRate(count, mileage_br)
+					h.save
 				end
 			end
 		end
+	end
+
+	def show
+
+		@highways = Highway.all
+		find_highway_to_accident
+
 	end
 
 =begin
