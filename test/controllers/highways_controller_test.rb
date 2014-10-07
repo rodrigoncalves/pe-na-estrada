@@ -215,4 +215,71 @@ class HighwaysControllerTest < ActionController::TestCase
 # End of tests for 'show' method
 
 
+
+
+# Beginning of tests of 'check_highway_number' method
+	
+	test "Should be null with a null argument" do
+
+		assert_nil @highways_controller.check_highway_number(nil), "Method 'check_highway_number' should return null"
+
+	end
+
+	test "Should be null with a empty argument" do
+
+		assert_equal "", @highways_controller.check_highway_number(""), "Method 'check_highway_number' should return an empty string"
+
+	end
+
+	test "Should return the number without the zero on left" do
+
+		assert_equal "40", @highways_controller.check_highway_number("040"), "Method 'check_highway_number' should return '40'"
+
+	end
+
+	test "Should return the number without  a lot of zero on left" do
+
+		assert_equal "20", @highways_controller.check_highway_number("0000000020"), "Method 'check_highway_number' should return '20'"
+
+	end
+
+	test "Should return the same number input" do
+
+		assert_equal "40", @highways_controller.check_highway_number("40"), "Method 'check_highway_number' should return '40'"
+	end
+
+
+	test "Should return the same number input with 3 digits" do
+
+		assert_equal "160", @highways_controller.check_highway_number("160"), "Method 'check_highway_number' should return '160'"
+	end
+
+# End of tests of 'check_highway_number' method
+
+#Begining of tests of check_highway_exists
+
+#Lucas
+
+#End of tests of check_highway_exists
+
+#Begining of tests of check_highway_number_length
+
+#Lucas
+
+#End of tests of check_highway_number_length
+
+#Begining of tests of search_for_highway
+
+#Tiago
+
+#End of tests of search_for_highway
+
+#Begining of tests of check_length_and_if_exists
+
+#Tiago
+
+#End of tests of check_length_and_if_exists
+
+
+
 end
