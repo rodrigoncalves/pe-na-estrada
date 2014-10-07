@@ -2,11 +2,18 @@ require 'test_helper'
 
 class HighwaysControllerTest < ActionController::TestCase
 
+	def setup
+
+		@highways_controller = HighwaysController.new
+
+	end
+
+
 # Beginning of tests for action 'index'
 
     # Beginning of tests for '@highway_informed_by_user' instance variable
 	test "Test if the variable '@highway_informed_by_user' receives the params from form (first fixture)" do
-		
+
 		get :index, {'highway_search' => highways(:one).idBr}
 
 		assert_equal assigns(:highway_informed_by_user), highways(:one).idBr, "This should be equal to '121'."
@@ -14,7 +21,7 @@ class HighwaysControllerTest < ActionController::TestCase
 	end
 
 	test "Test if the variable '@highway_informed_by_user' receives the params from form (second fixture)" do
-		
+
 		get :index, {'highway_search' => highways(:two).idBr}
 
 		assert_equal assigns(:highway_informed_by_user), highways(:two).idBr, "This should be equal to '987'."
@@ -22,7 +29,7 @@ class HighwaysControllerTest < ActionController::TestCase
 	end
 
 	test "Test if the variable '@highway_informed_by_user' receives an empty param" do
-		
+
 		get :index, {'highway_search' => ""}
 
 		assert assigns(:highway_informed_by_user).empty?, "This should be empty."
@@ -30,7 +37,7 @@ class HighwaysControllerTest < ActionController::TestCase
 	end
 
 	test "Test if the variable '@highway_informed_by_user' receives a null param" do
-		
+
 		get :index, {'highway_search' => nil}
 
 		assert_nil assigns(:highway_informed_by_user), "This should be null."
@@ -171,5 +178,41 @@ class HighwaysControllerTest < ActionController::TestCase
     #End of tests for '@highway' instance variable
 
 # End of tests for action 'index'
+
+
+# Beginning of tests for 'count_accidents_by_highway' method
+
+	test "Tests if count_accidents_by_highway returns a Hash" do
+
+		#If   count   is used with group, it returns a Hash whose keys represent the aggregated column
+		assert_kind_of Hash, @highways_controller.count_accidents_by_highway, "This should be a Hash object."
+		assert_equal 1, @highways_controller.count_accidents_by_highway['MyString'], "This  should be equal to 1"
+
+	end
+
+# End of tests for 'count_accidents_by_highway' method
+
+
+# Beginning of tests for 'order_accidents_by_accidentsRate' method
+
+	test "Tests if order_accidents_by_accidentsRate returns a 'ActiveRecord::Relation'" do
+
+		assert_kind_of ActiveRecord::Relation, @highways_controller.order_accidents_by_accidentsRate, "This should be a 'ActiveRecord::Relation' object."
+
+	end
+
+# End of tests for 'order_accidents_by_accidentsRate' method
+
+
+# Beginning of tests for 'show' method
+
+	test "Tests if show return a Hash" do
+
+		assert_kind_of Hash, @highways_controller.show, "This should be a Hash object."
+
+	end
+
+# End of tests for 'show' method
+
 
 end
