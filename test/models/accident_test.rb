@@ -7,7 +7,7 @@ class AccidentTest < ActiveSupport::TestCase
 		@accident = Accident.new
 	end
 
-	test "test_accident_one" do 
+	test "test_accident_one" do
 		@accident.latitude = accidents(:one).longitude
 		@accident.longitude = accidents(:one).latitude
 		@accident.uf = accidents(:one).uf
@@ -32,7 +32,7 @@ class AccidentTest < ActiveSupport::TestCase
 		@accident.km = accidents(:one).km
 		@accident.br = accidents(:one).br
 		assert_not @accident.save, "Cannot be null"
-	end	
+	end
 
 	test "test_presenceOf_latitude" do
 		@accident.latitude = accidents(:one).longitude
@@ -59,7 +59,7 @@ class AccidentTest < ActiveSupport::TestCase
 		@accident.km = accidents(:two).km
 		@accident.br = accidents(:one).br
 		assert_not @accident.save, "Cannot be null"
-		end
+	end
 
 	test "test_presenceOf_br" do
 		@accident.latitude = accidents(:one).longitude
@@ -70,4 +70,50 @@ class AccidentTest < ActiveSupport::TestCase
 		assert_not @accident.save, "Cannot be null"
 	end
 
+	test "Checking if latitude is empty" do
+		@accident.latitude = accidents(:three).latitude
+		@accident.longitude = accidents(:one).longitude
+		@accident.uf = accidents(:one).uf
+		@accident.km = accidents(:one).km
+		@accident.br = accidents(:one).br
+		assert_not @accident.save, "Cannot be invalid"
+	end
+
+	test "Checking if longitude is empty" do
+		@accident.latitude = accidents(:one).latitude
+		@accident.longitude = accidents(:three).longitude
+		@accident.uf = accidents(:one).uf
+		@accident.km = accidents(:one).km
+		@accident.br = accidents(:one).br
+		assert_not @accident.save, "Cannot be invalid"
+	end
+
+	test "Checking if uf is empty" do
+		@accident.latitude = accidents(:one).latitude
+		@accident.longitude = accidents(:one).longitude
+		@accident.uf = accidents(:three).uf
+		@accident.km = accidents(:one).km
+		@accident.br = accidents(:one).br
+		assert_not @accident.save, "Cannot be invalid"
+	end
+
+=begin
+	test "Checking if km is empty" do
+		@accident.latitude = accidents(:one).latitude
+		@accident.longitude = accidents(:one).longitude
+		@accident.uf = accidents(:one).uf
+		@accident.km = accidents(:three).km
+		@accident.br = accidents(:one).br
+		assert_not @accident.save, "Cannot be invalid"
+	end
+=end
+
+	test "Checking if br is empty" do
+		@accident.latitude = accidents(:one).latitude
+		@accident.longitude = accidents(:one).longitude
+		@accident.uf = accidents(:one).uf
+		@accident.km = accidents(:one).km
+		@accident.br = accidents(:three).br
+		assert_not @accident.save, "Cannot be invalid"
+	end
 end

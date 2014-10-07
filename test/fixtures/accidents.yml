@@ -13,3 +13,10 @@ two:
   uf:
   km:
   br:
+
+three:
+  latitude: ""
+  longitude: ""
+  uf: ""
+  # km:
+  br: ""
