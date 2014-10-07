@@ -1,5 +1,5 @@
 class Accident < ActiveRecord::Base
-		
+
 	validates_presence_of :longitude
 	validates_presence_of :latitude
 	validates_presence_of :uf
@@ -7,11 +7,13 @@ class Accident < ActiveRecord::Base
 	validates_presence_of :br
 
 	belongs_to :Highway
-	
+
+=begin
 	def self.import(file)
 		CSV.foreach(file.path, headers: true) do |row|
 			Accident.create! row.to_hash
 		end
 	end
+=end
 
 end
