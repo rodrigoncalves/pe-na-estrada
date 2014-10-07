@@ -14,22 +14,28 @@ class Highway < ActiveRecord::Base
   			id_to_search = ""
   		else
   			# Nothing to do
-		end
+		  end
   		
   		# Return all highways registered if id_to_search is empty
   		where("idBr LIKE ?", "%#{id_to_search}%")
 
-  	end
+  end
 
-  	def self.exists_highway highway_to_check
+	def self.exists_highway highway_to_check
 
-  		if highway_to_check.present?
-  			exists?(['idBr LIKE ?', "%#{highway_to_check}%"])
-  		else
-  			return false
-  		end
+		if highway_to_check.present?
+			exists?(['idBr LIKE ?', "%#{highway_to_check}%"])
+		else
+			return false
+		end
 
-  	end
+	end
+
+  def self.all_highways_by_accidentsRate
+
+      all.order(:accidentsRate).reverse_order
+
+  end
 
 =begin  
 	# Method used to parser

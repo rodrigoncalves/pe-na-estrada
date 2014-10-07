@@ -81,18 +81,18 @@ class HighwaysController < ApplicationController
 
 	        if !highway_number.blank?
 	              
-	              i = 0
+				i = 0
 
-	              while highway_number.at(i) == "0"
-	               
-	        			highway_number = highway_number.from(i+1)
+				while highway_number.at(i) == "0"
 
-	              end
+					highway_number = highway_number.from(i+1)
 
-	              return highway_number
+				end
+
+				return highway_number
 
 	        else
-	   		return highway_number
+	   			return highway_number
 	        end
 
 	end
@@ -102,12 +102,16 @@ class HighwaysController < ApplicationController
 	end
 
 	def count_accidents_by_highway
-		@accident = Accident.group(:br).count
+
+		@accident = Accident.count_accidents
+
 	end
 
 
 	def order_accidents_by_accidentsRate
-		@highway = Highway.all.order(:accidentsRate).reverse_order
+		
+		@highway = Highway.all_highways_by_accidentsRate
+
 	end
 	
 	def calculate_accidentsRate accidents_number, mileage_highway

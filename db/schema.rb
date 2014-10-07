@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007002213) do
+ActiveRecord::Schema.define(version: 20141006154950) do
 
   create_table "accidents", force: true do |t|
     t.string   "latitude"
