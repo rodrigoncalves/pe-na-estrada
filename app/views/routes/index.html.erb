@@ -11,7 +11,11 @@
 </div>
  
 <!-- Form to take origin and destination to trace route -->
-<%= simple_form_for @route do |o| %>
+<%= simple_form_for @route, 
+				    :url => url_for(:action => 'trace_route', 
+				    				:controller => 'routes'),
+				    :method => 'post' do |o| %>
+
 <div id="form">	
 	<br>
 	<br>
@@ -51,7 +55,7 @@
 	<br>
 
 	<div>
-		<%= o.button :submit, "Traçar Rota Padrão" %>
+		<%= o.button :submit, "Traçar Rota Padrão"%>
 	</div>
 </div>
 <% end %>

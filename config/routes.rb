@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     collection { post :import }
   end
 
-   get '/routes/trace' => 'routes#trace', as: :trace
+   post '/routes/trace' => 'routes#trace_route', as: :trace
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
