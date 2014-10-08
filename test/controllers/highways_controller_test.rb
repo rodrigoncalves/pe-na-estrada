@@ -405,7 +405,7 @@ class HighwaysControllerTest < ActionController::TestCase
 
 #Begining of tests of check_length_and_if_exists
 
-	test "'@check_length_and_if_exists' Should be false return  blank  number input with many zeros" do
+	test "'@check_length_and_if_exists' Should be  return  false  with param not exists" do
 
 		assert_equal false, @highways_controller.check_length_and_if_exists('111'), "Method 'search_for_highway' 
                                                                                 should return 153"
@@ -452,12 +452,11 @@ class HighwaysControllerTest < ActionController::TestCase
 
   end
 
-
+  
   test "'@check_length_and_if_exists' Should return  blank  number input with many zeros" do
 
     assert_not  @highways_controller.check_length_and_if_exists("0000000000"), "Method 'check_length_and_if_exists' 
                                                                                 should return false"
-
   end
 
 
@@ -468,6 +467,7 @@ class HighwaysControllerTest < ActionController::TestCase
 
   end
 
+ 
 
   test "'@check_length_and_if_exists' Should be null with a empty argument" do#
 
@@ -501,6 +501,13 @@ class HighwaysControllerTest < ActionController::TestCase
   end
 
 
+  test "'@check_length_and_if_exists' Should return the same number input with 1 digit" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("3"), "Method 'check_length_and_if_exists' 
+                                                                      should return '3'"
+  end
+
+
   test "'@check_length_and_if_exists' Should return the same number input with 2 digits" do#
 
     assert_not @highways_controller.check_length_and_if_exists("24"), "Method 'check_length_and_if_exists' 
@@ -515,22 +522,6 @@ class HighwaysControllerTest < ActionController::TestCase
 
   end
 
-
-  test "'@check_length_and_if_exists' Should return blank  number input with many zeros" do#
-
-    assert_not @highways_controller.check_length_and_if_exists("0000000000"), "Method 'check_length_and_if_exists' 
-                                                                              should return blank"
-
-  end
-
-
-  test "'@check_length_and_if_exists' Should return the letters input with letters" do#
-
-    assert_not @highways_controller.check_length_and_if_exists("abcd"), "Method 'check_length_and_if_exists' 
-                                                                        should return blank 'abcd'"
-
-  end
-
   
   #The method '@check_length_and_if_exists'  can not remover zeros after number
   test "'@check_length_and_if_exists' Should return the all number input with zeros after number" do#
@@ -540,10 +531,60 @@ class HighwaysControllerTest < ActionController::TestCase
 
   end
 
+
+
 #Tiago
 
+#End of tests of setup_highway
+
+  test "'@setup_highway' Should return nil whit param not existents" do#
+
+    assert_nil @highways_controller.setup_highway(nil), "Method 'setup_highway' 
+                                                            should return 'nil'"
+
+  end
+
+
+  test "'@setup_highway' Should be  return  false  with param not exists" do#
+
+    assert @highways_controller.setup_highway('111'), "Method 'search_for_highway' 
+                                                                                should return 153"
+  end
+
+
+  test "'@setup_highway' Should be false the return  with a null argument" do
+
+    assert_not @highways_controller.setup_highway(nil), "Method 'setup_highway' 
+                                                                      should return null"
+
+  end
+
+
+  test "'@setup_highway' Should be false the return  with a empty argument" do
+
+    assert @highways_controller.setup_highway(""), "Method 'setup_highway' 
+                                                                              should return an empty string"
+
+  end
+
+
+  test "'@setup_highway' Should return  the letters input with letters" do
+
+    assert @highways_controller.setup_highway("abcd"), "Method 
+                                                                                 'setup_highway'
+                                                                                  should return blank 'abcd'"
+
+  end
+
+
+  test "'@setup_highway' should be false with a param equal to highway with 4 caracters" do
+
+    assert @highways_controller.setup_highway("1234"), "'@setup_highway' 
+                                                        should be false."
+
+  end
+#Beging of tests of setup_highway
+
 #End of tests of check_length_and_if_exists
-
-
 
 end
