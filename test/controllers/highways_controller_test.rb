@@ -197,7 +197,8 @@ class HighwaysControllerTest < ActionController::TestCase
 
 	test "Tests if order_accidents_by_accidentsRate returns a 'ActiveRecord::Relation'" do
 
-		assert_kind_of ActiveRecord::Relation, @highways_controller.order_accidents_by_accidentsRate, "This should be a 'ActiveRecord::Relation' object."
+		assert_kind_of ActiveRecord::Relation, @highways_controller.order_accidents_by_accidentsRate, "This should be a 
+		'ActiveRecord::Relation' object."
 
 	end
 
@@ -218,43 +219,90 @@ class HighwaysControllerTest < ActionController::TestCase
 
 
 # Beginning of tests of 'check_highway_number' method
+
 	
-	test "Should be null with a null argument" do
+	test "'@check_highway_number' Should be null with a null argument" do
 
 		assert_nil @highways_controller.check_highway_number(nil), "Method 'check_highway_number' should return null"
 
 	end
 
-	test "Should be null with a empty argument" do
 
-		assert_equal "", @highways_controller.check_highway_number(""), "Method 'check_highway_number' should return an empty string"
+	test "'@check_highway_number' Should be null with a empty argument" do
 
-	end
-
-	test "Should return the number without the zero on left" do
-
-		assert_equal "40", @highways_controller.check_highway_number("040"), "Method 'check_highway_number' should return '40'"
+		assert_equal "", @highways_controller.check_highway_number(""), "Method 'check_highway_number' 
+																		                                should return an empty string"
 
 	end
 
-	test "Should return the number without  a lot of zero on left" do
 
-		assert_equal "20", @highways_controller.check_highway_number("0000000020"), "Method 'check_highway_number' should return '20'"
+	test "'@check_highway_number' Should return the number without the zero on left" do
+
+		assert_equal "40", @highways_controller.check_highway_number("040"), "Method 'check_highway_number' 
+																			                                   should return '40'"
 
 	end
 
-	test "Should return the same number input" do
 
-		assert_equal "40", @highways_controller.check_highway_number("40"), "Method 'check_highway_number' should return '40'"
+	test "'@check_highway_number' Should return the number without  a lot of zero on left" do
+
+		assert_equal "20", @highways_controller.check_highway_number("0000000020"), "Method 'check_highway_number' 
+																					                                       should return '20'"
+
 	end
 
 
-	test "Should return the same number input with 3 digits" do
+	test "'@check_highway_number' Should return the same number input" do
 
-		assert_equal "160", @highways_controller.check_highway_number("160"), "Method 'check_highway_number' should return '160'"
+		assert_equal "41", @highways_controller.check_highway_number("41"), "Method 'check_highway_number' 
+																			                                   should return '41'"
+
 	end
+
+
+	test "'@check_highway_number' Should return the same number input with 2 digits" do
+
+		assert_equal "24", @highways_controller.check_highway_number("24"), "Method 'check_highway_number' 
+																				                                should return '24'"
+
+	end
+
+
+	test "'@check_highway_number' Should return the same number input with 3 digits" do
+
+		assert_equal "160", @highways_controller.check_highway_number("160"), "Method 'check_highway_number' 
+																				                                  should return '160'"
+
+	end
+
+
+	test "'@check_highway_number' Should return blank  number input with many zeros" do
+
+		assert_equal "", @highways_controller.check_highway_number("0000000000"), "Method 'check_highway_number' 
+																				                                      should return blank"
+
+	end
+
+
+	test "'@check_highway_number' Should return the letters input with letters" do
+
+		assert_equal "abcd", @highways_controller.check_highway_number("abcd"), "Method 'check_highway_number' 
+																				                                    should return blank 'abcd'"
+
+	end
+
+	
+	#The method check_highway_number can not remover zeros after number
+	test "'@check_highway_number' Should return the all number input with zeros after number" do
+
+		assert_equal "50", @highways_controller.check_highway_number("50"), "Method 'check_highway_number' 
+																				                                should return blank '50'"
+
+  end
+
 
 # End of tests of 'check_highway_number' method
+
 
 #Begining of tests of check_highway_exists
 
@@ -268,13 +316,229 @@ class HighwaysControllerTest < ActionController::TestCase
 
 #End of tests of check_highway_number_length
 
+
+
 #Begining of tests of search_for_highway
 
-#Tiago
+	test "'@search_for_highway' Should be null the return  with a null argument" do#
 
-#End of tests of search_for_highway
+		assert @highways_controller.search_for_highway(nil), "Method 'search_for_highway' should return null"
+
+	end
+
+
+	test "'@search_for_highway' Should be null the return  with a empty argument" do#
+
+		assert @highways_controller.search_for_highway(""), "Method 'search_for_highway' 
+																		                    should return an empty string"
+
+	end
+
+
+	test "'@search_for_highway' Should return  the number without the zero on left" do
+
+		assert @highways_controller.search_for_highway("040"), "Method 'search_for_highway' 
+																			                     should return '40'"
+
+	end
+
+
+	test "'@search_for_highway' Should return   the number without  a lot of zero on left" do
+
+		assert @highways_controller.search_for_highway("0000000020"), "Method 'search_for_highway' 
+																					                         should return '20'"
+
+	end
+
+
+	test "'@search_for_highway' Should return  the same number input" do
+
+		assert  @highways_controller.search_for_highway("41"), "Method 'search_for_highway' 
+																			                       should return '41'"
+
+	end
+
+
+	test "'@search_for_highway' Should return  the same number input with 2 digits" do
+
+		assert @highways_controller.search_for_highway("24"), "Method 'search_for_highway' 
+																				                  should return '24'"
+
+	end
+
+
+	test "'@search_for_highway' Should return  the same number input with 3 digits" do
+
+		assert @highways_controller.search_for_highway("160"), "Method 'search_for_highway' 
+																				                    should return '160'"
+
+	end
+
+
+	test "'@search_for_highway' Should return  blank  number input with many zeros" do#
+
+		assert @highways_controller.search_for_highway("0000000000"), "Method 'search_for_highway' 
+																				                          should return blank"
+
+	end
+
+
+	test "'@search_for_highway' Should return  the letters input with letters" do#
+
+		assert @highways_controller.search_for_highway("abcd"), "Method 'search_for_highway' 
+																				                    should return blank 'abcd'"
+
+	end
+
+	
+	#The method search_for_highway can not remover zeros after number
+	test "'@search_for_highway' Should return a ythe all number input with zeros after number" do
+
+		assert @highways_controller.search_for_highway("50"), "Method 'search_for_highway' 
+																				                  should return blank '50'"
+
+	end
+
+
+#End of tests of search_for_highway/
+
 
 #Begining of tests of check_length_and_if_exists
+
+	test "'@check_length_and_if_exists' Should be false return  blank  number input with many zeros" do
+
+		assert_equal false, @highways_controller.check_length_and_if_exists('111'), "Method 'search_for_highway' 
+                                                                                should return 153"
+	end
+
+
+  test "'@check_length_and_if_exists' Should be false the return  with a null argument" do
+
+    assert_not @highways_controller.check_length_and_if_exists(nil), "Method 'check_length_and_if_exists' 
+                                                                      should return null"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should be false the return  with a empty argument" do
+
+    assert_equal false, @highways_controller.check_length_and_if_exists(""), "Method 'check_length_and_if_exists' 
+                                                                              should return an empty string"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return  the letters input with letters" do
+
+    assert_equal false, @highways_controller.check_length_and_if_exists("abcd"), "Method 
+                                                                                 'check_length_and_if_exists'
+                                                                                  should return blank 'abcd'"
+
+  end
+
+
+  test "'@check_length_and_if_exists' should be false with a param equal to highway with 4 caracters" do
+
+    assert_not @highways_controller.check_length_and_if_exists("1234"), "'@check_length_and_if_exists' 
+                                                                          should be false."
+
+  end
+
+
+  test "''@check_length_and_if_exists' should be true with a param equal to highway with '040'" do# 
+
+    assert_not @highways_controller.check_length_and_if_exists("040"), "'@check_length_and_if_exists' 
+                                                                        should be true."
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return  blank  number input with many zeros" do
+
+    assert_not  @highways_controller.check_length_and_if_exists("0000000000"), "Method 'check_length_and_if_exists' 
+                                                                                should return false"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should be null with a null argument" do#
+
+    assert_not  @highways_controller.check_length_and_if_exists(nil), "Method 'check_length_and_if_exists' 
+                                                                      should return null"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should be null with a empty argument" do#
+
+    assert_not @highways_controller.check_length_and_if_exists(""), "Method 'check_length_and_if_exists' 
+                                                                    should return an empty string"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return the number without the zero on left" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("040"), "Method 'check_length_and_if_exists' 
+                                                                        should return '40'"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return the number without  a lot of zero on left" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("0000000020"), "Method 'check_length_and_if_exists' 
+                                                                              should return '20'"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return the same number input" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("41"), "Method 'check_length_and_if_exists' 
+                                                                      should return '41'"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return the same number input with 2 digits" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("24"), "Method 'check_length_and_if_exists' 
+                                                                      should return '24'"
+  end
+
+
+  test "'@check_length_and_if_exists' Should return the same number input with 3 digits" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("160"), "Method 'check_length_and_if_exists' 
+                                                                        should return '160'"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return blank  number input with many zeros" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("0000000000"), "Method 'check_length_and_if_exists' 
+                                                                              should return blank"
+
+  end
+
+
+  test "'@check_length_and_if_exists' Should return the letters input with letters" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("abcd"), "Method 'check_length_and_if_exists' 
+                                                                        should return blank 'abcd'"
+
+  end
+
+  
+  #The method '@check_length_and_if_exists'  can not remover zeros after number
+  test "'@check_length_and_if_exists' Should return the all number input with zeros after number" do#
+
+    assert_not @highways_controller.check_length_and_if_exists("50"), "Method 'check_length_and_if_exists' 
+                                                                      should return blank '50'"
+
+  end
 
 #Tiago
 
