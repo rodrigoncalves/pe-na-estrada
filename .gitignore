@@ -17,3 +17,6 @@
 
 # Ignore coverage folder from simplecov
 /coverage
+
+# Ignore Gemfile binary file
+Gemfile.lock

@@ -57,6 +57,9 @@ group :test do
   gem 'shoulda'
 end
 
+# Code Climate
+gem "codeclimate-test-reporter", group: :test, require: nil
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
