@@ -8,34 +8,37 @@
  <div class="dropdown" id="rateTypes">
  Você está visualizando o ranking na taxa de:
    <button type="button" class=" btn btn-warning"data-toggle="dropdown">
-  Acidentes/Km <span class="caret"></span>
+  Porcentagem em relação ao total <span class="caret"></span>
   </button>
     <ul class="dropdown-menu" role="menu" >
-    <li><a href="<%= new_highway_path %>">Porcentagem em relação ao total</a></li>
+    <li><a href="<%= highway_path(1)%>">Acidentes/Km</a></li>
   </ul>
 
 </div>
 </ul>
 
 <div id="ranking">
-<table class="table table-hover" >
+<table class="table table-hover" align="center">
 <thread>
 <tr>
 <th>Posição</th>
 <th>BR</th>
-<th> Número de Acidentes/Km</th>
+<th>Número de Acidentes/Km</th>
 </tr>
 </thread>
 <tbody>
 
-<% @highway.each do |h| %>
-  <% if h.accidentsRate != 0.0 && h.accidentsRate != nil %>
+<%position = 1%>
+<% @highway2.each do |h| %>
+  <% if h.accidentsRatePercent != 0.0 && h.accidentsRatePercent != nil %>
     <tr></tr>
-    <td><%= h.rankingPosition %>º </td>
+    <td><%= " #{position} º" %> </td>
     <td><%= h.idBr %></td>
-    <td><%= format("%.4f",h.accidentsRate) %></td>
+    <td><%= format("%.4f",h.accidentsRatePercent)%>%</td>
+      <%position = position + 1%>
   <% end %>
 <% end %>
+
 </tbody>
 </table>
 </div>

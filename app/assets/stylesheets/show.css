@@ -28,5 +28,13 @@
 #rateTypes{
 	position:relative;
 	top:2%;
-	left:33%;
+	left:-5%;
+}
+#ranking{
+	position:absolute;
+	top:22%;
+	left:32%;
+	text-align:center;
+	height: 68%;
+	width: 40%;
 }
