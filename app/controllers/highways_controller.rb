@@ -87,6 +87,7 @@ class HighwaysController < ApplicationController
 
   def order_accidents_by_accidentsRate
     @highway = Highway.all_highways_by_accidentsRate
+    create_position
   end
   
   def calculate_accidentsRate accidents_number, mileage_highway
@@ -113,12 +114,21 @@ class HighwaysController < ApplicationController
       @highways.each do |h|
         mileage_br = h.mileage.to_s
         if h.idBr == br_accident
-          h.accidentsRate = calculate_accidentsRate(count, mileage_br)
-          h.save
+            h.accidentsRate = calculate_accidentsRate(count, mileage_br)
+            h.save
         end
       end
     end
 
+  end
+
+  def create_position
+    i = 0
+    @highway.each do |h| 
+      i = i + 1
+      h.rankingPosition = i
+      h.save
+    end
   end
 
   def show
@@ -126,4 +136,54 @@ class HighwaysController < ApplicationController
     find_highway_to_accident
   end
 
+
+  def calculate_accidentsRatePercent accidents_number, total_accidents
+
+    if accidents_number == 0
+      rate = 0.0
+    else
+      total = total_accidents.to_s
+      rate = (accidents_number/total.to_f)*100
+    end
+
+    return rate
+  end
+
+
+  def order_accidents_by_accidentsRatePercent
+    @highway2 = Highway.all_highways_by_accidentsRatePercent
+  end
+
+  def find_highway_to_accident_percent
+
+    br_accident = nil
+    count_accident = nil
+    mileage_br = nil
+
+    order_accidents_by_accidentsRatePercent  
+    count_accidents_by_highway
+    @accident.each do |br, count|
+    br_accident = br
+      @highways2.each do |h|
+      mileage_br = h.mileage.to_s
+        if h.idBr == br_accident
+            h.accidentsRatePercent = calculate_accidentsRatePercent(count,@accidents2)
+            h.save
+        end
+      end
+    end
+    
+  end
+
+
+  def new
+
+    @highways2 = Highway.all
+    #count the accidents
+    @accidents2 = Accident.total_accidents
+    #order the accidents
+
+    find_highway_to_accident_percent
+
+  end
 end
