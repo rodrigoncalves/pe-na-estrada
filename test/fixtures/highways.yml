@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# If add a new fixture, change in highway_test.rb tests the quantity of registers.
+# If add a new fixture, change in highway_test.rb tests the QUANTITY_OF_FIXTURES.
 
 one:
   idBr: "121"
@@ -9,3 +9,7 @@ one:
 two:
   idBr: "987"
   mileage: 2570
+
+three:
+  idBr: "128"
+  mileage: 5678
