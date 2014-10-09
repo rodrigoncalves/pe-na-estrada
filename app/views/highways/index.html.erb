@@ -42,7 +42,7 @@
     <% if @highway.blank? == false %>
 
     <div class="container" align="center">
-    <div class="panel panel-success" style="width: 300px;">
+    <div class="panel panel-success" style="width: 500px;">
         
       <div class="panel-heading">
         
@@ -59,6 +59,8 @@
           <td style="text-align: center;"><b><%= "BR"%></b></td>
           <td></td>
           <td style="text-align: center;"><b><%= "Entensão da rodovia"%></b></td>
+          <td></td>
+          <td style="text-align: center;"><b><%= "Posição no ranking de acidentes por quilômetro"%></b></td>
           <td></td>
 
         </tr>
@@ -81,6 +83,9 @@
             </td>
 
             <td></td>
+             <td style="text-align: center;">
+              <%= "#{highway.rankingPosition}" %>
+            </td>
           </tr>
 
         <% end %>
