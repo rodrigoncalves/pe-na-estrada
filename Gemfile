@@ -53,3 +53,7 @@ end
 
 # Code Climate
 gem "codeclimate-test-reporter", group: :test, require: nil
+
+group :test do
+  gem 'shoulda'
+end
