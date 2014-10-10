@@ -2,23 +2,25 @@
 	padding-top: 10%;*/
 	position:absolute;
 	top:1%;
-	left:17%;
+	left:35%;
 	text-align:center;
 }
 
 #form{
 	position: absolute;
-	top: 20%;
+	top: 17%;
 	left: 1%;
+	height: 100%;
+	width: 100%;
 }
 
 #directionsPanel{
 	position:absolute;
-	top:32%;
-	left:74%;
+	top:44%;
+	left:1.5%;
 	text-align:center;
 	overflow: auto;
-	height: 70%;
+	height: 47.5%;
 	width: 25%;
 }
 
@@ -28,11 +30,11 @@
 }
 #rateTypes{
 	position:relative;
-	top:2%;
+	top:0%;
 	left:-5%;
 }
 #ranking{
-	position:absolute;
+		
 	
 	left:32%;
 	text-align:center;
@@ -52,4 +54,15 @@
 	overflow: auto;
 	height: 130%;
 	width: 25%;
+}
+#initialRanking{
+	position: relative;
+	width: 25%;
+	left: 65%;
+}
+
+#initialAbout{
+	position: relative;
+	width: 45%;
+	left: 5%;
 }
