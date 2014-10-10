@@ -31,12 +31,12 @@
     <!-- Better Art Direction Styles -->
     <style type="text/css">
     .wp-polls .pollbar {
-      margin: 1px;
-      font-size: 13px;
-      line-height: 15px;
-      height: 15px;
+      margin: 13%;
+      font-size: 100%;
+      line-height: 100%;
+      height: 100%;
       background-image: url('http://cdn.css-tricks.com/wp-content/plugins/wp-polls/images/default/pollbg.gif');
-      border: 1px solid #ffffff;
+      border: 100% solid #ffffff;
     }
     </style>
 
@@ -117,12 +117,14 @@
 
 
 
-    <div id = "content"class="content-wrap">
-      <div class="grid group">    
+    <div id = "content" >
+      <div class="grid group">
+          
         <main role="main">
           <%= render 'layouts/messages' %>
 
             <%= yield %>
+
             <svg style="display: none;">
             <defs>
               <path id="shape-tab" d="M100,25C79.568,25,84.815,0,59.692,0H11.149C5.027,0,0,4.634,0,10.385V25"></path>
@@ -155,6 +157,7 @@
               </defs>
             </svg>
         </main>
+
         </div>
         </div>
         
