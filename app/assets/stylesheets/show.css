@@ -55,3 +55,8 @@
 	height: 130%;
 	width: 25%;
 }
+#initialRanking{
+	position: relative;
+	width: 25%;
+	left: 65%;
+}
