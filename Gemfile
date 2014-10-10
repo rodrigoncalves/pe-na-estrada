@@ -6,8 +6,6 @@ gem 'rails', '4.1.5'
 # Simplecov coverage analysis tool
 gem 'simplecov', :require => false, :group => :test
 
-gem 'capybara'
-
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -53,16 +51,5 @@ group :development do
   gem 'rails_layout'
 end
 
-group :test do
-  gem 'shoulda'
-end
-
 # Code Climate
 gem "codeclimate-test-reporter", group: :test, require: nil
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
