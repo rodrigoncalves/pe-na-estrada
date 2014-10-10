@@ -49,6 +49,7 @@
         <%= o.input :destination, label: false,
                     placeholder:'Informe um destino',
                     required: true,
+                    :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+',
                     :input_html => {:size => 25}%>
     </div>
     </div>

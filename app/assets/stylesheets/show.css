@@ -2,7 +2,7 @@
 	padding-top: 10%;*/
 	position:absolute;
 	top:1%;
-	left:45%;
+	left:35%;
 	text-align:center;
 }
 
@@ -20,7 +20,7 @@
 	left:1.5%;
 	text-align:center;
 	overflow: auto;
-	height: 50%;
+	height: 47.5%;
 	width: 25%;
 }
 
@@ -59,4 +59,10 @@
 	position: relative;
 	width: 25%;
 	left: 65%;
+}
+
+#initialAbout{
+	position: relative;
+	width: 45%;
+	left: 5%;
 }
