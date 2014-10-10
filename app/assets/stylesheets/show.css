@@ -38,3 +38,16 @@
 	height: 68%;
 	width: 40%;
 }
+
+#content{	
+	background: white;
+}
+#directionsPanelView{
+	position:absolute;
+	top:30%;
+	left:100%;
+	text-align:center;
+	overflow: auto;
+	height: 90%;
+	width: 25%;
+}
