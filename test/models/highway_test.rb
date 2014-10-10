@@ -2,6 +2,8 @@ require 'test_helper'
 
 class HighwayTest < ActiveSupport::TestCase
 
+	QUANTITY_OF_FIXTURES = 3
+
 	def setup
 		@highways = Highway.all
 		@highway = Highway.new
@@ -18,7 +20,7 @@ class HighwayTest < ActiveSupport::TestCase
 	# Based on fixtures
 	test "Should be equal to 2 the quantity of Highway objects on DB" do
 
-		assert_equal 2, Highway.count, "Registered data does not match the actual quantity registered"
+		assert_equal QUANTITY_OF_FIXTURES, Highway.count, "Registered data does not match the actual quantity registered"
 
 	end
 
@@ -26,7 +28,7 @@ class HighwayTest < ActiveSupport::TestCase
 	test "Test if all idBr's registered is present" do
 
 		@highways.each do |highway|
- 
+
 			assert highway.idBr.present?, "idBr  must be present!"
 
 		end
@@ -54,7 +56,7 @@ class HighwayTest < ActiveSupport::TestCase
 	end
 
 	# Begin tests to 'validates_presence_of :idBr
-	
+
 	test "Should save a valid Highway object" do
 
 		@highway.idBr = "131"
@@ -70,8 +72,8 @@ class HighwayTest < ActiveSupport::TestCase
 
 	end
 
-	test "Should not save without an idBr" do 
-		
+	test "Should not save without an idBr" do
+
 		@highway.mileage = 1200
 
 		assert_not @highway.save, "Cannot save without an idBr"
@@ -111,7 +113,7 @@ class HighwayTest < ActiveSupport::TestCase
 
 	end
 
-	test "Should not save an Highway object wiith an idBr out of range 2..3 of length. Test a shorter than 2 idBr length" do 
+	test "Should not save an Highway object wiith an idBr out of range 2..3 of length. Test a shorter than 2 idBr length" do
 
 		@highway.idBr = "1"
 
@@ -119,7 +121,7 @@ class HighwayTest < ActiveSupport::TestCase
 
 	end
 
-	test "Should not save an Highway object wiith an idBr out of range 2..3 of length. Test a greater than 2 idBr length" do 
+	test "Should not save an Highway object wiith an idBr out of range 2..3 of length. Test a greater than 2 idBr length" do
 
 		@highway.idBr = "2222"
 
@@ -177,9 +179,9 @@ class HighwayTest < ActiveSupport::TestCase
 
 	test "Test the 'exists_highway' method" do
 
-		# Passing first fixture 
+		# Passing first fixture
 		@highway_exists_result_first = Highway.exists_highway "121"
-		
+
 		# Passing second fixture
 		@highway_exists_result_second = Highway.exists_highway "987"
 
@@ -202,7 +204,7 @@ class HighwayTest < ActiveSupport::TestCase
 		@highway_exists_result = Highway.exists_highway nil
 
 		assert_not @highway_exists_result, "Should not exists a nil highway idBr on DB"
-		
+
 	end
 
 	test "Test the 'exists_highway' method with empty argument" do
@@ -211,7 +213,7 @@ class HighwayTest < ActiveSupport::TestCase
 		@highway_exists_result = Highway.exists_highway ""
 
 		assert_not @highway_exists_result, "Should not exists an empty highway idBr on DB"
-		
+
 	end
 
 	test "Test the 'search_for_highway' method with valid argument" do
@@ -247,8 +249,8 @@ class HighwayTest < ActiveSupport::TestCase
 		@highway_search_result = Highway.search_for_highway ""
 
 		assert_kind_of ActiveRecord::Relation, @highway_search_result, "Not a instance of ActiveRecord::Relation returned from the method 'search_for_highway'"
-		
-		assert_equal 2, Highway.count, "Should be equal to the quantity of registers on DB"
+
+		assert_equal QUANTITY_OF_FIXTURES, Highway.count, "Should be equal to the quantity of registers on DB"
 
 		@highway_search_result.each do |highway|
 
@@ -265,8 +267,8 @@ class HighwayTest < ActiveSupport::TestCase
 		@highway_search_result = Highway.search_for_highway nil
 
 		assert_kind_of ActiveRecord::Relation, @highway_search_result, "Not a instance of ActiveRecord::Relation returned from the method 'search_for_highway'"
-		
-		assert_equal 2, Highway.count, "Should be equal to the quantity of registers on DB"
+
+		assert_equal QUANTITY_OF_FIXTURES, Highway.count, "Should be equal to the quantity of registers on DB"
 
 		@highway_search_result.each do |highway|
 
