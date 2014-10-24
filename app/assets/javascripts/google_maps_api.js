@@ -48,6 +48,7 @@ function initialize()
 
   google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
     computeTotalDistance(directionsDisplay.directions);
+    getInfoAboutRoute(directionsDisplay.directions);
   });
 
   calcRoute();
@@ -117,3 +118,32 @@ handler.buildMap({ internal: {id: 'directions'}}, function()
   directionsDisplay.setMap(handler.getMap());
   initialize();
 });
+
+function getInfoAboutRoute(result){
+
+  var myroute = result.routes[0];
+  var mylegs = myroute.legs[0];
+
+  var length = mylegs.steps.length;
+  
+  for (j=0,i = 0; i < length; i++) 
+  {
+    var instructions = mylegs.steps[i].instructions;
+    var initialposition = 0;
+    var endposition = 0;
+    var coordinates = new Array;
+    var brnumber = new Array;
+
+    if(instructions.indexOf("BR-") != -1){
+
+      initialposition = instructions.indexOf("BR-");
+      endposition = initialposition + 6;
+      var substring = instructions.substring(initialposition,endposition);
+
+      brnumber[j] = substring.substring(3,6);
+      coordinates[j] = mylegs.steps[i].path[i].toString();
+      //document.write(brnumber[j] + "\n" + coordinates[j]);
+    }
+  }
+
+}
