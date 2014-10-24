@@ -6,7 +6,7 @@
 
     <!-- Set the default page title as "Pé na estrada" -->
     <title><%= content_for?(:title) ? yield(:title) : "Pé na estrada" %></title>
-    
+
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pé na estrada" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -143,17 +143,22 @@ perspective-origin:50% 50%;
 -moz-transition-delay:0.2s;
 -webkit-transition-delay:0.2s
 }
+
+body{
+overflow-y: scroll;
+overflow-x: hidden;
+}
+
 </style>
 
-    
 
 
-    
+
+
   </head>
 
-  
-<body>
 
+<body>
 <ul>
 <!--
 <div id="geral">
@@ -180,18 +185,18 @@ perspective-origin:50% 50%;
 </div>
 </div>
 </ul>
-          
+
+        <div id="content">
+
         <main role="main">
-          <%= render 'layouts/messages' %>
-
-
-            <%= yield %>
-
-            
+        <%= render 'layouts/messages' %>
+        <%= yield %>
         </main>
 
-      
-        
+        </div>
+
+
+
 
   </body>
 </html>

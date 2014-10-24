@@ -28,14 +28,14 @@
 	position:absolute;
 
 }
+
 #rateTypes{
 	position:relative;
 	top:0%;
 	left:-5%;
 }
+
 #ranking{
-		
-	
 	left:32%;
 	text-align:center;
 	height: 68%;
@@ -43,7 +43,11 @@
 }
 
 #content{
+	position: relative;
 	background: white;
+	top: 13%;
+	left: 1%;
+	width: 98%;
 }
 
 #directionsPanelView{
@@ -55,6 +59,7 @@
 	height: 130%;
 	width: 25%;
 }
+
 #initialRanking{
 	position: relative;
 	width: 25%;
