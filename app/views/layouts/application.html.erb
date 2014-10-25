@@ -18,6 +18,7 @@
 <style src=>
 .lista-abas, .lista-abas * {
 margin:0;
+left: 2%;
 padding:0;
 outline:none;
 border:0;
@@ -61,11 +62,11 @@ transition:background .3s, color .4s;
 -webkit-transition:background .3s, color .4s
 }
 .lista-abas > label:hover span span {
-background:#3498db;
-color:#fff
+background:#FFFFFF;
+color:#000000
 }
 .lista-abas > input:checked + label span span {
-background:#3498db;
+background:#000000;
 color:#fff
 }
 .lista-abas > ul {
@@ -170,6 +171,12 @@ overflow-x: hidden;
 </div>
 -->
 
+<!-- Inserting the logo -->
+<div id="logo">
+<%= image_tag("logo.jpg", height: '23%', width: '23%')%>
+</div>
+
+<!--  FInished inserting the logo -->
 
 <div class="area-total-abas">
 <div class="lista-abas amimacao-flip">

@@ -24,6 +24,12 @@
 	width: 25%;
 }
 
+#logo{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+}
+
 #top-menu{
 	position:absolute;
 
