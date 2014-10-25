@@ -6,7 +6,7 @@
 
     <!-- Set the default page title as "Pé na estrada" -->
     <title><%= content_for?(:title) ? yield(:title) : "Pé na estrada" %></title>
-    
+
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pé na estrada" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -15,130 +15,183 @@
     <title>Navegação por Abas com CSS3 e HTML | butSource</title>
     
 
-    <style>
-      .lista-abas, .lista-abas * {
-        margin:0;
-        padding:0;
-        outline:none;
-        border:0;
-        background:none
-      }
-      .lista-abas {
-        position:relative;
-        font-size:0;
-        text-align:left;
-        color:#666
-      }
-      .lista-abas > input {
-        position:absolute;
-        display:none
-      }
-      .lista-abas > label {
-        position:relative;
-        z-index:1;
-        display:inline-block;
-        box-sizing:border-box;
-        -moz-box-sizing:border-box;
-        padding:1px;
-        padding-top:0;
-        padding-left:0;
-        font-size:20px;
-        line-height:70px;
-        cursor:pointer
-      }
-      .lista-abas > label span {
-        display:block;
-        padding:5px;
-        background:rgba(255, 255, 255, .9)
-      }
-      .lista-abas > label span span {
-        padding:0 20px;
-        background:transparent;
-        transition:background .3s, color .4s;
-        -o-transition:background .3s, color .4s;
-        -ms-transition:background .3s, color .4s;
-        -moz-transition:background .3s, color .4s;
-        -webkit-transition:background .3s, color .4s
-      }
-      .lista-abas > label:hover span span {
-        background:#3498db;
-        color:#fff
-      }
-      .lista-abas > input:checked + label span span {
-        background:#3498db;
-        color:#fff
-      }
-      .lista-abas > ul {
-        list-style:none;
-        position:relative;
-        display:block;
-        font-size:13px
-      }
-      .lista-abas > ul > li {
-        position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        overflow:auto;
-        padding:20px 25px 25px;
-        background:rgba(255, 255, 255, .9);
-        box-sizing:border-box;
-        -moz-box-sizing:border-box;
-        opacity:0;
-        -o-transform-origin:0% 0%;
-        -ms-transform-origin:0% 0%;
-        -moz-transform-origin:0% 0%;
-        -webkit-transform-origin:0% 0%;
-        -o-transition:opacity .8s, -o-transform .8s;
-        -ms-transition:opacity .8s, -ms-transform .8s;
-        -moz-transition:opacity .8s, -moz-transform .8s;
-        -webkit-transition:opacity .8s, -webkit-transform .8s
-      }
-      .lista-abas > .aba-1:checked ~ ul > .aba-1,
-      .lista-abas > .aba-2:checked ~ ul > .aba-2,
-      .lista-abas > .aba-3:checked ~ ul > .aba-3,
-      .lista-abas > .aba-4:checked ~ ul > .aba-4 {
-        position:relative;
-        z-index:1;
-        opacity:1
-      }
-      .conteudo {
-        width:100px;
-        font-size:10px;
-        position:relative;
-        line-height:200px
-      }
-      .pagina-url {
-        float:right;
-        margin-top:15px
-      }
-      
-    </style>
 
-    
+<style src=>
+.lista-abas, .lista-abas * {
+margin:0;
+left: 2%;
+padding:0;
+outline:none;
+border:0;
+background:none
+}
+.lista-abas {
+position:relative;
+font-size:0;
+text-align:left;
+color:#666
+}
+.lista-abas > input {
+position:absolute;
+display:none
+}
+.lista-abas > label {
+position:relative;
+z-index:1;
+display:inline-block;
+box-sizing:border-box;
+-moz-box-sizing:border-box;
+padding:1px;
+padding-top:0;
+padding-left:0;
+font-size:20px;
+line-height:70px;
+cursor:pointer
+}
+.lista-abas > label span {
+display:block;
+padding:5px;
+background:rgba(255, 255, 255, .9)
+}
+.lista-abas > label span span {
+padding:0 20px;
+background:transparent;
+transition:background .3s, color .4s;
+-o-transition:background .3s, color .4s;
+-ms-transition:background .3s, color .4s;
+-moz-transition:background .3s, color .4s;
+-webkit-transition:background .3s, color .4s
+}
+.lista-abas > label:hover span span {
+background:#FFFFFF;
+color:#000000
+}
+.lista-abas > input:checked + label span span {
+background:#000000;
+color:#fff
+}
+.lista-abas > ul {
+list-style:none;
+position:relative;
+display:block;
+font-size:13px
+}
+.lista-abas > ul > li {
+position:absolute;
+top:0;
+left:0;
+width:100%;
+overflow:auto;
+padding:20px 25px 25px;
+background:rgba(255, 255, 255, .9);
+box-sizing:border-box;
+-moz-box-sizing:border-box;
+opacity:0;
+-o-transform-origin:0% 0%;
+-ms-transform-origin:0% 0%;
+-moz-transform-origin:0% 0%;
+-webkit-transform-origin:0% 0%;
+-o-transition:opacity .8s, -o-transform .8s;
+-ms-transition:opacity .8s, -ms-transform .8s;
+-moz-transition:opacity .8s, -moz-transform .8s;
+-webkit-transition:opacity .8s, -webkit-transform .8s
+}
+.lista-abas > .aba-1:checked ~ ul > .aba-1,
+.lista-abas > .aba-2:checked ~ ul > .aba-2,
+.lista-abas > .aba-3:checked ~ ul > .aba-3,
+.lista-abas > .aba-4:checked ~ ul > .aba-4 {
+position:relative;
+z-index:1;
+opacity:1
+}
+.conteudo {
+width:600px;
+font-size:10px;
+position:relative;
+line-height:200px
+}
+.pagina-url {
+float:right;
+margin-top:15px
+}
+.amimacao-flip > ul {
+perspective:2000px;
+-o-perspective:2000px;
+-ms-perspective:2000px;
+-moz-perspective:2000px;
+-webkit-perspective:2000px;
+perspective-origin:50% 50%;
+-o-perspective-origin:50% 50%;
+-ms-perspective-origin:50% 50%;
+-moz-perspective-origin:50% 50%;
+-webkit-perspective-origin:50% 50%
+}
+.amimacao-flip > ul > li {
+-o-transform:rotateX(-90deg);
+-ms-transform:rotateX(-90deg);
+-moz-transform:rotateX(-90deg);
+-webkit-transform:rotateX(-90deg)
+}
+.amimacao-flip > .aba-1:checked ~ ul > .aba-1,
+.amimacao-flip > .aba-2:checked ~ ul > .aba-2,
+.amimacao-flip > .aba-3:checked ~ ul > .aba-3,
+.amimacao-flip > .aba-4:checked ~ ul > .aba-4 {
+-o-transform:rotateX(0deg);
+-ms-transform:rotateX(0deg);
+-moz-transform:rotateX(0deg);
+-webkit-transform:rotateX(0deg);
+-o-transition-delay:0.2s;
+-ms-transition-delay:0.2s;
+-moz-transition-delay:0.2s;
+-webkit-transition-delay:0.2s
+}
+
+body{
+overflow-y: scroll;
+overflow-x: hidden;
+}
+
+</style>
 
 
-    
   </head>
 
   
   <body >
 
-    <ul>
+    
+
+
+
+<!--
+<div id="geral">
+  <ul class="menu">
+    <li><a href="routes">Fox</a></li>
+    <li><a href="#aba02"></a></li>
+    <li><a href="#aba03"></a></li>
+  </ul>
+</div>
+-->
+
+<!-- Inserting the logo -->
+<div id="logo">
+<%= image_tag("logo.jpg", height: '23%', width: '23%')%>
+</div>
+
+<!--  FInished inserting the logo -->
+
+<ul>
       <div class="area-total-abas">
         <li>
           <a href="/home">
             <div class="lista-abas amimacao-flip">
-              <input type="radio" name="lista-abas" checked id="aba-1" class="aba-1">
               <label  for="aba-1"><span><span>Tracar Rota</span></span></label>
             </div>
           </a>
         </li>
-
         <li>
           <a href="/highways/1">
             <div class="lista-abas amimacao-flip">
-              <input type="radio" name="lista-abas" id="aba-2" class="aba-2">
               <label for="aba-2"><span><span>Visualizar Ranking</span></span></label>
             </div>
 
@@ -148,7 +201,6 @@
         <li>
           <a href="/highways">
             <div class="lista-abas amimacao-flip">
-              <input type="radio" name="lista-abas" id="aba-3" class="aba-3">
               <label for="aba-3"><span><span>Pesquisar Rodovia</span></span></label>
             </div>
           </a>
@@ -157,7 +209,6 @@
         <li>
           <a href="/home/show">
             <div class="lista-abas amimacao-flip">
-              <input type="radio" name="lista-abas" id="aba-4" class="aba-4">
               <label for="aba-4"><span><span>Sobre o time</span></span></label>
             </div>
 
@@ -165,10 +216,19 @@
         </li>
       </div>
     </ul>
-            
-    <main role="main">
-      <%= render 'layouts/messages' %>
+
+
+        <div id="content">
+
+        <main role="main">
+        <%= render 'layouts/messages' %>
         <%= yield %>
-    </main>
+        </main>
+
+        </div>
+
+
+
+
   </body>
 </html>
