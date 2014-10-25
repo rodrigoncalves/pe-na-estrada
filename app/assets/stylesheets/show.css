@@ -52,6 +52,25 @@
 	overflow: scroll;
 }
 
+#search_btn{
+
+	position: static;
+}
+
+#search_highway_form{
+
+}
+
+#search_for_highway_result{
+
+	margin-left: 10%;
+}
+
+#error_message{
+
+	margin-top: 15%;
+}
+
 #ranking_header{
 
 	margin-top: 1%;
