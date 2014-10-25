@@ -37,17 +37,24 @@
 	position:absolute;
 
 }
-#rateTypes{
+#rate_types{
 	position:relative;
 	top:0%;
 	left:-5%;
 }
+
 #ranking{
 
-	left:32%;
-	text-align:center;
-	height: 68%;
+	/*left: 32%;*/
+	text-align: center;
 	width: 40%;
+	height: 400px;
+	overflow: scroll;
+}
+
+#ranking_header{
+
+	margin-top: 1%;
 }
 
 #about{
