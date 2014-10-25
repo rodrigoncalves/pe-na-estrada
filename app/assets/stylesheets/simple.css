@@ -2,13 +2,8 @@
  * Simple CSS stylesheet for a navigation bar and flash messages.
  */
 main {
-  
-  /* 
-   * Didn't understand why the background color was set as #eee, so I (Italo) took it out
-   * 
-   * background-color: #eee;
-   */
-  
+
+  /*background-color: #eee;*/
   padding-bottom: 80px;
 
   /* Added to give space to the menu bar */
@@ -20,11 +15,11 @@ main {
 header {
   border: 1px solid #d4d4d4;
   background-image: linear-gradient(to bottom, white, #f2f2f2);
-  background-color: #f9f9f9;
+  background-color: #1A1A0A;
   -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  height: 5%;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 ul.nav li {

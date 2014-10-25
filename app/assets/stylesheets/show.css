@@ -1,5 +1,12 @@
+#main_panel{
+	
+	/*text-align: center;*/
+	margin-left: 15%;
+	margin-right: 15%;	
+}
+
 #directions{
-	padding-top: 10%;*/
+	padding-top: 10%;
 	position:absolute;
 	top:1%;
 	left:37%;
@@ -34,8 +41,7 @@
 	left:-5%;
 }
 #ranking{
-		
-	
+
 	left:32%;
 	text-align:center;
 	height: 68%;
@@ -56,13 +62,15 @@
 	width: 25%;
 }
 #initialRanking{
-	position: relative;
+/*	position: relative;
 	width: 25%;
-	left: 65%;
+	left: 65%;*/
+	width: 40%;
+	font-size: 11px;
 }
 
 #initialAbout{
-	position: relative;
-	width: 45%;
-	left: 5%;
+/*	position: relative;
+	width: 30%;
+	left: 5%;*/
 }
