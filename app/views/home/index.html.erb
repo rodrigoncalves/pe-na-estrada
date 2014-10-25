@@ -2,46 +2,57 @@
 
 <div class="row">
   
-<div id="initialAbout" class="col-lg-6">
-      DESCRIÇÃO DO SOFTWARE
-      <br>
-      <br>
-      Essa aplicação foi desenvolvida com o intuito de disponibilizar informações sobre os acidentes ocorridos nas rodovias federais de acordo com os dados disponiblizados pela Polícia Rodoviária Federal (PRF). Você poderá acompanhar em nosso site rankings dos acidentes em cada rodovia, pesquisar rodovias que você deseja obter informações e traçar rotas para planejar uma viagem mais segura. 
-      <br>
-      <br>
-      Seja Bem-Vindo ! 
-</div>  
+      <div id="initial_about" class="col-lg-6">
+            DESCRIÇÃO DO SOFTWARE
+            <br>
+            <br>
+            Essa aplicação foi desenvolvida com o intuito de disponibilizar informações sobre os acidentes ocorridos nas rodovias federais de acordo com os dados disponiblizados pela Polícia Rodoviária Federal (PRF). Você poderá acompanhar em nosso site rankings dos acidentes em cada rodovia, pesquisar rodovias que você deseja obter informações e traçar rotas para planejar uma viagem mais segura. 
+            <br>
+            <br>
+            Seja Bem-Vindo ! 
+      </div>  
 
-<div id="initialRanking" class="col-lg-6">
-      <h5>  Ranking </h5>
-      <table class="table table-hover" >
-      <thread>
-      <tr>
-      <th>Posição</th>
-      <th>BR</th>
-      <th>Acidentes/Km</th>
-      </tr>
-      </thread>
-      <tbody>
+      <div id="initial_ranking" class="col-lg-6">
+            
+            <div class="panel panel-warning">
+              
+                  <div class="panel panel-heading">
+                        <h5 align="center">Ranking</h5>
+                  </div>
+                  
+                  <div class="panel-body">
+                    
+                        <table class="table table-hover table-responsive" >
+                        <thread>
+                        <tr>
+                        <th>Posição</th>
+                        <th>BR</th>
+                        <th>Acidentes/Km</th>
+                        </tr>
+                        </thread>
+                        <tbody>
 
-      <% @highway.each do |h| %>
-        <% if h.rankingPosition < 11 %>
-          <tr></tr>
-          <td><%= h.rankingPosition %>º </td>
-          <td><%= h.idBr %></td>
-          <td><%= format("%.4f",h.accidentsRate) %></td>
-        <% end %>
-      <% end %>
-      </tbody>
-      </table>
+                        <% @highway.each do |h| %>
+                          <% if h.rankingPosition < 11 %>
+                            <tr></tr>
+                            <td><%= h.rankingPosition %>º </td>
+                            <td><%= h.idBr %></td>
+                            <td><%= format("%.4f",h.accidentsRate) %></td>
+                          <% end %>
+                        <% end %>
+                        </tbody>
+                        </table>
 
-      <ul class="nav nav-pills nav-stacked">
-        <li class="active">
-          <a href="<%=highway_path(1)%>">
-            <span class="badge pull-right">+</span>
-            Visualizar mais 
-          </a>
-        </li>
-      </ul>
-</div>
+                        <ul class="nav nav-pills nav-stacked">
+                          <li class="link">
+                            <%= link_to '  Visualizar mais', highway_path(1), class: "fa fa-plus-square" %>
+                          </li>
+                        </ul>
+                  
+                  </div>
+            
+            </div>
+
+      </div>
+
 </div>

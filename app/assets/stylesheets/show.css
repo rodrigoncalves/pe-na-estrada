@@ -2,7 +2,9 @@
 	
 	/*text-align: center;*/
 	margin-left: 15%;
-	margin-right: 15%;	
+	margin-right: 15%;
+	box-shadow: 10px 10px 5px #888888;
+	border-radius: 20px;
 }
 
 #directions{
@@ -48,8 +50,13 @@
 	width: 40%;
 }
 
+#about{
+	margin-right: 15%;
+}
+
 #content{
 	background: white;
+	overflow: hidden;
 }
 
 #directionsPanelView{
@@ -61,16 +68,29 @@
 	height: 130%;
 	width: 25%;
 }
-#initialRanking{
+#initial_ranking{
 /*	position: relative;
 	width: 25%;
 	left: 65%;*/
+	-webkit-transition: height 1s;
+    	transition: height 1s;
+	position: relative;
 	width: 40%;
+	height: 60px;
 	font-size: 11px;
+	cursor: pointer;
+	overflow: hidden;
 }
 
-#initialAbout{
+#initial_ranking:hover{
+
+	height: 550px;
+	cursor: crosshair;
+}
+
+#initial_about{
 /*	position: relative;
 	width: 30%;
 	left: 5%;*/
+	text-align: justify;
 }
