@@ -20,7 +20,9 @@
             <div class="navbar navbar-default ">
             
                 <div class="navbar-header">
-                      <%= link_to 'Pé na estrada', root_path, class: "navbar-brand link" %>
+                        <div id="logo">
+                            <a href="<%=root_path%>"><%= image_tag("logo.jpg", height: '23%', width: '22%')%></a>
+                        </div>
                 </div>
 
                 <div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -57,7 +59,6 @@
 <!--   <div class="panel-footer">Panel footer</div> -->
 
 </div>
-
 
 </body>
 </html>
