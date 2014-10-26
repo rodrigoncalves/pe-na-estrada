@@ -1,5 +1,6 @@
 google.maps.event.addDomListener(window, 'load', initialize);
-
+var map;
+var stepDisplay;
 // Gives to the map the option to drag it and change the route
 var rendererOptions = 
 {
@@ -9,7 +10,6 @@ var rendererOptions =
 
 var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var directionsService = new google.maps.DirectionsService();
-
 
 function initialize() 
 {
@@ -41,20 +41,21 @@ function initialize()
 
   };
 
-  var map = new google.maps.Map(document.getElementById('directions'),
-      mapOptions);
-   directionsDisplay.setMap(map);
+  map = new google.maps.Map(document.getElementById('directions'), mapOptions);
+  directionsDisplay.setMap(map);
 	directionsDisplay.setPanel(document.getElementById("directionsPanel"));
 
   google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
     computeTotalDistance(directionsDisplay.directions);
-    getInfoAboutRoute(directionsDisplay.directions);
   });
+
+stepDisplay = new google.maps.InfoWindow();
 
   calcRoute();
 
 
 }
+
 function calcRoute() {
 
   var origin      = $("#origin").val();
@@ -67,29 +68,31 @@ function calcRoute() {
 
     directionsService.route(request, function(response, status) {
 
-    if (status == google.maps.DirectionsStatus.OK) {
+    if (status === google.maps.DirectionsStatus.OK) {
       var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
       document.getElementById("distance").innerHTML = text;
      	directionsDisplay.setDirections(response);
+      getInfoAboutRoute(directionsDisplay.directions);
+
    //  	directionsDisplay.setPanel(origin);
     	}
-    else if (status == 'ZERO_RESULTS' || status == 'INVALID_REQUEST') {
+    else if (status === 'ZERO_RESULTS' || status === 'INVALID_REQUEST') {
       alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" 
             + destination + "'. \n Digite novamente.");
     }
-    else if (status == 'UNKNOWN_ERROR' || status == 'REQUEST_DENIED') {
+    else if (status === 'UNKNOWN_ERROR' || status === 'REQUEST_DENIED') {
         alert('Erro inesperado');
     }
-    else if(status == 'OVER_QUERY_LIMIT'){
+    else if(status === 'OVER_QUERY_LIMIT'){
         alert('Erro inesperado'); 
     }
-    else if(status == 'NOT_FOUND'){
-        if(origin == ""){
-            
+    else if(status === 'NOT_FOUND'){
+        if(origin  != ""){
+          alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" 
+                 + destination  + "'. \n Digite novamente.");            
         }
         else{
-                    alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" 
-                      + destination  + "'. \n Digite novamente.");
+          // Nothing to do     
         }
 
     }
@@ -99,7 +102,6 @@ function calcRoute() {
     }
  });
 }
-	
 function computeTotalDistance(result) 
 {
   var total = 0;
@@ -125,15 +127,16 @@ function getInfoAboutRoute(result){
   var mylegs = myroute.legs[0];
 
   var length = mylegs.steps.length;
-  
-  for (j=0,i = 0; i < length; i++) 
-  {
-    var instructions = mylegs.steps[i].instructions;
-    var initialposition = 0;
-    var endposition = 0;
-    var coordinates = new Array;
-    var brnumber = new Array;
+  var initialposition = 0;
+  var endposition = 0;
+  var coordinates = new Array;
+  var brnumber = new Array;
 
+  
+  for (i = 0; i < length; i++) 
+  {
+    j=0;
+    var instructions = mylegs.steps[i].instructions;
     if(instructions.indexOf("BR-") != -1){
 
       initialposition = instructions.indexOf("BR-");
@@ -141,9 +144,25 @@ function getInfoAboutRoute(result){
       var substring = instructions.substring(initialposition,endposition);
 
       brnumber[j] = substring.substring(3,6);
-      coordinates[j] = mylegs.steps[i].path[i].toString();
-      //document.write(brnumber[j] + "\n" + coordinates[j]);
+      coordinates[j] = mylegs.steps[i].path[i];
+      //alert(brnumber[j] + "\n" + coordinates[j]);
+
+     
+      var marker = new google.maps.Marker({
+        position: coordinates[j],
+        map: map
+      });
+      j++;
+
+      $.post(
+            "/routes/trace",
+            {length:length, brnumber:brnumber},
+            function(){}
+      );
     }
   }
 
 }
+
+
+

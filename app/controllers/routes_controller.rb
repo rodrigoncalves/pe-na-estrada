@@ -10,7 +10,10 @@ class RoutesController < ApplicationController
     @route = Route.new(origin_params)
     @origin_informed_by_user = @route.origin
     @destination_informed_by_user = @route.destination
-    
+
+
+    #@latitude = Accident.all.map &:latitude
+    #@longitude = Accident.all.map &:longitude
     render :index
   end
     
