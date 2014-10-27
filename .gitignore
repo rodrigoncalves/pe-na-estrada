@@ -17,3 +17,6 @@
 
 # Ignore coverage folder from simplecov
 /coverage
+
+# Ignore assets folder
+/public/assets
