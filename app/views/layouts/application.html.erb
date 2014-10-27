@@ -1,64 +1,63 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      <!-- Set the default page title as "Pé na estrada" -->
-      <title><%= content_for?(:title) ? yield(:title) : "Pé na estrada" %></title>
+    <!-- Set the default page title as "Pé na estrada" -->
+    <title><%= content_for?(:title) ? yield(:title) : "Pé na estrada" %></title>
 
-      <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pé na estrada" %>">
-      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-      <%= csrf_meta_tags %>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pé na estrada" %>">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
   </head>
   
-<body background="/assets/fundo.jpg">
+  <body background="/assets/fundo.jpg">
 
-<div class="panel-heading">
+    <div class="panel-heading">
       <header class="navbar navbar-fixed-top">
-            <div class="navbar navbar-default ">
-            
-                 <div class="navbar-header">
-                        <div id="logo">
-                            <a href="<%=root_path%>"><%= image_tag("logo.jpg", height: '100%', width: '100%')%></a>
-                        </div>
-                </div>
- 
-                <div class="navbar-collapse collapse navbar-responsive-collapse">
-                      <ul class="nav navbar-nav">
-                        
-                            <li class="link"><%= link_to 'Traçar Rota', routes_path, class: "navbar-brand" %></li>
-                            <li class="link"><%= link_to 'Ranking', highway_path(1), class: "navbar-brand" %></li>
-                            <li class="link "><%= link_to 'Rodovia', highways_path, class: "navbar-brand" %></li>
-                          
-                      </ul>
+        <div class="navbar navbar-default ">
 
-                      <ul class="nav navbar-nav navbar-right">
-                            <li id="about" class="link "><%= link_to 'About', home_path(1), class: "navbar-brand" %></li>
-                      </ul>
-                </div>
-
+          <div class="navbar-header">
+            <div id="logo">
+              <a href="<%=root_path%>">
+                <%= image_tag("logo.jpg", height: '100%', width: '100%', alt:"Pé na estada")%>
+              </a>
             </div>
+          </div>
+
+          <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+              
+              <li class="link"><%= link_to 'Traçar Rota', routes_path, class: "navbar-brand" %></li>
+              <li class="link"><%= link_to 'Ranking', highway_path(1), class: "navbar-brand" %></li>
+              <li class="link "><%= link_to 'Rodovia', highways_path, class: "navbar-brand" %></li>
+                
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li id="about" class="link "><%= link_to 'About', home_path(1), class: "navbar-brand" %></li>
+            </ul>
+          </div>
+
+        </div>
       </header>
-</div>
+    </div>
 
-<div id="main_panel" class="panel panel-default container" style="width: 90%;  border: 1px solid #d4d4d4;">
-  
+    <div id="main_panel" class="panel panel-default container" style="width: 90%;  border: 1px solid #d4d4d4;">  
       <div class="panel-body">
-          <div id = "content" >
-                  <main role="main">
-                        
-                        <%= render 'layouts/messages' %>
-                        <%= yield %>
+        <div id = "content" >
+          <main role="main">
+                
+            <%= render 'layouts/messages' %>
+            <%= yield %>
 
-                  </main>
-            </div>
+          </main>
+        </div>
       </div>
+      <!--   <div class="panel-footer">Panel footer</div> -->
+    </div>
 
-<!--   <div class="panel-footer">Panel footer</div> -->
-
-</div>
-
-</body>
+  </body>
 </html>
