@@ -39,9 +39,9 @@
         <table class="table table-hover" >
           <thread>
             <tr>
-            <th>Posição</th>
-            <th>BR</th>
-            <th>Acidentes/Km(%)</th>
+            <th class="text-center">Posição</th>
+            <th class="text-center">BR</th>
+            <th class="text-center">Participação no total<br> de acidentes(%)</th>
             </tr>
           </thread>
 
@@ -50,7 +50,7 @@
             <% @highway2.each do |h| %>
               <% if h.accidentsRatePercent != 0.0 && h.accidentsRatePercent != nil %>
                 <tr></tr>
-                <td><%= " #{position} º" %> </td>
+                <td><%= " #{position}º" %> </td>
                 <td><%= h.idBr %></td>
                 <td><%= format("%.4f",h.accidentsRatePercent)%>%</td>
                 <%position = position + 1%>

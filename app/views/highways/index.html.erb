@@ -27,8 +27,8 @@
         </div>     
             
         <div id="search_btn" >
-          <%= submit_tag "Pesquisar", :name => nil, :class => "btn btn-default"%>
           <i class="fa fa-search"></i>
+          <%= submit_tag "Pesquisar", :name => nil, :class => "btn btn-default"%>
         </div>
 
     <% end %>
@@ -74,7 +74,7 @@
 
               <td></td>
                <td style="text-align: center;">
-                <%= "#{highway.rankingPosition}" %>
+                <%= "#{highway.rankingPosition}º" %>
               </td>
             </tr>
           <% end %>
