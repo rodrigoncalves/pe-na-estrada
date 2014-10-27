@@ -3,13 +3,15 @@
 	/*text-align: center;*/
 	margin-left: 5%;
 	margin-right: 5%;
-	box-shadow: 10px 10px 5px #888888;
+	box-shadow: 10px 10px 5px rgba(0,0,0,.3);
+	/*box-shadow: 10px 10px 5px #888888;*/
 	border-radius: 20px;
 }
 
 #logo{
 
-	margin-right: -200px;
+	height: 70px;
+	/*margin-right: -200px;*/
 }
 
 #directions{
@@ -46,9 +48,14 @@
 #ranking{
 
 	text-align: center;
-	width: 40%;
+	width: 100%;
 	height: 400px;
 	overflow-y: scroll;
+}
+
+#ranking_panel{
+
+	width: 40%;
 }
 
 #search_btn{
@@ -101,14 +108,14 @@
 	width: 40%;
 	height: 60px;
 	font-size: 11px;
-	cursor: pointer;
+	cursor: wait;
 	overflow: hidden;
 }
 
 #initial_ranking:hover{
 
 	height: 550px;
-	cursor: crosshair;
+	cursor: pointer;
 }
 
 #initial_about{

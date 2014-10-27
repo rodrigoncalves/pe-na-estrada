@@ -35,7 +35,7 @@
                         <% @highway.each do |h| %>
                           <% if h.rankingPosition < 11 %>
                             <tr></tr>
-                            <td><%= h.rankingPosition %>º </td>
+                            <td><%= h.rankingPosition %>º</td>
                             <td><%= h.idBr %></td>
                             <td><%= format("%.4f",h.accidentsRate) %></td>
                           <% end %>

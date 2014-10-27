@@ -19,18 +19,18 @@
       <header class="navbar navbar-fixed-top">
             <div class="navbar navbar-default ">
             
-                <div class="navbar-header">
+                 <div class="navbar-header">
                         <div id="logo">
-                            <a href="<%=root_path%>"><%= image_tag("logo.jpg", height: '23%', width: '22%')%></a>
+                            <a href="<%=root_path%>"><%= image_tag("logo.jpg", height: '100%', width: '100%')%></a>
                         </div>
                 </div>
-
+ 
                 <div class="navbar-collapse collapse navbar-responsive-collapse">
                       <ul class="nav navbar-nav">
                         
-                            <li class="link"><%= link_to 'Traçar Rota', routes_path %></li>
-                            <li class="link"><%= link_to 'Ranking', highway_path(1) %></li>
-                            <li class="link "><%= link_to 'Rodovia', highways_path %></li>
+                            <li class="link"><%= link_to 'Traçar Rota', routes_path, class: "navbar-brand" %></li>
+                            <li class="link"><%= link_to 'Ranking', highway_path(1), class: "navbar-brand" %></li>
+                            <li class="link "><%= link_to 'Rodovia', highways_path, class: "navbar-brand" %></li>
                           
                       </ul>
 

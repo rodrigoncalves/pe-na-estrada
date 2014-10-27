@@ -8,7 +8,8 @@
                <div class="dropdown" id="rate_types">
                     Você está visualizando o ranking na taxa de 
                     <label class="dropdown-toggle" data-toggle="dropdown">
-                         Porcentagem em relação ao total <span class="fa fa-chevron-down"></span>
+                         <font color="#EEC900">Porcentagem em relação ao total</font>
+                         <span class="fa fa-chevron-down"></span>
                     </label>
                     <ul class="dropdown-menu" role="menu" >
                           <li role="presentation">
@@ -24,29 +25,37 @@
 <br>
 
 <div align="center">
-      <div id="ranking">
-            <table class="table table-hover" align="center">
-            <thread>
-            <tr>
-            <th>Posição</th>
-            <th>BR</th>
-            <th>Acidentes/Km (%)</th>
-            </tr>
-            </thread>
-            <tbody>
-
-            <%position = 1%>
-            <% @highway2.each do |h| %>
-              <% if h.accidentsRatePercent != 0.0 && h.accidentsRatePercent != nil %>
-                <tr></tr>
-                <td><%= " #{position} º" %> </td>
-                <td><%= h.idBr %></td>
-                <td><%= format("%.4f",h.accidentsRatePercent)%>%</td>
-                  <%position = position + 1%>
-              <% end %>
-            <% end %>
-
-            </tbody>
-            </table>
+<div id="ranking_panel" class="panel panel-warning">
+      <div class="panel panel-heading">
+          <h5 class="panel-title" align="center">Ranking Completo</h5>
       </div>
+
+      <div id="ranking" class="content">
+            <div class="panel-body">
+                  <table class="table table-hover" >
+                        <thread>
+                        <tr>
+                        <th>Posição</th>
+                        <th>BR</th>
+                        <th>Acidentes/Km(%)</th>
+                        </tr>
+                        </thread>
+                        <tbody>
+
+                            <%position = 1%>
+                            <% @highway2.each do |h| %>
+                              <% if h.accidentsRatePercent != 0.0 && h.accidentsRatePercent != nil %>
+                                <tr></tr>
+                                <td><%= " #{position} º" %> </td>
+                                <td><%= h.idBr %></td>
+                                <td><%= format("%.4f",h.accidentsRatePercent)%>%</td>
+                                  <%position = position + 1%>
+                              <% end %>
+                            <% end %>
+
+                        </tbody>
+                  </table>
+            </div>
+      </div>
+</div>
 </div>

@@ -8,7 +8,7 @@
             <!-- Form to take origin and destination to trace route -->
             <%= simple_form_for @route,
                         :url => url_for(:action => 'trace_route',
-                                        :controller => 'routes'),
+                                              :controller => 'routes'),
                         :method => 'post' do |o| %>
 
                   <div id="trace_route_form">
