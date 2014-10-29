@@ -1,113 +1,98 @@
 <!-- Set the page title to "Rodovias" -->
 <% content_for :title do %>Rodovias<% end %>
 
-<br>
-<div class="row container panel panel-default panel-body">
-<div class="container">
+<div class="page-header">
+  <h2><i class="fa fa-search-plus"></i>  Rodovias<br>
+    <small>Pesquise aqui por uma rodovia federal</small>
+  </h2>
+</div>
 
-  <div class="panel-body">
+<div class="row">
 
-    <div class="page-header">
-        <h1>Rodovias<br>
-          <small>Pesquise aqui por uma rodovia federal</small>
-        </h1>
-    </div>
-
+  <div id="search_highway_form" class="col-lg-3">
     <!-- Search bar for a highway -->
     <%= form_tag highways_path, :method => "get" , id: "search-highway-form" do%>
+        
+        <br>
+        <span class="label label-success">Pesquisar Rodovia</span>
 
-      <br>
-      <span class="label label-success">Pesquisar Rodovia</span>
-      <div class="row">
-      <div class="col-lg-6">
-      <div class="input-group">
-
-        <div class="form-horizontal">
-            <%= text_field_tag :highway_search,
-            params[:highway_search],
-            placeholder: "Informe uma rodovia",
-            :pattern => '[0-9]+',
-            :input_html => {:size => 40, :maxlenght => 3} %>
+        <div class="input-group">
+          <div class="form-horizontal">
+              <%= text_field_tag :highway_search,
+                                            params[:highway_search],
+                                            placeholder: "Informe uma rodovia",
+                                            :pattern => '[0-9]+',
+                                            :input_html => {:size => 40, :maxlenght => 3} %>
+          </div>
+        </div>     
+            
+        <div id="search_btn" >
+          <i class="fa fa-search"></i>
+          <%= submit_tag "Pesquisar", :name => nil, :class => "btn btn-default"%>
         </div>
-
-      </div>
-      </div>
-      </div>
-
-      <div><%= submit_tag "Pesquisar", :name => nil%></div>
 
     <% end %>
     <!-- End of search bar for a highway form -->
+  </div>
+        
+  <% if @highway.blank? == false %>
 
+    <div class="col-lg-6" align="center">
+      <div id="search_for_highway_result" class="panel panel-success" style="width: 500px;">
 
-    <% if @highway.blank? == false %>
+        <div class="panel-heading">
+          <h1 class="panel-title" style="text-align: left">
+            <%= "Rodovias encontradas:"%>
+          </h1>
+         </div>
 
-    <div class="container" align="center">
-    <div class="panel panel-success" style="width: 500px;">
-
-      <div class="panel-heading">
-
-        <h1 class="panel-title" style="text-align: left">
-          <%= "Rodovias encontradas:"%>
-        </h1>
-
-       </div>
-
-      <table class="table">
-
-        <tr>
-
-          <td style="text-align: center;"><b><%= "BR"%></b></td>
-          <td></td>
-          <td style="text-align: center;"><b><%= "Entensão da rodovia"%></b></td>
-          <td></td>
-          <td style="text-align: center;"><b><%= "Posição no ranking de acidentes por quilômetro"%></b></td>
-          <td></td>
-
-        </tr>
-
-        <% @highway.each do |highway| %>
-
+        <table class="table table-hover">
           <tr>
-            <td style="text-align: center;">
-              <%= "#{highway.idBr}" %>
-            </td>
-
+            <td style="text-align: center;"><b><%= "BR"%></b></td>
             <td></td>
-
-            <td style="text-align: center;">
-              <% if highway.mileage.blank? == false %>
-                <%= "#{highway.mileage} Km" %>
-              <% else %>
-                <%= "Sem informações no momento" %>
-              <% end %>
-            </td>
-
+            <td style="text-align: center;"><b><%= "Entensão da rodovia"%></b></td>
             <td></td>
-             <td style="text-align: center;">
-              <%= "#{highway.rankingPosition}" %>
-            </td>
+            <td style="text-align: center;"><b><%= "Posição no ranking de acidentes por quilômetro"%></b></td>
+            <td></td>
           </tr>
 
-        <% end %>
+          <% @highway.each do |highway| %>
+            <tr>
+              <td style="text-align: center;">
+                <%= "#{highway.idBr}" %>
+              </td>
 
-      </table>
+              <td></td>
+
+              <td style="text-align: center;">
+                <% if highway.mileage.blank? == false %>
+                  <%= "#{highway.mileage} Km" %>
+                <% else %>
+                  <%= "Sem informações no momento" %>
+                <% end %>
+              </td>
+
+              <td></td>
+               <td style="text-align: center;">
+                <%= "#{highway.rankingPosition}º" %>
+              </td>
+            </tr>
+          <% end %>
+
+        </table>
+      </div>
     </div>
-    </div>
 
-    <% else %>
+  <% else %>
 
-      <% if !@highway_number_exists && @highway_informed_by_user != nil %>
-        <br><br>
-        <div class="alert alert-danger" role="alert" style="text-align: center;">
-          Nenhuma rodovia com esse nome ou parte dele. Cheque o número digitado (Digite apenas os dígitos da rodovia).
-        </div>
-      <% end %>
-
+    <% if !@highway_number_exists && @highway_informed_by_user != nil %>
+      <br><br>
+      <div id="error_message" class="alert alert-danger" role="alert" style="text-align: center;">
+        Nenhuma rodovia com esse nome ou parte dele. Cheque o número digitado (Digite apenas os dígitos da rodovia).
+      </div>
     <% end %>
 
+  <% end %>
   <br>
-  </div>
 
-</div>
 </div>

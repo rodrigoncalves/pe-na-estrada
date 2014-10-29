@@ -6,160 +6,58 @@
 
     <!-- Set the default page title as "Pé na estrada" -->
     <title><%= content_for?(:title) ? yield(:title) : "Pé na estrada" %></title>
-    
+
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pé na estrada" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
-
-    <script src="/assets/behavior.js"></script>
-    <script type="application/ld+json">{ "@context": "http://schema.org", "@type": "WebSite", "url": "http://css-tricks.com/", "potentialAction": { "@type": "SearchAction", "target": "http://css-tricks.com/?s={search_term}", "query-input": "required name=search_term" } }</script>
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="CSS-Tricks Search">
-    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://feeds.feedburner.com/CssTricks">
-    <link rel="author" href="https://plus.google.com/101987072260327250694/posts">
-
-    <!-- / Yoast WordPress SEO plugin. -->
-
-    <link rel='stylesheet' id='yarppWidgetCss-css'  href='http://cdn.css-tricks.com/wp-content/plugins/yet-another-related-posts-plugin/style/widget.css?ver=4.0' type='text/css' media='all' />
-    <link rel='stylesheet' id='jetpack-subscriptions-css'  href='http://cdn.css-tricks.com/wp-content/plugins/jetpack/modules/subscriptions/subscriptions.css?ver=4.0' type='text/css' media='all' />
-    <link rel='stylesheet' id='bbp-child-bbpress-css'  href='http://cdn.css-tricks.com/wp-content/themes/CSS-Tricks-11/css/bbpress.css?ver=2.5.4-5380' type='text/css' media='screen' />
-    <link rel='stylesheet' id='wp-polls-css'  href='http://cdn.css-tricks.com/wp-content/plugins/wp-polls/polls-css.css?ver=2.67' type='text/css' media='all' />
-    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js?ver=4.0'></script>
-    <script type='text/javascript' src='http://cdn.css-tricks.com/wp-content/plugins/anti-spam/js/anti-spam.js?ver=2.2'></script>
-
-    <!-- Better Art Direction Styles -->
-    <style type="text/css">
-    .wp-polls .pollbar {
-      margin: 13%;
-      font-size: 100%;
-      line-height: 100%;
-      height: 100%;
-      background-image: url('http://cdn.css-tricks.com/wp-content/plugins/wp-polls/images/default/pollbg.gif');
-      border: 100% solid #ffffff;
-    }
-    </style>
-
-    <link rel="stylesheet" href="//cloud.typography.com/610186/691184/css/fonts.css">
-
-    <!--[if !IE]><!-->
-    <link rel="stylesheet" href="http://cdn.css-tricks.com/wp-content/themes/CSS-Tricks-11/style.css?v=2.8">
   </head>
-  <body class="home blog user-0">
-  <style type="text/css">
-    body { 
-      top:22%;
-    left:32%;
-    background-image: url("https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t34.0-12/10708161_598318706946206_266706413_n.jpg?oh=d2ec429f044e5da7faa8c903162b4f0a&oe=543882B6&__gda__=1413012203_04f5d2d096e886544276f8bb33b0d2f7");}
-  </style>
+  
+  <body background="/assets/fundo.jpg">
 
+    <div class="panel-heading">
+      <header class="navbar navbar-fixed-top">
+        <div class="navbar navbar-default ">
 
-  <script>
-    (function(){
-      var bsa = document.createElement('script');
-         bsa.async = true;
-         bsa.src = 'http://s3.buysellads.com/ac/bsa.js';
-      (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);
-    })();
-  </script>
-    
-  <div class="page-wrap"  >
+          <div class="navbar-header">
+            <div id="logo">
+              <a href="<%=root_path%>">
+                <%= image_tag("logo.jpg", height: '100%', width: '100%', alt:"Pé na estada")%>
+              </a>
+            </div>
+          </div>
 
-    <br>
-    <br>
+          <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+              
+              <li class="link"><%= link_to 'Traçar Rota', routes_path, class: "navbar-brand" %></li>
+              <li class="link"><%= link_to 'Ranking', highway_path(1), class: "navbar-brand" %></li>
+              <li class="link "><%= link_to 'Rodovia', highways_path, class: "navbar-brand" %></li>
+                
+            </ul>
 
-    <div class="logo">
-      <a href="/">Pé na Estrada</a>
+            <ul class="nav navbar-nav navbar-right">
+              <li id="about" class="link "><%= link_to 'Sobre', home_path(1), class: "navbar-brand" %></li>
+            </ul>
+          </div>
+
+        </div>
+      </header>
     </div>
-    <br><br>
-    <br><br>
-    
-    
-  </header>
-    <nav class="main-nav" id="main-nav">
 
-
-    <a id="" href="/home/" class="home">
-      <svg viewBox="0 0 100 25" class="shape-tab-left">
-        <use xlink:href="#shape-tab-left"></use>
-      </svg>
-      <span><em>Home</span>
-    </a>
-    <a href="/routes/" class="home">
-      <svg viewBox="0 0 100 25" class="shape-tab">
-        <use xlink:href="#shape-tab"></use>
-      </svg>
-      <span>Traçar Rota</span>
-    </a>
-    
-    <a href="/highways/1/" class="snippets">
-      <svg viewBox="0 0 100 25" class="shape-tab">
-        <use xlink:href="#shape-tab"></use>
-      </svg>
-      <span>Ranking</span>
-    </a>
-    <a href="/highways/" class="forums">
-      <svg viewBox="0 0 100 25" class="shape-tab">
-        <use xlink:href="#shape-tab"></use>
-      </svg>
-      <span>Pesquisar</span>
-    </a>
-
-      <a href="/home/show/" class="lodge">
-      <svg viewBox="0 0 100 25" class="shape-tab-right">
-        <use xlink:href="#shape-tab-right"></use>
-      </svg>
-      <span><em>Sobre o grupo</span>
-    </a>
-    </nav>
-
-
-
-    <div id = "content" >
-      <div id = "content"class="grid group">
-          
-        <main role="main">
-          <%= render 'layouts/messages' %>
-
-
+    <div id="main_panel" class="panel panel-default container" style="width: 90%;  border: 1px solid #d4d4d4;">  
+      <div class="panel-body">
+        <div id = "content" >
+          <main role="main">
+                
+            <%= render 'layouts/messages' %>
             <%= yield %>
 
-            <svg style="display: none;">
-            <defs>
-              <path id="shape-tab" d="M100,25C79.568,25,84.815,0,59.692,0H11.149C5.027,0,0,4.634,0,10.385V25"></path>
-              <path id="shape-tab-right" d="M0,25C20.432,25,15.185,0,40.308,0h48.543C94.973,0,100,4.634,100,10.385V25"></path>
-              <path id="shape-search" d="M3.327,96.684C5.534,98.895,8.434,100,11.331,100s5.797-1.105,8.004-3.316l21.321-21.322
-              c5.83,3.188,12.393,4.897,19.223,4.897c10.721,0,20.798-4.172,28.379-11.752c15.646-15.644,15.646-41.105,0.002-56.755
-              C80.677,4.171,70.598,0,59.877,0C49.159,0,39.08,4.171,31.504,11.752c-7.581,7.576-11.756,17.655-11.756,28.376
-              c0,6.832,1.71,13.396,4.9,19.226L3.327,80.675C-1.096,85.094-1.096,92.266,3.327,96.684z M59.879,68.938
-              c-7.695,0-14.93-2.996-20.371-8.435c-5.443-5.442-8.439-12.677-8.439-20.375c0-7.695,2.996-14.933,8.439-20.372
-              c5.441-5.44,12.676-8.436,20.369-8.436c7.698,0,14.936,2.997,20.378,8.436c11.231,11.236,11.231,29.515,0,40.747
-              C74.812,65.941,67.575,68.938,59.879,68.938z"></path>
-
-              <g id="shape-rss">
-                <path id="rss-1" d="M7.336,62.163c-0.388-0.075-0.783-0.112-1.171-0.112c-1.42,0-2.81,0.491-3.923,1.409C0.822,64.632,0,66.375,0,68.216
-                  v25.617C0,97.238,2.76,100,6.166,100h25.616c1.84,0,3.586-0.822,4.757-2.243c1.17-1.421,1.646-3.287,1.297-5.098
-                  C34.876,77.378,22.62,65.12,7.336,62.163z"></path>
-                <path id="rss-2" d="M6.764,30.957c-0.199-0.02-0.399-0.029-0.597-0.029c-1.525,0-3.005,0.563-4.142,1.6C0.733,33.699,0,35.357,0,37.096v3.098
-                  c0,3.164,2.394,5.812,5.536,6.136C30.838,48.92,51.08,69.161,53.672,94.462c0.322,3.146,2.973,5.539,6.135,5.539h3.098
-                  c1.74,0,3.398-0.732,4.566-2.023c1.168-1.286,1.738-3.009,1.571-4.74C65.841,60.349,39.65,34.158,6.764,30.957z"></path>
-                <path id="rss-3" d="M99.986,93.431C96.732,43.428,56.568,3.268,6.565,0.012C6.432,0.005,6.298,0,6.166,0C4.604,0,3.095,0.593,1.95,1.667
-                  C0.705,2.832,0,4.461,0,6.167v3.088c0,3.247,2.515,5.938,5.752,6.155c42.113,2.832,76.006,36.726,78.839,78.84
-                  c0.22,3.235,2.907,5.75,6.151,5.75h3.091c1.706,0,3.335-0.706,4.5-1.95C99.498,96.805,100.098,95.135,99.986,93.431z"></path>
-              </g>
-
-              <path id="shape-arrow-right" d="M0,49.993c0,7.387,6.007,13.394,13.396,13.394h40.691L42.898,74.407c-2.543,2.507-3.94,5.827-3.94,9.36
-                c0,3.539,1.407,6.863,3.952,9.364C45.428,95.616,48.809,97,52.402,97c3.6,0,6.978-1.384,9.516-3.891l34.159-33.623
-                c2.53-2.489,3.923-5.81,3.923-9.342v-0.307c0-3.545-1.4-6.867-3.943-9.358L61.914,6.869c-5.243-5.16-13.775-5.16-19.014,0
-                c-2.539,2.495-3.942,5.821-3.942,9.354c0,3.535,1.403,6.862,3.942,9.354L54.1,36.604H13.396C6.012,36.604,0.001,42.61,0,49.993z"></path>
-
-              </defs>
-            </svg>
-        </main>
-
+          </main>
         </div>
-        </div>
-        
+      </div>
+      <!--   <div class="panel-footer">Panel footer</div> -->
+    </div>
 
   </body>
 </html>
