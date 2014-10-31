@@ -12,7 +12,7 @@
                 :method => 'post' do |o| %>
 
           <div id="trace_route_form">
-            
+
             <br>
             <span class="label label-primary">Origem</span>
             <div class="row">
@@ -44,7 +44,7 @@
                 </div>
               </div>
             </div>
-            
+
             <br>
             <%= o.button :submit, "Traçar Rota Padrão"%>
 
@@ -74,7 +74,7 @@
       <div id="directions" style='width: 100%; height: 100%;'></div>
     </div>
   </div>
-  <div class="col-lg-4">  
+  <div class="col-lg-4">
     <!-- Instantiate the directions (step by step) panel -->
     <div id="directionsPanel" style="float:right;width:100%;height 100%">
       <p><h4 id="distance"></h4></p>
@@ -84,3 +84,4 @@
 
 <%= hidden_field_tag 'origin' , @origin_informed_by_user %>
 <%= hidden_field_tag 'destination' , @destination_informed_by_user%>
+<%= include_gon %>

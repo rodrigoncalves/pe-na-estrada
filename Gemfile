@@ -51,6 +51,11 @@ group :development do
   gem 'rails_layout'
 end
 
+gem 'gon'
+
+# gem 'rabl-rails'
+
+
 # Code Climate
 gem "codeclimate-test-reporter", group: :test, require: nil
 

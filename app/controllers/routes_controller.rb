@@ -1,7 +1,7 @@
 #-*- encoding : utf-8 -*-
 
 class RoutesController < ApplicationController
-  
+
   def index
     @route = Route.new
   end
@@ -12,14 +12,19 @@ class RoutesController < ApplicationController
     @destination_informed_by_user = @route.destination
 
 
-    #@latitude = Accident.all.map &:latitude
-    #@longitude = Accident.all.map &:longitude
+    @latitude = Accident.all.map &:latitude
+    @longitude = Accident.all.map &:longitude
+
+    gon.latitude = @latitude
+    gon.longitude = @longitude
+
     render :index
   end
-    
+
   def origin_params
     params.require(:route).permit(:origin, :destination)
   end
+
 
 end
 

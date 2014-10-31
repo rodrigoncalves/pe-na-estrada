@@ -2,7 +2,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 var map;
 var stepDisplay;
 // Gives to the map the option to drag it and change the route
-var rendererOptions = 
+var rendererOptions =
 {
   draggable: true
 };
@@ -11,9 +11,9 @@ var rendererOptions =
 var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var directionsService = new google.maps.DirectionsService();
 
-function initialize() 
+function initialize()
 {
-  var mapOptions = 
+  var mapOptions =
   {
     zoom: 5,
     center: new google.maps.LatLng(-15.453695287170715, -409.5702874999999),
@@ -27,14 +27,14 @@ function initialize()
   	scaleControl: false,
   	streetViewControl: true,
   	overviewMapControl: false,
-  	
-	mapTypeControlOptions: 
+
+	mapTypeControlOptions:
 	{
     	style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
         position: google.maps.ControlPosition.RIGHT_BOTTOM
     },
 
-  	zoomControlOptions: 
+  	zoomControlOptions:
   	{
     	style: google.maps.ZoomControlStyle.SMALL
   	}
@@ -77,22 +77,22 @@ function calcRoute() {
    //  	directionsDisplay.setPanel(origin);
     	}
     else if (status === 'ZERO_RESULTS' || status === 'INVALID_REQUEST') {
-      alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" 
+      alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
             + destination + "'. \n Digite novamente.");
     }
     else if (status === 'UNKNOWN_ERROR' || status === 'REQUEST_DENIED') {
         alert('Erro inesperado');
     }
     else if(status === 'OVER_QUERY_LIMIT'){
-        alert('Erro inesperado'); 
+        alert('Erro inesperado');
     }
     else if(status === 'NOT_FOUND'){
         if(origin  != ""){
-          alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" 
-                 + destination  + "'. \n Digite novamente.");            
+          alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
+                 + destination  + "'. \n Digite novamente.");
         }
         else{
-          // Nothing to do     
+          // Nothing to do
         }
 
     }
@@ -102,11 +102,11 @@ function calcRoute() {
     }
  });
 }
-function computeTotalDistance(result) 
+function computeTotalDistance(result)
 {
   var total = 0;
   var myroute = result.routes[0];
-  for (i = 0; i < myroute.legs.length; i++) 
+  for (i = 0; i < myroute.legs.length; i++)
   {
     total += myroute.legs[i].distance.value;
   }
@@ -132,8 +132,8 @@ function getInfoAboutRoute(result){
   var coordinates = new Array;
   var brnumber = new Array;
 
-  
-  for (i = 0; i < length; i++) 
+
+  for (i = 0; i < length; i++)
   {
     j=0;
     var instructions = mylegs.steps[i].instructions;
@@ -147,22 +147,29 @@ function getInfoAboutRoute(result){
       coordinates[j] = mylegs.steps[i].path[i];
       //alert(brnumber[j] + "\n" + coordinates[j]);
 
-     
+
       var marker = new google.maps.Marker({
         position: coordinates[j],
         map: map
       });
       j++;
 
-      $.post(
-            "/routes/trace",
-            {length:length, brnumber:brnumber},
-            function(){}
-      );
+
     }
   }
 
+      getCoordinatesToMarkers();
+
+
 }
 
+function getCoordinatesToMarkers(){
 
+var latitudeArray = gon.latitude;
+var longitudeArray = gon.longitude;
+
+// alert(gon.latitude);
+// alert(gon.longitude);
+
+}
 
