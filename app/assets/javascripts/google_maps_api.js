@@ -132,7 +132,7 @@ function getInfoAboutRoute(result){
   var coordinates = [];
   var brnumber = [];
   var j = 0; // Posição no array de brs e coordenadas da rota traçada
-  
+
   for (i = 0; i < length; i++)
   {
     var instructions = mylegs.steps[i].instructions;
@@ -163,7 +163,7 @@ function getCoordinatesToMarkers(brnumber, coordinates){
   var brArray = gon.br;
 
   var j = 0; // Posição no array de posições nas brs
-  
+
   var position = [];
 
 
@@ -183,8 +183,8 @@ function getCoordinatesToMarkers(brnumber, coordinates){
   while(p < position.length){
     lat = parseFloat(latitudeArray[position[p]]);
     lng = parseFloat(longitudeArray[position[p]]);
-    markerTheAccidents(lat,lng); 
-    p++; 
+    markerTheAccidents(lat,lng);
+    p++;
   }
 }
 
@@ -194,9 +194,13 @@ function markerTheAccidents(lat,lng){
 
       marker = new google.maps.Marker({
       position:  new google.maps.LatLng(lat, lng),
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 5
+        },
       map: map
       });
-  
+
 }
 
 
