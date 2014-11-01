@@ -129,13 +129,12 @@ function getInfoAboutRoute(result){
   var length = mylegs.steps.length;
   var initialposition = 0;
   var endposition = 0;
-  var coordinates = new Array;
-  var brnumber = new Array;
-
-
+  var coordinates = [];
+  var brnumber = [];
+  var j = 0; // Posição no array de brs e coordenadas da rota traçada
+  
   for (i = 0; i < length; i++)
   {
-    j=0;
     var instructions = mylegs.steps[i].instructions;
     if(instructions.indexOf("BR-") != -1){
 
@@ -143,33 +142,62 @@ function getInfoAboutRoute(result){
       endposition = initialposition + 6;
       var substring = instructions.substring(initialposition,endposition);
 
-      brnumber[j] = substring.substring(3,6);
+      if(substring.indexOf("0") == 3){
+        brnumber[j] = substring.substring(4,6);
+      }
+      else{
+        brnumber[j] = substring.substring(3,6);
+      }
       coordinates[j] = mylegs.steps[i].path[i];
-      //alert(brnumber[j] + "\n" + coordinates[j]);
-
-
-      var marker = new google.maps.Marker({
-        position: coordinates[j],
-        map: map
-      });
       j++;
-
 
     }
   }
-
-      getCoordinatesToMarkers();
-
+  getCoordinatesToMarkers(brnumber, coordinates);
 
 }
+function getCoordinatesToMarkers(brnumber, coordinates){
 
-function getCoordinatesToMarkers(){
+  var latitudeArray = gon.latitude;
+  var longitudeArray = gon.longitude;
+  var brArray = gon.br;
 
-var latitudeArray = gon.latitude;
-var longitudeArray = gon.longitude;
+  var j = 0; // Posição no array de posições nas brs
+  
+  var position = [];
 
-// alert(gon.latitude);
-// alert(gon.longitude);
 
+  for(x = 0; x < brnumber.length; x++){
+    for(i = 0; i < brArray.length; i++){
+      if (brArray[i] == brnumber[x]){
+          position[j] = i;
+          j++;
+      }
+    }
+  }
+
+  var p = 0; // Posição no array de posições
+  var lat;
+  var lng;
+
+  while(p < position.length){
+    lat = parseFloat(latitudeArray[position[p]]);
+    lng = parseFloat(longitudeArray[position[p]]);
+    markerTheAccidents(lat,lng); 
+    p++; 
+  }
 }
+
+function markerTheAccidents(lat,lng){
+
+  var marker;
+
+      marker = new google.maps.Marker({
+      position:  new google.maps.LatLng(lat, lng),
+      map: map
+      });
+  
+}
+
+
 

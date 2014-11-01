@@ -13,5 +13,16 @@ class Accident < ActiveRecord::Base
   def self.total_accidents
  	Accident.count
   end
+  
+  def self.get_accidents_latitude 
+    all.map &:latitude
+  end
 
+  def self.get_accidents_longitude 
+    all.map &:longitude
+  end
+
+  def self.get_accidents_br
+    all.map &:br
+  end
 end
