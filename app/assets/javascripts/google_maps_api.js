@@ -125,13 +125,18 @@ function getInfoAboutRoute(result){
 
   var myroute = result.routes[0];
   var mylegs = myroute.legs[0];
-
   var length = mylegs.steps.length;
   var initialposition = 0;
   var endposition = 0;
-  var coordinates = [];
   var brnumber = [];
-  var j = 0; // Posição no array de brs e coordenadas da rota traçada
+  var coordinates = [];
+  var j = 0; // Count for highways in the route
+  var maiorLatitude = 0;
+  var menorLatitude = 0;
+  var maiorLongitude = 0;
+  var menorLongitude = 0;
+  var latitudeCoordinate=[]; // Get the latitudes from route
+  var longitudeCoordinate=[]; // Get the longitudes from route
 
   for (i = 0; i < length; i++)
   {
@@ -148,23 +153,53 @@ function getInfoAboutRoute(result){
       else{
         brnumber[j] = substring.substring(3,6);
       }
-      coordinates[j] = mylegs.steps[i].path[i];
       j++;
 
     }
   }
-  getCoordinatesToMarkers(brnumber, coordinates);
+  for(j=0 ; j < myroute.overview_path.length; j++){  
+      coordinates[j] = myroute.overview_path[j];
+      menorLatitude = coordinates[0].lat();
+      menorLongitude = coordinates[0].lng();
+      if(coordinates[j].lat() > maiorLatitude){
+        maiorLatitude = coordinates[j].lat();
+      }
+      if(coordinates[j].lat() < menorLatitude){
+        menorLatitude = coordinates[j].lat();
+      } 
+      if(coordinates[j].lng() > maiorLongitude){
+        maiorLongitude = coordinates[j].lng();
+      }
+      if(coordinates[j].lng() < menorLongitude){
+        menorLongitude = coordinates[j].lng();
+      } 
+      latitudeCoordinate[j] = coordinates[j].lat();
+      longitudeCoordinate[j] = coordinates[j].lng();
+  }  
+
+  getCoordinatesToMarkers(brnumber, maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate);
+
 
 }
-function getCoordinatesToMarkers(brnumber, coordinates){
+function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate){
 
+  /* Get the latitudes, longitudes and highways of accidents from database */
   var latitudeArray = gon.latitude;
   var longitudeArray = gon.longitude;
   var brArray = gon.br;
 
-  var j = 0; // Posição no array de posições nas brs
+  var j = 0; // Position in brs Array 
+  var i = 0; // Position in coordinates(latitude,longitude) Array 
+  var s = 0; // Position in latitude Array (latitudeCoordinate)
 
   var position = [];
+  var lat; // Latitude to marker
+  var lng; // Longitude to marker
+  var latitude = [];
+  var longitude = [];
+  var latitudeLimit;
+  var longitudeLimit;
+
 
 
   for(x = 0; x < brnumber.length; x++){
@@ -176,16 +211,32 @@ function getCoordinatesToMarkers(brnumber, coordinates){
     }
   }
 
-  var p = 0; // Posição no array de posições
-  var lat;
-  var lng;
 
-  while(p < position.length){
+  for(p = 0; p < position.length; p++){
     lat = parseFloat(latitudeArray[position[p]]);
     lng = parseFloat(longitudeArray[position[p]]);
-    markerTheAccidents(lat,lng);
-    p++;
+
+    if(lat <= maiorLatitude && lat >= menorLatitude){
+      if(lng <= maiorLongitude && lng >= menorLongitude){
+          latitude[i]  = lat;
+          longitude[i] = lng;
+          i++;
+      }
+    }
   }
+
+  while(s < latitudeCoordinate.length){
+    for(p = 0; p < latitude.length; p++){
+
+      latitudeLimit = latitude[p] - latitudeCoordinate[s];
+      longitudeLimit = longitude[p] - longitudeCoordinate[s];
+      if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
+        markerTheAccidents(latitude[p],longitude[p]);
+      }
+    }
+     s++;
+  }
+
 }
 
 function markerTheAccidents(lat,lng){
@@ -194,10 +245,11 @@ function markerTheAccidents(lat,lng){
 
       marker = new google.maps.Marker({
       position:  new google.maps.LatLng(lat, lng),
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 5
-        },
+      /* Used to change marker layout
+      //icon: {
+        //path: google.maps.SymbolPath.CIRCLE,
+        //scale: 5
+        //},*/
       map: map
       });
 
