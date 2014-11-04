@@ -21,29 +21,29 @@ function initialize()
     disableDefaultUI: true,
 
     // Chooses which elements are wanted in the map
-  	panControl: false,
-  	zoomControl: true,
-  	mapTypeControl: true,
-  	scaleControl: false,
-  	streetViewControl: true,
-  	overviewMapControl: false,
+    panControl: false,
+    zoomControl: true,
+    mapTypeControl: true,
+    scaleControl: false,
+    streetViewControl: true,
+    overviewMapControl: false,
 
-	mapTypeControlOptions:
-	{
-    	style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+  mapTypeControlOptions:
+  {
+      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
         position: google.maps.ControlPosition.RIGHT_BOTTOM
     },
 
-  	zoomControlOptions:
-  	{
-    	style: google.maps.ZoomControlStyle.SMALL
-  	}
+    zoomControlOptions:
+    {
+      style: google.maps.ZoomControlStyle.SMALL
+    }
 
   };
 
   map = new google.maps.Map(document.getElementById('directions'), mapOptions);
   directionsDisplay.setMap(map);
-	directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+  directionsDisplay.setPanel(document.getElementById("directionsPanel"));
 
   google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
     computeTotalDistance(directionsDisplay.directions);
@@ -63,19 +63,19 @@ function calcRoute() {
   var request = {
       origin:      origin,
       destination: destination,
-	  travelMode:  google.maps.TravelMode.DRIVING
-	 };
+    travelMode:  google.maps.TravelMode.DRIVING
+   };
 
     directionsService.route(request, function(response, status) {
 
     if (status === google.maps.DirectionsStatus.OK) {
       var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
       document.getElementById("distance").innerHTML = text;
-     	directionsDisplay.setDirections(response);
+      directionsDisplay.setDirections(response);
       getInfoAboutRoute(directionsDisplay.directions);
 
-   //  	directionsDisplay.setPanel(origin);
-    	}
+   //   directionsDisplay.setPanel(origin);
+      }
     else if (status === 'ZERO_RESULTS' || status === 'INVALID_REQUEST') {
       alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
             + destination + "'. \n Digite novamente.");
@@ -97,8 +97,8 @@ function calcRoute() {
 
     }
     else{
-    	directionsDisplay.setDirections(response);
-    	initialize();
+      directionsDisplay.setDirections(response);
+      initialize();
     }
  });
 }
@@ -175,12 +175,13 @@ function getInfoAboutRoute(result){
       } 
       latitudeCoordinate[j] = coordinates[j].lat();
       longitudeCoordinate[j] = coordinates[j].lng();
-  }  
+  }
 
-  getCoordinatesToMarkers(brnumber, maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate);
-
+   getCoordinatesToMarkers(brnumber, maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate);
 
 }
+
+
 function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate){
 
   /* Get the latitudes, longitudes and highways of accidents from database */
@@ -199,6 +200,7 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
   var longitude = [];
   var latitudeLimit;
   var longitudeLimit;
+  var clicked = false;
 
 
 
@@ -224,19 +226,59 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
       }
     }
   }
+      markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longitude);
+      // while(s < latitudeCoordinate.length){
+      //   for(p = 0; p < latitude.length; p++){
 
-  while(s < latitudeCoordinate.length){
-    for(p = 0; p < latitude.length; p++){
+      //     latitudeLimit = latitude[p] - latitudeCoordinate[s];
+      //     longitudeLimit = longitude[p] - longitudeCoordinate[s];
+      //     if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
+      //           markerTheAccidents(latitude[p],longitude[p]);
+      //     }
+      //   }
+      //    s++;
+      // }
 
-      latitudeLimit = latitude[p] - latitudeCoordinate[s];
-      longitudeLimit = longitude[p] - longitudeCoordinate[s];
-      if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
-        markerTheAccidents(latitude[p],longitude[p]);
+}
+
+function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longitude){
+
+      var s = 0;
+      var p = 0;
+      var i = 0; // Used to swap the vectors latitudesToMark and longitudesToMark
+      var latitudesToMark = [];
+      var longitudesToMark = [];
+
+      while(s < latitudeCoordinate.length){
+
+            for(p = 0; p < latitude.length; p++){
+
+                  latitudeLimit = latitude[p] - latitudeCoordinate[s];
+                  longitudeLimit = longitude[p] - longitudeCoordinate[s];
+                  
+                  if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
+                       // markerTheAccidents(latitude[p],longitude[p]);
+                       latitudesToMark[i] = latitude[p];
+                       longitudesToMark[i] = longitude[p];
+                       i++;
+                  }
+            }
+            
+            s++;
       }
-    }
-     s++;
-  }
 
+      $(document).ready(function(){
+          $("#sinalizeAccidents").click(function(){
+
+                while(i >= 0){
+
+                    markerTheAccidents(latitudesToMark[i], longitudesToMark[i]);
+
+                    i = i - 1;
+                }
+
+          });
+      });
 }
 
 function markerTheAccidents(lat,lng){
@@ -245,15 +287,12 @@ function markerTheAccidents(lat,lng){
 
       marker = new google.maps.Marker({
       position:  new google.maps.LatLng(lat, lng),
-      /* Used to change marker layout
-      //icon: {
-        //path: google.maps.SymbolPath.CIRCLE,
-        //scale: 5
-        //},*/
+      // Used to change marker layout
+      // icon: {
+      //   path: google.maps.SymbolPath.CIRCLE,
+      //   scale: 5
+      //   },
       map: map
       });
 
 }
-
-
-

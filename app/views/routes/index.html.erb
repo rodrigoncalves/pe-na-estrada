@@ -2,6 +2,7 @@
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js'></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=pt-BR"></script>
 <script src="/assets/google_maps_api.js?body=1"></script>
+<script src="/assets/google_maps_api.js"></script>
 
 <div class="row">
   <div class="col-lg-4">
@@ -22,7 +23,7 @@
                     <%= o.input :origin, label: false,
                                         placeholder:'Informe uma origem',
                                         required: true,
-                                        :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+',
+                                        :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~-,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+',
                                         :input_html => {:size => 25} %>
                   </div>
                 </div>
@@ -38,7 +39,7 @@
                     <%= o.input :destination, label: false,
                                         placeholder:'Informe um destino',
                                         required: true,
-                                        :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+',
+                                        :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~-,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+',
                                         :input_html => {:size => 25}%>
                   </div>
                 </div>
@@ -46,8 +47,8 @@
             </div>
 
             <br>
-            <%= o.button :submit, "Traçar Rota Padrão"%>
-
+            <%= o.button :submit, "Traçar Rota Padrão", :class => "btn btn-success"%>
+            
           </div>
 
     <% end %>
@@ -66,12 +67,15 @@
 
 <br>
 <br>
+<button id="sinalizeAccidents" class = "btn btn-danger">Sinalizar acidentes</button>
+<!-- <a href="#" class="btn btn-primary">Sinalizar acidentes</a> -->
 
 <div class="row">
   <div class="col-lg-8">
     <!-- Instantiate the map on the screen -->
     <div style='width: 100%; height: 450px;'>
-      <div id="directions" style='width: 100%; height: 100%;'></div>
+      <div id="directions" style='width: 100%; height: 100%;'>
+      </div>
     </div>
   </div>
   <div class="col-lg-4">
