@@ -47,7 +47,7 @@
             </div>
 
             <br>
-            <%= o.button :submit, "Traçar Rota Padrão", :class => "btn btn-success"%>
+            <%= o.button :submit, "Traçar Rota Padrão", :class => "btn btn-default"%>
             
           </div>
 
@@ -67,8 +67,11 @@
 
 <br>
 <br>
-<button id="sinalizeAccidents" class = "btn btn-danger">Sinalizar acidentes</button>
-<!-- <a href="#" class="btn btn-primary">Sinalizar acidentes</a> -->
+<button id="sinalizeAccidents" class = "btn btn-danger" data-container="body"
+             data-toggle="popover" data-placement="right" data-trigger="hover"
+             data-content="Será marcado no mapa os acidentes que aconteceram nas proximidades da sua rota.">
+Sinalizar acidentes
+</button>
 
 <div class="row">
   <div class="col-lg-8">

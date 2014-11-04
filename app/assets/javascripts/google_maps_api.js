@@ -7,12 +7,15 @@ var rendererOptions =
   draggable: true
 };
 
-
 var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var directionsService = new google.maps.DirectionsService();
 
-function initialize()
-{
+function initialize(){
+
+  $(document).ready(function(){
+    $("#sinalizeAccidents").popover('show');
+  });
+
   var mapOptions =
   {
     zoom: 5,
@@ -28,9 +31,9 @@ function initialize()
     streetViewControl: true,
     overviewMapControl: false,
 
-  mapTypeControlOptions:
-  {
-      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+    mapTypeControlOptions:{
+
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
         position: google.maps.ControlPosition.RIGHT_BOTTOM
     },
 
@@ -49,67 +52,68 @@ function initialize()
     computeTotalDistance(directionsDisplay.directions);
   });
 
-stepDisplay = new google.maps.InfoWindow();
+  stepDisplay = new google.maps.InfoWindow();
 
   calcRoute();
-
-
 }
 
 function calcRoute() {
 
-  var origin      = $("#origin").val();
-  var destination = $("#destination").val();
-  var request = {
-      origin:      origin,
-      destination: destination,
-    travelMode:  google.maps.TravelMode.DRIVING
-   };
+      var origin = $("#origin").val();
+      var destination = $("#destination").val();
+      var request = {
+          origin:      origin,
+          destination: destination,
+          travelMode:  google.maps.TravelMode.DRIVING
+       };
 
-    directionsService.route(request, function(response, status) {
+      directionsService.route(request, function(response, status) {
 
-    if (status === google.maps.DirectionsStatus.OK) {
-      var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
-      document.getElementById("distance").innerHTML = text;
-      directionsDisplay.setDirections(response);
-      getInfoAboutRoute(directionsDisplay.directions);
+      if (status === google.maps.DirectionsStatus.OK) {
+        var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
+        document.getElementById("distance").innerHTML = text;
+        directionsDisplay.setDirections(response);
+        getInfoAboutRoute(directionsDisplay.directions);
 
-   //   directionsDisplay.setPanel(origin);
       }
-    else if (status === 'ZERO_RESULTS' || status === 'INVALID_REQUEST') {
-      alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
-            + destination + "'. \n Digite novamente.");
-    }
-    else if (status === 'UNKNOWN_ERROR' || status === 'REQUEST_DENIED') {
-        alert('Erro inesperado');
-    }
-    else if(status === 'OVER_QUERY_LIMIT'){
-        alert('Erro inesperado');
-    }
-    else if(status === 'NOT_FOUND'){
-        if(origin  != ""){
-          alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
-                 + destination  + "'. \n Digite novamente.");
-        }
-        else{
-          // Nothing to do
-        }
+      else if (status === 'ZERO_RESULTS' || status === 'INVALID_REQUEST') {
+        alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
+              + destination + "'. \n Digite novamente.");
+      }
+      else if (status === 'UNKNOWN_ERROR' || status === 'REQUEST_DENIED') {
+          alert('Erro inesperado');
+      }
+      else if(status === 'OVER_QUERY_LIMIT'){
+          alert('Erro inesperado');
+      }
+      else if(status === 'NOT_FOUND'){
+          if(origin  != ""){
+            alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
+                   + destination  + "'. \n Digite novamente.");
+          }
+          else{
+            // Nothing to do
+          }
 
-    }
-    else{
-      directionsDisplay.setDirections(response);
-      initialize();
-    }
+      }
+      else{
+        directionsDisplay.setDirections(response);
+        initialize();
+      }
+
  });
+
 }
-function computeTotalDistance(result)
-{
+
+function computeTotalDistance(result){
+
   var total = 0;
   var myroute = result.routes[0];
-  for (i = 0; i < myroute.legs.length; i++)
-  {
+
+  for (i = 0; i < myroute.legs.length; i++){
     total += myroute.legs[i].distance.value;
   }
+
   total = total / 1000.
   document.getElementById("total").innerHTML = total + " km";
 }
@@ -226,19 +230,8 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
       }
     }
   }
-      markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longitude);
-      // while(s < latitudeCoordinate.length){
-      //   for(p = 0; p < latitude.length; p++){
 
-      //     latitudeLimit = latitude[p] - latitudeCoordinate[s];
-      //     longitudeLimit = longitude[p] - longitudeCoordinate[s];
-      //     if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
-      //           markerTheAccidents(latitude[p],longitude[p]);
-      //     }
-      //   }
-      //    s++;
-      // }
-
+   markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longitude);
 }
 
 function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longitude){
@@ -257,7 +250,6 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
                   longitudeLimit = longitude[p] - longitudeCoordinate[s];
                   
                   if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
-                       // markerTheAccidents(latitude[p],longitude[p]);
                        latitudesToMark[i] = latitude[p];
                        longitudesToMark[i] = longitude[p];
                        i++;
@@ -270,9 +262,10 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
       $(document).ready(function(){
           $("#sinalizeAccidents").click(function(){
 
+                // Swap the arrays marking the accident given by it coordinates on the map
                 while(i >= 0){
 
-                    markerTheAccidents(latitudesToMark[i], longitudesToMark[i]);
+                    markAccident(latitudesToMark[i], longitudesToMark[i]);
 
                     i = i - 1;
                 }
@@ -281,12 +274,17 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
       });
 }
 
-function markerTheAccidents(lat,lng){
+/* 
+    Create a marker on the map
+    param latitude - Latitude of the point to be marked
+    param longitude - Longitude of the point to be marked
+ */
+function markAccident(latitude, longitude){
 
-  var marker;
+      var marker;
 
       marker = new google.maps.Marker({
-      position:  new google.maps.LatLng(lat, lng),
+      position:  new google.maps.LatLng(latitude, longitude),
       // Used to change marker layout
       // icon: {
       //   path: google.maps.SymbolPath.CIRCLE,
