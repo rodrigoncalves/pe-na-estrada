@@ -66,6 +66,13 @@ function calcRoute() {
           destination: destination,
           travelMode:  google.maps.TravelMode.DRIVING
        };
+  var origin      = $("#origin").val();
+  var destination = $("#destination").val();
+  var request = {
+      origin:      origin,
+      destination: destination,
+    travelMode:  google.maps.TravelMode.DRIVING
+   };
 
       directionsService.route(request, function(response, status) {
 
@@ -105,8 +112,9 @@ function calcRoute() {
 
 }
 
-function computeTotalDistance(result){
-
+function computeTotalDistance(result)
+{
+  var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
   var total = 0;
   var myroute = result.routes[0];
 
@@ -141,6 +149,7 @@ function getInfoAboutRoute(result){
   var menorLongitude = 0;
   var latitudeCoordinate=[]; // Get the latitudes from route
   var longitudeCoordinate=[]; // Get the longitudes from route
+
 
   for (i = 0; i < length; i++)
   {
