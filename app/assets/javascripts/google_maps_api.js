@@ -1,63 +1,93 @@
 google.maps.event.addDomListener(window, 'load', initialize);
 var map;
-var stepDisplay;
+
 // Gives to the map the option to drag it and change the route
-var rendererOptions =
-{
+var rendererOptions = {
   draggable: true
 };
 
+// Global variables
 var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var directionsService = new google.maps.DirectionsService();
 
-function initialize(){
+var handler = Gmaps.build('Google');
+handler.buildMap({internal: {id: 'directions'}}, function(){
+  directionsDisplay.setMap(handler.getMap());
+  initialize();
+});
 
+function computeTotalDistance(directionsResult){
+  
+  var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
   $(document).ready(function(){
     $("#sinalizeAccidents").popover('show');
   });
+  var total = 0;
+  var myRoute = directionsResult.routes[0];
 
-  var mapOptions =
-  {
-    zoom: 5,
-    center: new google.maps.LatLng(-15.453695287170715, -409.5702874999999),
-    // Removes the default features of the map
-    disableDefaultUI: true,
+  for (i = 0; i < myRoute.legs.length; i++){
+    total += myRoute.legs[i].distance.value;
+  }
 
-    // Chooses which elements are wanted in the map
-    panControl: false,
-    zoomControl: true,
-    mapTypeControl: true,
-    scaleControl: false,
-    streetViewControl: true,
-    overviewMapControl: false,
-
-    mapTypeControlOptions:{
-
-        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-        position: google.maps.ControlPosition.RIGHT_BOTTOM
-    },
-
-    zoomControlOptions:
-    {
-      style: google.maps.ZoomControlStyle.SMALL
-    }
-
-  };
-
-  map = new google.maps.Map(document.getElementById('directions'), mapOptions);
-  directionsDisplay.setMap(map);
-  directionsDisplay.setPanel(document.getElementById("directionsPanel"));
-
-  google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-    computeTotalDistance(directionsDisplay.directions);
-  });
-
-  stepDisplay = new google.maps.InfoWindow();
-
-  calcRoute();
+  total = total / 1000.
+  $("#total").html(total + " km");
 }
 
-function calcRoute() {
+function setMapOptions(){
+
+      var mapOptions = {
+
+            zoom: 5,
+            
+            // Center in Brazil
+            center: new google.maps.LatLng(-15.453695287170715, -409.5702874999999),
+            
+            // Removes the default features of the map
+            disableDefaultUI: true,
+
+            // Chooses which elements are wanted in the map
+            panControl: false,
+            zoomControl: true,
+            mapTypeControl: true,
+            scaleControl: false,
+            streetViewControl: true,
+            overviewMapControl: false,
+
+            mapTypeControlOptions:{
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                position: google.maps.ControlPosition.RIGHT_BOTTOM
+            },
+
+            zoomControlOptions:{
+              style: google.maps.ZoomControlStyle.SMALL
+            }
+
+      };
+
+      return mapOptions;
+}
+
+function initialize(){
+
+      var mapOptions = setMapOptions();
+
+      var directionsPanelDiv = document.getElementById("directionsPanel");
+      var mapDiv = document.getElementById("directions");
+
+      map = new google.maps.Map(mapDiv, mapOptions);
+      
+      directionsDisplay.setMap(map);
+      directionsDisplay.setPanel(directionsPanelDiv);
+
+      // When the directions change, calculate the new distance
+      google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+            computeTotalDistance(directionsDisplay.directions);
+      });
+      
+      calculateRoute();
+}
+
+function calculateRoute(){
 
       var origin = $("#origin").val();
       var destination = $("#destination").val();
@@ -65,73 +95,51 @@ function calcRoute() {
           origin:      origin,
           destination: destination,
           travelMode:  google.maps.TravelMode.DRIVING
-       };
-  var origin      = $("#origin").val();
-  var destination = $("#destination").val();
-  var request = {
-      origin:      origin,
-      destination: destination,
-    travelMode:  google.maps.TravelMode.DRIVING
-   };
+      };
 
-      directionsService.route(request, function(response, status) {
+      directionsService.route(request, function(response, status){
 
-      if (status === google.maps.DirectionsStatus.OK) {
-        var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
-        document.getElementById("distance").innerHTML = text;
-        directionsDisplay.setDirections(response);
-        getInfoAboutRoute(directionsDisplay.directions);
+            var statusOK = google.maps.DirectionsStatus.OK;
+            switch(status){
 
-      }
-      else if (status === 'ZERO_RESULTS' || status === 'INVALID_REQUEST') {
-        alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
-              + destination + "'. \n Digite novamente.");
-      }
-      else if (status === 'UNKNOWN_ERROR' || status === 'REQUEST_DENIED') {
-          alert('Erro inesperado');
-      }
-      else if(status === 'OVER_QUERY_LIMIT'){
-          alert('Erro inesperado');
-      }
-      else if(status === 'NOT_FOUND'){
-          if(origin  != ""){
-            alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
-                   + destination  + "'. \n Digite novamente.");
-          }
-          else{
-            // Nothing to do
-          }
+                  case statusOK:
+                      var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
+                      $("#distance").html(text);
+                      directionsDisplay.setDirections(response);
+                      getInfoAboutRoute(directionsDisplay.directions);
+                      break;
+                  
+                  case 'ZERO_RESULTS':
+                  case 'INVALID_REQUEST':
+                      alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
+                              + destination + "'. \n Digite novamente.");
+                      break;
 
-      }
-      else{
-        directionsDisplay.setDirections(response);
-        initialize();
-      }
+                  case 'UNKNOWN_ERROR':
+                  case 'REQUEST_DENIED':
+                  case 'OVER_QUERY_LIMIT':
+                      alert('Erro inesperado');
+                      break;
 
- });
+                  case 'NOT_FOUND':
+                      if(origin  != ""){
+                        alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
+                               + destination  + "'. \n Digite novamente.");
+                      }
+                      else{
+                        // Nothing to do
+                      }
+                      break;
+
+                  default:
+                      directionsDisplay.setDirections(response);
+                      initialize();
+                      break;
+            }
+
+      });
 
 }
-
-function computeTotalDistance(result)
-{
-  var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
-  var total = 0;
-  var myroute = result.routes[0];
-
-  for (i = 0; i < myroute.legs.length; i++){
-    total += myroute.legs[i].distance.value;
-  }
-
-  total = total / 1000.
-  document.getElementById("total").innerHTML = total + " km";
-}
-
-var handler = Gmaps.build('Google');
-handler.buildMap({ internal: {id: 'directions'}}, function()
-{
-  directionsDisplay.setMap(handler.getMap());
-  initialize();
-});
 
 function getInfoAboutRoute(result){
 
@@ -151,8 +159,8 @@ function getInfoAboutRoute(result){
   var longitudeCoordinate=[]; // Get the longitudes from route
 
 
-  for (i = 0; i < length; i++)
-  {
+  for (i = 0; i < length; i++){
+
     var instructions = mylegs.steps[i].instructions;
     if(instructions.indexOf("BR-") != -1){
 
@@ -170,6 +178,7 @@ function getInfoAboutRoute(result){
 
     }
   }
+
   for(j=0 ; j < myroute.overview_path.length; j++){  
       coordinates[j] = myroute.overview_path[j];
       menorLatitude = coordinates[0].lat();
@@ -197,7 +206,7 @@ function getInfoAboutRoute(result){
 
 function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate){
 
-  /* Get the latitudes, longitudes and highways of accidents from database */
+  // Get the latitudes, longitudes and highways of accidents from database
   var latitudeArray = gon.latitude;
   var longitudeArray = gon.longitude;
   var brArray = gon.br;
@@ -270,7 +279,7 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
 
       $(document).ready(function(){
           $("#sinalizeAccidents").click(function(){
-
+                
                 // Swap the arrays marking the accident given by it coordinates on the map
                 while(i >= 0){
 
@@ -291,14 +300,18 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
 function markAccident(latitude, longitude){
 
       var marker;
+      // var iconSize = new google.maps.Size();
+
+      // iconSize.width = 10;
+      // iconSize.height = 10;
 
       marker = new google.maps.Marker({
       position:  new google.maps.LatLng(latitude, longitude),
       // Used to change marker layout
-      // icon: {
-      //   path: google.maps.SymbolPath.CIRCLE,
-      //   scale: 5
-      //   },
+      // icon:{
+      //   url: "/assets/warning_icon.svg.png",
+      //   size: iconSize
+      // },
       map: map
       });
 
