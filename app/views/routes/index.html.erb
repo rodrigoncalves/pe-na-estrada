@@ -65,11 +65,13 @@
 
 <br>
 <br>
+<% if @origin_informed_by_user.blank? == false%>
 <button id="sinalizeAccidents" class = "btn btn-danger" data-container="body"
              data-toggle="popover" data-placement="right" data-trigger="hover" disabled="true"
              data-content="Será marcado no mapa os acidentes que aconteceram nas proximidades da sua rota.">
 Sinalizar acidentes
 </button>
+<%end%>
 
 <div class="row">
   <div class="col-lg-8">
