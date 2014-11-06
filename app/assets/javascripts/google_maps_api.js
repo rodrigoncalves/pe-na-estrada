@@ -1,5 +1,12 @@
+
 // Loads the map on the screen
-google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', function(){
+
+    setUpMarkersArray();
+    initialize();
+
+});
+
 var map;
 
 // Gives to the map the option to drag it and change the route
@@ -21,9 +28,11 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
 function computeTotalDistance(directionsResult){
 
   var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
+  
   $(document).ready(function(){
     $("#sinalizeAccidents").popover('show');
   });
+
   var total = 0;
   var myRoute = directionsResult.routes[0];
 
@@ -210,7 +219,6 @@ function getInfoAboutRoute(result){
 
 }
 
-
 function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate){
 
   // Get the latitudes, longitudes and highways of accidents from database using the 'gon' gem
@@ -284,19 +292,101 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
             s++;
       }
 
+      google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+            removeAllMarkersFromMap();
+            deleteMarkersOnMap();
+            getInfoAboutRoute(directionsDisplay.directions);
+      });
+
       $(document).ready(function(){
           $("#sinalizeAccidents").click(function(){
-
-                // Swap the arrays marking the accident given by it coordinates on the map
+                // Sweeps the arrays marking on the map the accident given by it coordinates
                 while(i >= 0){
 
                     markAccident(latitudesToMark[i], longitudesToMark[i]);
 
                     i = i - 1;
                 }
-
           });
       });
+}
+ 
+// Array that contains all markers that is visible on map
+var markersOnMap;
+var quantityOfMarkersOnMap;
+
+function setUpMarkersArray(){
+  markersOnMap = new Array();
+  quantityOfMarkersOnMap = new Number();
+}
+
+/*
+    Save a marker on markersOnMap array
+    param marker - Marker that will be saved on markersOnMap array
+ */
+function saveMarkerOnMap(markerToSave){
+  quantityOfMarkersOnMap = markersOnMap.push(markerToSave);
+}
+
+// Delete all markers on markersOnMap array
+function deleteMarkersOnMap(){
+
+  markersOnMapLength = markersOnMap.length;
+
+  // If the array is not already empty, get it emp  ty.
+  if(markersOnMapLength > 0){
+    
+    var i = 0;
+    for(i = 0; i < markersOnMapLength; i++){
+      markersOnMap.pop();
+      quantityOfMarkersOnMap = quantityOfMarkersOnMap - 1;
+    }
+
+    /*// If the array got empty, the quantity of markers should be 0
+    if(quantityOfMarkersOnMap == 0){
+      return true;
+    }
+    else{
+      return false;
+    }*/
+
+  }
+  else{
+    // return false;  
+    // Nothing to do
+  }
+
+}
+
+/*
+   Set the marker invisible on map
+   param markerToRemove - Marker that will be removed from map
+ */
+function removeMarkerFromMap(markerToRemove){
+  /* To remove from map */
+  markerToRemove.setMap(null);
+
+  // To set invisible
+  // markerToRemove.setVisible(false);
+}
+
+// Remove all markers on 'markersOnMap' array from map
+function removeAllMarkersFromMap(){
+
+  markersOnMapLength = markersOnMap.length;
+  
+  if(markersOnMapLength > 0){
+    
+    var i = 0;
+    for(i = 0; i < markersOnMapLength; i++){
+      markerToBeRemoved = markersOnMap[i];
+      removeMarkerFromMap(markerToBeRemoved);
+    }
+
+  }
+  else{
+    // Nothing to do
+  }
 }
 
 /*
@@ -307,20 +397,21 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
 function markAccident(latitude, longitude){
 
        var marker;
-       var iconSize = new google.maps.Size();
+       // var iconSize = new google.maps.Size();
 
-       iconSize.width = 10;
-       iconSize.height = 10;
+       // iconSize.width = 10;
+       // iconSize.height = 10;
 
       marker = new google.maps.Marker({
-      position:  new google.maps.LatLng(latitude, longitude),
-
-      // Used to change marker layout
-       icon:{
-         url: "/assets/ic_warning_amber_24dp.png",
-         size: iconSize
-       },
-      map: map
+            position:  new google.maps.LatLng(latitude, longitude),
+            // // Used to change marker layout
+            // icon:{
+            //   url: "/assets/ic_warning_amber_24dp.png",
+            //   size: iconSize
+            // },
+            visible: true,
+            map: map
       });
 
+      saveMarkerOnMap(marker);
 }
