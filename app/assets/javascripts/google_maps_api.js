@@ -1,3 +1,4 @@
+// Loads the map on the screen
 google.maps.event.addDomListener(window, 'load', initialize);
 var map;
 
@@ -16,8 +17,9 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
   initialize();
 });
 
+// Compute the total distance from the origin to the destination
 function computeTotalDistance(directionsResult){
-  
+
   var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
   $(document).ready(function(){
     $("#sinalizeAccidents").popover('show');
@@ -33,15 +35,18 @@ function computeTotalDistance(directionsResult){
   $("#total").html(total + " km");
 }
 
+// Configurations used to personalize the map
 function setMapOptions(){
 
+      var brasilia = new google.maps.LatLng(-15.453695287170715, -409.5702874999999);
       var mapOptions = {
 
+            // Initial level of zoom in the center
             zoom: 5,
-            
-            // Center in Brazil
-            center: new google.maps.LatLng(-15.453695287170715, -409.5702874999999),
-            
+
+            // Center the map in Brasilia
+            center: brasilia,
+
             // Removes the default features of the map
             disableDefaultUI: true,
 
@@ -53,11 +58,13 @@ function setMapOptions(){
             streetViewControl: true,
             overviewMapControl: false,
 
+            // Sets the menu to choose the map type (Roadmap or Satellite) on  the right bottom of the map
             mapTypeControlOptions:{
                 style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
                 position: google.maps.ControlPosition.RIGHT_BOTTOM
             },
 
+            // Determine the style of the zoom controller
             zoomControlOptions:{
               style: google.maps.ZoomControlStyle.SMALL
             }
@@ -75,7 +82,7 @@ function initialize(){
       var mapDiv = document.getElementById("directions");
 
       map = new google.maps.Map(mapDiv, mapOptions);
-      
+
       directionsDisplay.setMap(map);
       directionsDisplay.setPanel(directionsPanelDiv);
 
@@ -83,7 +90,7 @@ function initialize(){
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             computeTotalDistance(directionsDisplay.directions);
       });
-      
+
       calculateRoute();
 }
 
@@ -108,7 +115,7 @@ function calculateRoute(){
                       directionsDisplay.setDirections(response);
                       getInfoAboutRoute(directionsDisplay.directions);
                       break;
-                  
+
                   case 'ZERO_RESULTS':
                   case 'INVALID_REQUEST':
                       alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
@@ -179,7 +186,7 @@ function getInfoAboutRoute(result){
     }
   }
 
-  for(j=0 ; j < myroute.overview_path.length; j++){  
+  for(j=0 ; j < myroute.overview_path.length; j++){
       coordinates[j] = myroute.overview_path[j];
       menorLatitude = coordinates[0].lat();
       menorLongitude = coordinates[0].lng();
@@ -188,13 +195,13 @@ function getInfoAboutRoute(result){
       }
       if(coordinates[j].lat() < menorLatitude){
         menorLatitude = coordinates[j].lat();
-      } 
+      }
       if(coordinates[j].lng() > maiorLongitude){
         maiorLongitude = coordinates[j].lng();
       }
       if(coordinates[j].lng() < menorLongitude){
         menorLongitude = coordinates[j].lng();
-      } 
+      }
       latitudeCoordinate[j] = coordinates[j].lat();
       longitudeCoordinate[j] = coordinates[j].lng();
   }
@@ -206,13 +213,13 @@ function getInfoAboutRoute(result){
 
 function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate){
 
-  // Get the latitudes, longitudes and highways of accidents from database
+  // Get the latitudes, longitudes and highways of accidents from database using the 'gon' gem
   var latitudeArray = gon.latitude;
   var longitudeArray = gon.longitude;
   var brArray = gon.br;
 
-  var j = 0; // Position in brs Array 
-  var i = 0; // Position in coordinates(latitude,longitude) Array 
+  var j = 0; // Position in brs Array
+  var i = 0; // Position in coordinates(latitude,longitude) Array
   var s = 0; // Position in latitude Array (latitudeCoordinate)
 
   var position = [];
@@ -266,20 +273,20 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
 
                   latitudeLimit = latitude[p] - latitudeCoordinate[s];
                   longitudeLimit = longitude[p] - longitudeCoordinate[s];
-                  
+
                   if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
                        latitudesToMark[i] = latitude[p];
                        longitudesToMark[i] = longitude[p];
                        i++;
                   }
             }
-            
+
             s++;
       }
 
       $(document).ready(function(){
           $("#sinalizeAccidents").click(function(){
-                
+
                 // Swap the arrays marking the accident given by it coordinates on the map
                 while(i >= 0){
 
@@ -292,26 +299,27 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
       });
 }
 
-/* 
+/*
     Create a marker on the map
     param latitude - Latitude of the point to be marked
     param longitude - Longitude of the point to be marked
  */
 function markAccident(latitude, longitude){
 
-      var marker;
-      // var iconSize = new google.maps.Size();
+       var marker;
+       var iconSize = new google.maps.Size();
 
-      // iconSize.width = 10;
-      // iconSize.height = 10;
+       iconSize.width = 10;
+       iconSize.height = 10;
 
       marker = new google.maps.Marker({
       position:  new google.maps.LatLng(latitude, longitude),
+
       // Used to change marker layout
-      // icon:{
-      //   url: "/assets/warning_icon.svg.png",
-      //   size: iconSize
-      // },
+       icon:{
+         url: "/assets/ic_warning_amber_24dp.png",
+         size: iconSize
+       },
       map: map
       });
 
