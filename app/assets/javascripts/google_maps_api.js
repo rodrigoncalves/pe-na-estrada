@@ -36,12 +36,21 @@ function computeTotalDistance(directionsResult){
   var total = 0;
   var myRoute = directionsResult.routes[0];
 
-  for (i = 0; i < myRoute.legs.length; i++){
-    total += myRoute.legs[i].distance.value;
+  total = calculateRouteTotalDistance(myRoute);
+
+  total = total / 1000;
+  $("#total").html(total + " km");
+}
+
+function calculateRouteTotalDistance(route){
+  
+  var totalDistance = 0;
+
+  for (i = 0; i < route.legs.length; i++){
+    totalDistance += route.legs[i].distance.value;
   }
 
-  total = total / 1000.
-  $("#total").html(total + " km");
+  return totalDistance;
 }
 
 // Configurations used to personalize the map
@@ -122,6 +131,7 @@ function calculateRoute(){
                       var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
                       $("#distance").html(text);
                       directionsDisplay.setDirections(response);
+                      sinalizeMostDangerousPatch(directionsDisplay.directions.routes[0]);
                       getInfoAboutRoute(directionsDisplay.directions);
                       break;
 
@@ -157,6 +167,127 @@ function calculateRoute(){
 
 }
 
+var currentRoute;
+
+function setCurrentRoute(routeToSet){
+  currentRoute = routeToSet;
+}
+
+// Initialize the patches array as an array of arrays
+function initializePatchesArray(patchesArray, quantityOfPatchs){
+     // Each position in 'patches[]' array is an array that will contain the steps for this patch
+    var p = 0;
+    for(p = 0; p < quantityOfPatchs; p++){
+        patchesArray[p] = new Array();
+    }
+}
+
+
+function calculateStepsPerPatch(totalOfSteps, quantityOfPatchs){
+
+    var remainingSteps = calculateRemainingSteps(totalOfSteps, quantityOfPatchs);
+
+    var quantityOfStepsPerPatch = (totalOfSteps - remainingSteps) / quantityOfPatchs;
+
+    return quantityOfStepsPerPatch;
+}
+
+function calculateRemainingSteps(totalOfSteps, quantityOfPatchs){
+
+  var remainingSteps = totalOfSteps % quantityOfPatchs;
+
+  return remainingSteps;
+
+}
+
+/*
+    Slice the route in 'quantityOfPatchs' patches.
+    param routeToSlice - 'google.maps.DirectionsRoute' object that contains the route to slice
+    param quantityOfPatchs - Quantity of patchs to slice the route
+    return An array with the patches.
+ */
+function sliceRoute(routeToSlice, quantityOfPatchs){
+
+    // Array with the route legs
+    var routeLegs = routeToSlice.legs;
+
+    // Quantity of legs on route
+    var totalOfLegs = routeLegs.length;
+
+    // Each position in this array is an array of 'google.maps.DirectionsStep' object
+    var routeSteps = new Array(totalOfLegs);
+    
+    var i = 0;
+    for(i = 0; i < totalOfLegs; i++){
+      routeSteps[i] = routeLegs[i].steps;
+    }
+
+    // All steps from all legs
+    var routeAllSteps = [];
+
+    i = 0;
+    for(i = 0; i < totalOfLegs; i++){
+      routeAllSteps = routeAllSteps.concat(routeSteps[i]);
+    }
+
+    // Quantity of steps in the route
+    totalOfSteps = routeAllSteps.length;
+
+     var quantityOfStepsPerPatch = calculateStepsPerPatch(totalOfSteps, quantityOfPatchs);
+     
+     // Will be added at the last patch 
+     var remainingSteps = calculateRemainingSteps(totalOfSteps, quantityOfPatchs);
+
+     var patches = new Array(quantityOfPatchs);
+
+     initializePatchesArray(patches, quantityOfPatchs);
+
+     var patchIndex = 0;
+     var reachPatchMaxElements = 0;
+
+     var quantityOfStepsToFitOnPatches = totalOfSteps - remainingSteps;
+
+     i = 0;
+     for(i = 0; i < quantityOfStepsToFitOnPatches; i++){
+
+           patches[patchIndex].push(routeAllSteps[i]);
+           reachPatchMaxElements++;
+
+           if(reachPatchMaxElements == quantityOfStepsPerPatch){
+               patchIndex++;
+               reachPatchMaxElements = 0;
+           }
+           else{
+           // Nothing to do
+           }
+
+     }
+  
+     // Last patch position in 'patches[]' array
+     var lastPatch = quantityOfPatchs - 1;
+
+     // Adding the remaining steps to the last patch
+     var t = 0;
+     for(t = 0; t < remainingSteps; t++){
+         var routeStepsIndex = totalOfSteps - (remainingSteps - t);
+         patches[lastPatch].push(routeAllSteps[routeStepsIndex]);
+     }
+
+     return patches;
+}
+
+function getCoordinatesOfPatch(patchesArray){
+  // Do it here
+}
+
+function sinalizeMostDangerousPatch(route){
+
+  // Set the quantity of patchs as you want
+  var routeSliced = sliceRoute(route, 10);
+  // getCoordinatesOfPatch(routeSliced);
+}
+
+
 function getInfoAboutRoute(result){
 
   var myroute = result.routes[0];
@@ -174,6 +305,7 @@ function getInfoAboutRoute(result){
   var latitudeCoordinate=[]; // Get the latitudes from route
   var longitudeCoordinate=[]; // Get the longitudes from route
 
+  setCurrentRoute(myroute);
 
   for (i = 0; i < length; i++){
 
