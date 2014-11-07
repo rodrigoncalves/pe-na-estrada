@@ -276,15 +276,55 @@ function sliceRoute(routeToSlice, quantityOfPatchs){
      return patches;
 }
 
+/*
+    Get the start and ending coordinates of patchesArray.
+    param patchesArray - Array with the patches
+    return An array that contains the start and ending coordinates from all patches in google.maps.LatLng object
+ */
 function getCoordinatesOfPatch(patchesArray){
-  // Do it here
+    
+    var quantityOfPatches = patchesArray.length;
+
+    var patchesSize = new Array(quantityOfPatches);
+
+    var i = 0;
+    for(i = 0; i < quantityOfPatches; i++){
+          patchesSize[i] = patchesArray[i].length;
+    }
+
+    var patchesCoordinates = new Array(quantityOfPatches);
+
+    i = 0;
+    for(i = 0; i < quantityOfPatches; i++){
+
+          var firstStepOnPatchIndex = 0;
+          var lastStepOnPatchIndex = patchesSize[i] - 1;
+
+          var coordinates = {
+              // This coordinates are objects of 'google.maps.LatLng' class
+              startCoordinate: patchesArray[i][firstStepOnPatchIndex].start_location,
+              endCoordinate: patchesArray[i][lastStepOnPatchIndex].end_location    
+          };
+
+          patchesCoordinates[i] = coordinates;
+    }
+
+    return patchesCoordinates;
 }
 
 function sinalizeMostDangerousPatch(route){
 
   // Set the quantity of patchs as you want
-  var routeSliced = sliceRoute(route, 10);
-  // getCoordinatesOfPatch(routeSliced);
+  quantityOfPatches = 5;
+  var routeSliced = sliceRoute(route, quantityOfPatches);
+
+  /* 
+      Array with patch start and ending coordinates
+      Use '.startCoordinate' to access the start coordinate of the patch as google.maps.LatLng object
+      Use '.endCoordinate' to access the end coordinate of the patch as google.maps.LatLng object
+      Example.: alert(routePatchesCoordinates[0].startCoordinate);
+   */
+  var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
 }
 
 
