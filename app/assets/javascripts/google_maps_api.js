@@ -324,9 +324,11 @@ function getCoordinatesOfPatch(patchesArray){
           var lastStepOnPatchIndex = patchesSize[i] - 1;
 
           var coordinates = {
-              // This coordinates are objects of 'google.maps.LatLng' class
-              startCoordinate: patchesArray[i][firstStepOnPatchIndex].start_location,
-              endCoordinate: patchesArray[i][lastStepOnPatchIndex].end_location,
+
+              startLatitude: patchesArray[i][firstStepOnPatchIndex].start_location.lat(),
+              startLongitude: patchesArray[i][firstStepOnPatchIndex].start_location.lng(),
+              endLatitude:  patchesArray[i][lastStepOnPatchIndex].end_location.lat(),
+              endLongitude: patchesArray[i][lastStepOnPatchIndex].end_location.lng(), 
               // Distance covered by this patch
               distance: calculatePatchDistance(patchesArray[i])
           };
@@ -337,19 +339,59 @@ function getCoordinatesOfPatch(patchesArray){
     return patchesCoordinates;
 }
 
-function sinalizeMostDangerousPatch(route){
-
+function countTheAccidentsByPatch(latitude, longitude){
+    
+  var route = directionsDisplay.directions.routes[0];
+  
   // Set the quantity of patchs as you want
   quantityOfPatches = 5;
+  
   var routeSliced = sliceRoute(route, quantityOfPatches);
-
   /* 
-      Array with patch start and ending coordinates and the distance covered by each patch
-      Use '.startCoordinate' to access the start coordinate of the patch as google.maps.LatLng object
-      Use '.endCoordinate' to access the end coordinate of the patch as google.maps.LatLng object
-      Example.: alert(routePatchesCoordinates[0].startCoordinate);
+      Array with patch start and ending coordinates
+      Use '.startLatitude' to access the start latitude of the patch as google.maps.LatLng object
+      Use '.endLatitude' to access the end latitude of the patch as google.maps.LatLng object
+      Example.: alert(routePatchesCoordinates[0].startLatitude);
    */
   var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
+
+  var accidentsInPatch = [];
+  var j = 0;
+
+  for(i=0;i<routePatchesCoordinates.length;i++){
+    accidentsInPatch[i] = 0;
+  }
+  
+  for(i=0;i<routePatchesCoordinates.length;i++){
+    if(routePatchesCoordinates[i].startLatitude > routePatchesCoordinates[i].endLatitude){
+      j = 0;
+      while(j < latitude.length){
+        if(latitude[j] < routePatchesCoordinates[i].startLatitude && latitude[j] > routePatchesCoordinates[i].endLatitude){      
+          accidentsInPatch[i] = accidentsInPatch[i] + 1;
+        }
+        j++;    
+      }
+    }
+
+    else if(routePatchesCoordinates[i].startLatitude < routePatchesCoordinates[i].endLatitude){
+      j=0;
+      while(j < latitude.length){
+        if(latitude[j] > routePatchesCoordinates[i].startLatitude && latitude[j] < routePatchesCoordinates[i].endLatitude){        
+          accidentsInPatch[i] = accidentsInPatch[i] + 1;
+        }
+        j++;    
+      }
+    }
+
+  }
+
+  return accidentsInPatch;
+}
+
+function sinalizeMostDangerousPatch(route){
+
+
+
 }
 
 
@@ -471,6 +513,7 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
       var i = 0; // Used to swap the vectors latitudesToMark and longitudesToMark
       var latitudesToMark = [];
       var longitudesToMark = [];
+      var accidentsInPatch= [];
 
       while(s < latitudeCoordinate.length){
 
@@ -488,7 +531,7 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
 
             s++;
       }
-
+      accidentsInPatch = countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             removeAllMarkersFromMap();
             deleteMarkersOnMap();
@@ -506,6 +549,7 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
                 }
           });
       });
+      
 }
  
 // Array that contains all markers that is visible on map
