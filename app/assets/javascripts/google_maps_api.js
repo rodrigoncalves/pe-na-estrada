@@ -258,7 +258,7 @@ function sliceRoute(routeToSlice, quantityOfPatchs){
                reachPatchMaxElements = 0;
            }
            else{
-           // Nothing to do
+               // Nothing to do
            }
 
      }
@@ -274,6 +274,29 @@ function sliceRoute(routeToSlice, quantityOfPatchs){
      }
 
      return patches;
+}
+
+/*
+    Calculate the distance covered by a patch
+    param patch - Array that contains the steps of the patch
+    return The distance covered by this patch in kilometers
+ */
+function calculatePatchDistance(patch){
+
+    var patchSize = patch.length;
+
+    var patchDistance = 0;
+
+    var i = 0;
+    for(i = 0; i < patchSize; i++){
+        // Distance in meters
+        patchDistance = patchDistance + patch[i].distance.value;
+    }
+
+    // Converting the distance in meters to kilometers
+    patchDistance = patchDistance/1000;
+
+    return patchDistance;
 }
 
 /*
@@ -303,7 +326,9 @@ function getCoordinatesOfPatch(patchesArray){
           var coordinates = {
               // This coordinates are objects of 'google.maps.LatLng' class
               startCoordinate: patchesArray[i][firstStepOnPatchIndex].start_location,
-              endCoordinate: patchesArray[i][lastStepOnPatchIndex].end_location    
+              endCoordinate: patchesArray[i][lastStepOnPatchIndex].end_location,
+              // Distance covered by this patch
+              distance: calculatePatchDistance(patchesArray[i])
           };
 
           patchesCoordinates[i] = coordinates;
@@ -319,7 +344,7 @@ function sinalizeMostDangerousPatch(route){
   var routeSliced = sliceRoute(route, quantityOfPatches);
 
   /* 
-      Array with patch start and ending coordinates
+      Array with patch start and ending coordinates and the distance covered by each patch
       Use '.startCoordinate' to access the start coordinate of the patch as google.maps.LatLng object
       Use '.endCoordinate' to access the end coordinate of the patch as google.maps.LatLng object
       Example.: alert(routePatchesCoordinates[0].startCoordinate);
