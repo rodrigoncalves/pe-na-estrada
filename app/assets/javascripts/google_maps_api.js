@@ -10,9 +10,11 @@ google.maps.event.addDomListener(window, 'load', function(){
 var map;
 
 // Gives to the map the option to drag it and change the route
-var rendererOptions = {
-  draggable: true
-};
+  var rendererOptions = {
+    // Draggable is turned on when the option below is set as 'true'
+    draggable: false
+  };
+
 
 // Global variables
 var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
@@ -28,7 +30,7 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
 function computeTotalDistance(directionsResult){
 
   var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
-  
+
   $(document).ready(function(){
     $("#sinalizeAccidents").popover('show');
   });
@@ -43,7 +45,7 @@ function computeTotalDistance(directionsResult){
 }
 
 function calculateRouteTotalDistance(route){
-  
+
   var totalDistance = 0;
 
   for (i = 0; i < route.legs.length; i++){
@@ -216,7 +218,7 @@ function sliceRoute(routeToSlice, quantityOfPatchs){
 
     // Each position in this array is an array of 'google.maps.DirectionsStep' object
     var routeSteps = new Array(totalOfLegs);
-    
+
     var i = 0;
     for(i = 0; i < totalOfLegs; i++){
       routeSteps[i] = routeLegs[i].steps;
@@ -234,8 +236,8 @@ function sliceRoute(routeToSlice, quantityOfPatchs){
     totalOfSteps = routeAllSteps.length;
 
      var quantityOfStepsPerPatch = calculateStepsPerPatch(totalOfSteps, quantityOfPatchs);
-     
-     // Will be added at the last patch 
+
+     // Will be added at the last patch
      var remainingSteps = calculateRemainingSteps(totalOfSteps, quantityOfPatchs);
 
      var patches = new Array(quantityOfPatchs);
@@ -262,7 +264,7 @@ function sliceRoute(routeToSlice, quantityOfPatchs){
            }
 
      }
-  
+
      // Last patch position in 'patches[]' array
      var lastPatch = quantityOfPatchs - 1;
 
@@ -305,7 +307,7 @@ function calculatePatchDistance(patch){
     return An array that contains the start and ending coordinates from all patches in google.maps.LatLng object
  */
 function getCoordinatesOfPatch(patchesArray){
-    
+
     var quantityOfPatches = patchesArray.length;
 
     var patchesSize = new Array(quantityOfPatches);
@@ -328,7 +330,7 @@ function getCoordinatesOfPatch(patchesArray){
               startLatitude: patchesArray[i][firstStepOnPatchIndex].start_location.lat(),
               startLongitude: patchesArray[i][firstStepOnPatchIndex].start_location.lng(),
               endLatitude:  patchesArray[i][lastStepOnPatchIndex].end_location.lat(),
-              endLongitude: patchesArray[i][lastStepOnPatchIndex].end_location.lng(), 
+              endLongitude: patchesArray[i][lastStepOnPatchIndex].end_location.lng(),
               // Distance covered by this patch
               distance: calculatePatchDistance(patchesArray[i])
           };
@@ -340,14 +342,14 @@ function getCoordinatesOfPatch(patchesArray){
 }
 
 function countTheAccidentsByPatch(latitude, longitude){
-    
+
   var route = directionsDisplay.directions.routes[0];
-  
+
   // Set the quantity of patchs as you want
   quantityOfPatches = 5;
-  
+
   var routeSliced = sliceRoute(route, quantityOfPatches);
-  /* 
+  /*
       Array with patch start and ending coordinates
       Use '.startLatitude' to access the start latitude of the patch as google.maps.LatLng object
       Use '.endLatitude' to access the end latitude of the patch as google.maps.LatLng object
@@ -361,25 +363,25 @@ function countTheAccidentsByPatch(latitude, longitude){
   for(i=0;i<routePatchesCoordinates.length;i++){
     accidentsInPatch[i] = 0;
   }
-  
+
   for(i=0;i<routePatchesCoordinates.length;i++){
     if(routePatchesCoordinates[i].startLatitude > routePatchesCoordinates[i].endLatitude){
       j = 0;
       while(j < latitude.length){
-        if(latitude[j] < routePatchesCoordinates[i].startLatitude && latitude[j] > routePatchesCoordinates[i].endLatitude){      
+        if(latitude[j] < routePatchesCoordinates[i].startLatitude && latitude[j] > routePatchesCoordinates[i].endLatitude){
           accidentsInPatch[i] = accidentsInPatch[i] + 1;
         }
-        j++;    
+        j++;
       }
     }
 
     else if(routePatchesCoordinates[i].startLatitude < routePatchesCoordinates[i].endLatitude){
       j=0;
       while(j < latitude.length){
-        if(latitude[j] > routePatchesCoordinates[i].startLatitude && latitude[j] < routePatchesCoordinates[i].endLatitude){        
+        if(latitude[j] > routePatchesCoordinates[i].startLatitude && latitude[j] < routePatchesCoordinates[i].endLatitude){
           accidentsInPatch[i] = accidentsInPatch[i] + 1;
         }
-        j++;    
+        j++;
       }
     }
 
@@ -549,9 +551,9 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
                 }
           });
       });
-      
+
 }
- 
+
 // Array that contains all markers that is visible on map
 var markersOnMap;
 var quantityOfMarkersOnMap;
@@ -576,7 +578,7 @@ function deleteMarkersOnMap(){
 
   // If the array is not already empty, get it emp  ty.
   if(markersOnMapLength > 0){
-    
+
     var i = 0;
     for(i = 0; i < markersOnMapLength; i++){
       markersOnMap.pop();
@@ -593,7 +595,7 @@ function deleteMarkersOnMap(){
 
   }
   else{
-    // return false;  
+    // return false;
     // Nothing to do
   }
 
@@ -615,9 +617,9 @@ function removeMarkerFromMap(markerToRemove){
 function removeAllMarkersFromMap(){
 
   markersOnMapLength = markersOnMap.length;
-  
+
   if(markersOnMapLength > 0){
-    
+
     var i = 0;
     for(i = 0; i < markersOnMapLength; i++){
       markerToBeRemoved = markersOnMap[i];
