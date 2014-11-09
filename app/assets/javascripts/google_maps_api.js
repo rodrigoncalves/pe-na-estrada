@@ -40,6 +40,7 @@ function computeTotalDistance(directionsResult){
 
   total = calculateRouteTotalDistance(myRoute);
 
+
   total = total / 1000;
   $("#total").html(total + " km");
 }
@@ -357,6 +358,12 @@ function countTheAccidentsByPatch(latitude, longitude){
    */
   var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
 
+  //Get quant of patch for declaration the array
+  var quantityOfPatches = routeSliced.length;
+
+  //Array with coordinates of the patch most dangerous
+  var patchMostDangerous = new Array(quantityOfPatches);
+
   var accidentsInPatch = [];
   var j = 0;
 
@@ -386,9 +393,32 @@ function countTheAccidentsByPatch(latitude, longitude){
     }
 
   }
-
+  //Receives the coordinates(latitude and longitude) of the portions more accidents
+  patchMostDangerous[0] = identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates);
+  alert(patchMostDangerous[0].startLongitude);
   return accidentsInPatch;
 }
+
+//Patch which has seen more accidents
+function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates){
+  
+  //Variable auxiliar for view what patch have more accidents
+  var moreAccidentsPatch = 0;
+  var positionMoreAccidentsPatch = 0;
+
+  //scans the array looking for the portions more accidents
+  for (var i = 0; i < accidentsInPatch.length; i++) {
+    if (accidentsInPatch[i] > moreAccidentsPatch) {
+      moreAccidentsPatch = accidentsInPatch[i];
+      positionMoreAccidentsPatch = i;
+    };
+    
+  };
+
+  //Returns the latitude and longitude of the portions more accidents
+  return routePatchesCoordinates[positionMoreAccidentsPatch];
+}
+
 
 function sinalizeMostDangerousPatch(route){
 
@@ -398,6 +428,8 @@ function sinalizeMostDangerousPatch(route){
 
 
 function getInfoAboutRoute(result){
+
+
 
   var myroute = result.routes[0];
   var mylegs = myroute.legs[0];
@@ -534,6 +566,7 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
             s++;
       }
       accidentsInPatch = countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
+
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             removeAllMarkersFromMap();
             deleteMarkersOnMap();
