@@ -393,14 +393,14 @@ function countTheAccidentsByPatch(latitude, longitude){
     }
 
   }
-  //Receives the coordinates(latitude and longitude) of the portions more accidents
-  patchMostDangerous[0] = identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates);
-  alert(patchMostDangerous[0].startLongitude);
+  //Receives the all coordinates(latitude and longitude) of the portions more accidents
+  coordinatesOfPatchMostDangerous[0] = identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced);
+
   return accidentsInPatch;
 }
 
 //Patch which has seen more accidents
-function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates){
+function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced){
   
   //Variable auxiliar for view what patch have more accidents
   var moreAccidentsPatch = 0;
@@ -415,8 +415,13 @@ function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates){
     
   };
 
+  var quantityOfSteps = routeSliced[positionMoreAccidentsPatch].length;
+  var coordinatesOfPatchMostDangerous = [];
+  for (i = 0; i < quantityOfSteps; i++) {
+    coordinatesOfPatchMostDangerous[i] = routeSliced[positionMoreAccidentsPatch][i].path
+  };
   //Returns the latitude and longitude of the portions more accidents
-  return routePatchesCoordinates[positionMoreAccidentsPatch];
+  return coordinatesOfPatchMostDangerous;
 }
 
 
