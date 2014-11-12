@@ -61,17 +61,6 @@ class AccidentTest < ActiveSupport::TestCase
 		assert_not @accident.save, "Cannot be invalid"
 	end
 
-=begin
-	test "Checking if km is empty" do
-		@accident.latitude = accidents(:one).latitude
-		@accident.longitude = accidents(:one).longitude
-		@accident.uf = accidents(:one).uf
-		@accident.km = accidents(:three).km
-		@accident.br = accidents(:one).br
-		assert_not @accident.save, "Cannot be invalid"
-	end
-=end
-
 	test "Checking if br is empty" do
 		@accident.latitude = accidents(:one).latitude
 		@accident.longitude = accidents(:one).longitude
@@ -79,5 +68,21 @@ class AccidentTest < ActiveSupport::TestCase
 		@accident.km = accidents(:one).km
 		@accident.br = accidents(:three).br
 		assert_not @accident.save, "Cannot be invalid"
+	end
+
+	test "get accidents longitude at position 4 of the array" do
+		assert_equal Accident.get_accidents_longitude[4], accidents(:five).longitude, "test if get accidents longitude at position 4 of the array"
+	end
+
+	test "get accidents longitude at position 1 of the array" do
+		assert_equal Accident.get_accidents_longitude[1], accidents(:four).longitude, "test if get accidents longitude at position 1 of the array"
+	end
+ 	
+ 	test "get accidents latitude at position 4 of the array" do
+		assert_equal Accident.get_accidents_latitude[4], accidents(:five).latitude, "test if get accidents latidude at position 4 of the array"
+	end
+
+	test "get accidents latitude at position 1 of the array" do
+		assert_equal Accident.get_accidents_latitude[1], accidents(:four).latitude, "test if get accidents latitude at position 1 of the array"
 	end
 end
