@@ -135,7 +135,7 @@ function calculateRoute(){
                       $("#distance").html(text);
                       directionsDisplay.setDirections(response);
                       sinalizeMostDangerousPatch(directionsDisplay.directions.routes[0]);
-                      getInfoAboutRoute(directionsDisplay.directions);
+                      getHighwaysFromRoute(directionsDisplay.directions);
                       break;
 
                   case 'ZERO_RESULTS':
@@ -431,9 +431,7 @@ function sinalizeMostDangerousPatch(route){
 }
 
 
-function getInfoAboutRoute(result){
-
-
+function getHighwaysFromRoute(result){
 
   var myroute = result.routes[0];
   var mylegs = myroute.legs[0];
@@ -441,14 +439,8 @@ function getInfoAboutRoute(result){
   var initialposition = 0;
   var endposition = 0;
   var brnumber = [];
-  var coordinates = [];
   var j = 0; // Count for highways in the route
-  var maiorLatitude = 0;
-  var menorLatitude = 0;
-  var maiorLongitude = 0;
-  var menorLongitude = 0;
-  var latitudeCoordinate=[]; // Get the latitudes from route
-  var longitudeCoordinate=[]; // Get the longitudes from route
+
 
   setCurrentRoute(myroute);
 
@@ -471,6 +463,19 @@ function getInfoAboutRoute(result){
 
     }
   }
+  getCoordinatesFromRoute(brnumber,myroute);
+}
+
+function getCoordinatesFromRoute(brnumber,myroute){
+  var coordinates = [];
+  var j = 0; // Count for highways in the route
+  var maiorLatitude = 0;
+  var menorLatitude = 0;
+  var maiorLongitude = 0;
+  var menorLongitude = 0;
+  var latitudeCoordinate=[]; // Get the latitudes from route
+  var longitudeCoordinate=[]; // Get the longitudes from route
+  var accidents=[];
 
   for(j=0 ; j < myroute.overview_path.length; j++){
       coordinates[j] = myroute.overview_path[j];
@@ -488,20 +493,51 @@ function getInfoAboutRoute(result){
       if(coordinates[j].lng() < menorLongitude){
         menorLongitude = coordinates[j].lng();
       }
-      latitudeCoordinate[j] = coordinates[j].lat();
-      longitudeCoordinate[j] = coordinates[j].lng();
   }
 
-   getCoordinatesToMarkers(brnumber, maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate);
+  var coordinatesCompare;
+      coordinatesCompare = {
+        maiorLatitude: maiorLatitude,
+        menorLatitude: menorLatitude,
+        maiorLongitude: maiorLongitude,
+        menorLongitude: menorLongitude
+      };
+
+   accidents = getTheUsableAccidents();
+   getCoordinatesToMarkers(accidents, brnumber, coordinatesCompare, coordinates);
 
 }
 
-function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLongitude, menorLongitude, longitudeCoordinate, latitudeCoordinate){
+function getTheUsableAccidents() {
+
+  var accidents = [];
+  var i = 0;
+  var j = 0;
 
   // Get the latitudes, longitudes and highways of accidents from database using the 'gon' gem
   var latitudeArray = gon.latitude;
   var longitudeArray = gon.longitude;
   var brArray = gon.br;
+
+  for(j = 0; j < latitudeArray.length; j++){
+
+    if(latitudeArray[j] != null){  
+      var accident = {
+        latitude: latitudeArray[j],
+        longitude: longitudeArray[j],
+        br: brArray[j]
+      };
+
+      accidents[i] = accident;
+      i++;
+    }
+  }
+  return accidents;
+  
+}
+
+function getCoordinatesToMarkers(accidents, brnumber,coordinatesCompare, coordinates){
+
 
   var j = 0; // Position in brs Array
   var i = 0; // Position in coordinates(latitude,longitude) Array
@@ -516,11 +552,9 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
   var longitudeLimit;
   var clicked = false;
 
-
-
   for(x = 0; x < brnumber.length; x++){
-    for(i = 0; i < brArray.length; i++){
-      if (brArray[i] == brnumber[x]){
+    for(i = 0; i < accidents.length; i++){
+      if (accidents[i].br == brnumber[x]){
           position[j] = i;
           j++;
       }
@@ -529,11 +563,11 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
 
 
   for(p = 0; p < position.length; p++){
-    lat = parseFloat(latitudeArray[position[p]]);
-    lng = parseFloat(longitudeArray[position[p]]);
+    lat = parseFloat(accidents[position[p]].latitude);
+    lng = parseFloat(accidents[position[p]].longitude);
 
-    if(lat <= maiorLatitude && lat >= menorLatitude){
-      if(lng <= maiorLongitude && lng >= menorLongitude){
+    if(lat <= coordinatesCompare.maiorLatitude && lat >= coordinatesCompare.menorLatitude){
+      if(lng <= coordinatesCompare.maiorLongitude && lng >= coordinatesCompare.menorLongitude){
           latitude[i]  = lat;
           longitude[i] = lng;
           i++;
@@ -541,10 +575,10 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
     }
   }
 
-   markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longitude);
+   markAccidents(coordinates, latitude, longitude);
 }
 
-function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longitude){
+function markAccidents(coordinates, latitude, longitude){
 
       var s = 0;
       var p = 0;
@@ -553,12 +587,12 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
       var longitudesToMark = [];
       var accidentsInPatch= [];
 
-      while(s < latitudeCoordinate.length){
+      while(s < coordinates.length){
 
             for(p = 0; p < latitude.length; p++){
 
-                  latitudeLimit = latitude[p] - latitudeCoordinate[s];
-                  longitudeLimit = longitude[p] - longitudeCoordinate[s];
+                  latitudeLimit = latitude[p] - coordinates[s].lat();
+                  longitudeLimit = longitude[p] - coordinates[s].lng();
 
                   if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
                        latitudesToMark[i] = latitude[p];
@@ -570,11 +604,10 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
             s++;
       }
       accidentsInPatch = countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
-
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             removeAllMarkersFromMap();
             deleteMarkersOnMap();
-            getInfoAboutRoute(directionsDisplay.directions);
+            getHighwaysFromRoute(directionsDisplay.directions);
       });
 
       $(document).ready(function(){
