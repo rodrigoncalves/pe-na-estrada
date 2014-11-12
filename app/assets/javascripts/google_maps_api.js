@@ -178,7 +178,8 @@ function setCurrentRoute(routeToSet){
 
 // Initialize the patches array as an array of arrays
 function initializePatchesArray(patchesArray, quantityOfPatchs){
-     // Each position in 'patches[]' array is an array that will contain the steps for this patch
+    
+    // Each position in 'patches[]' array is an array that will contain the steps for this patch
     var p = 0;
     for(p = 0; p < quantityOfPatchs; p++){
         patchesArray[p] = new Array();
@@ -430,7 +431,10 @@ function sinalizeMostDangerousPatch(route){
 
 }
 
-
+/*
+  Get the highways in the route
+  param result - Variable that contains the route
+*/
 function getHighwaysFromRoute(result){
 
   var myroute = result.routes[0];
@@ -447,13 +451,13 @@ function getHighwaysFromRoute(result){
   for (i = 0; i < length; i++){
 
     var instructions = mylegs.steps[i].instructions;
-    if(instructions.indexOf("BR-") != -1){
+    if(instructions.indexOf("BR-") !== -1){
 
       initialposition = instructions.indexOf("BR-");
       endposition = initialposition + 6;
       var substring = instructions.substring(initialposition,endposition);
 
-      if(substring.indexOf("0") == 3){
+      if(substring.indexOf("0") === 3){
         brnumber[j] = substring.substring(4,6);
       }
       else{
@@ -466,48 +470,66 @@ function getHighwaysFromRoute(result){
   getCoordinatesFromRoute(brnumber,myroute);
 }
 
+/*
+  Checks if the coordinate is larger or smaller coordinate
+  param coordinatesLimit - Object with the limit coordinates
+  param coordinate       - Variable with the coordinate to be checked
+*/
+function checkCoordinate(coordinatesLimit, coordinate){
+
+      if(coordinate.lat() > coordinatesLimit.maiorLatitude){
+        coordinatesLimit.maiorLatitude = coordinate.lat();
+      }
+      else if(coordinate.lat() < coordinatesLimit.menorLatitude){
+        coordinatesLimit.menorLatitude = coordinate.lat();
+      }
+      if(coordinate.lng() > coordinatesLimit.maiorLongitude){
+        coordinatesLimit.maiorLongitude = coordinate.lng();
+      }
+      else if(coordinate.lng() < coordinatesLimit.menorLongitude){
+        coordinatesLimit.menorLongitude = coordinate.lng();
+      }
+
+      return coordinatesLimit;
+
+}
+
+/*
+  Get the coordinates in the route
+  param brnumber   - Array with the route highway's number
+  param coordinate - Variable with the route
+*/
 function getCoordinatesFromRoute(brnumber,myroute){
+
   var coordinates = [];
   var j = 0; // Count for highways in the route
-  var maiorLatitude = 0;
   var menorLatitude = 0;
-  var maiorLongitude = 0;
   var menorLongitude = 0;
   var latitudeCoordinate=[]; // Get the latitudes from route
   var longitudeCoordinate=[]; // Get the longitudes from route
   var accidents=[];
+  var coordinatesLimit;
+
+  coordinatesLimit = {
+        maiorLatitude: 0,
+        menorLatitude: myroute.overview_path[0].lat(),
+        maiorLongitude: 0,
+        menorLongitude: myroute.overview_path[0].lng()
+  };
 
   for(j=0 ; j < myroute.overview_path.length; j++){
       coordinates[j] = myroute.overview_path[j];
-      menorLatitude = coordinates[0].lat();
-      menorLongitude = coordinates[0].lng();
-      if(coordinates[j].lat() > maiorLatitude){
-        maiorLatitude = coordinates[j].lat();
-      }
-      if(coordinates[j].lat() < menorLatitude){
-        menorLatitude = coordinates[j].lat();
-      }
-      if(coordinates[j].lng() > maiorLongitude){
-        maiorLongitude = coordinates[j].lng();
-      }
-      if(coordinates[j].lng() < menorLongitude){
-        menorLongitude = coordinates[j].lng();
-      }
+      coordinatesLimit = checkCoordinate(coordinatesLimit,coordinates[j]);
   }
 
-  var coordinatesCompare;
-      coordinatesCompare = {
-        maiorLatitude: maiorLatitude,
-        menorLatitude: menorLatitude,
-        maiorLongitude: maiorLongitude,
-        menorLongitude: menorLongitude
-      };
-
    accidents = getTheUsableAccidents();
-   getCoordinatesToMarkers(accidents, brnumber, coordinatesCompare, coordinates);
+   getCoordinatesToMarkers(accidents, brnumber, coordinatesLimit, coordinates);
 
 }
 
+/*
+  Removes the null coordinates of the coordinate arrays
+*/
 function getTheUsableAccidents() {
 
   var accidents = [];
@@ -521,7 +543,7 @@ function getTheUsableAccidents() {
 
   for(j = 0; j < latitudeArray.length; j++){
 
-    if(latitudeArray[j] != null){  
+    if(latitudeArray[j] !== null){  
       var accident = {
         latitude: latitudeArray[j],
         longitude: longitudeArray[j],
@@ -536,7 +558,7 @@ function getTheUsableAccidents() {
   
 }
 
-function getCoordinatesToMarkers(accidents, brnumber,coordinatesCompare, coordinates){
+function getCoordinatesToMarkers(accidents, brnumber,coordinatesLimit, coordinates){
 
 
   var j = 0; // Position in brs Array
@@ -554,7 +576,7 @@ function getCoordinatesToMarkers(accidents, brnumber,coordinatesCompare, coordin
 
   for(x = 0; x < brnumber.length; x++){
     for(i = 0; i < accidents.length; i++){
-      if (accidents[i].br == brnumber[x]){
+      if (accidents[i].br === brnumber[x]){
           position[j] = i;
           j++;
       }
@@ -566,8 +588,8 @@ function getCoordinatesToMarkers(accidents, brnumber,coordinatesCompare, coordin
     lat = parseFloat(accidents[position[p]].latitude);
     lng = parseFloat(accidents[position[p]].longitude);
 
-    if(lat <= coordinatesCompare.maiorLatitude && lat >= coordinatesCompare.menorLatitude){
-      if(lng <= coordinatesCompare.maiorLongitude && lng >= coordinatesCompare.menorLongitude){
+    if(lat <= coordinatesLimit.maiorLatitude && lat >= coordinatesLimit.menorLatitude){
+      if(lng <= coordinatesLimit.maiorLongitude && lng >= coordinatesLimit.menorLongitude){
           latitude[i]  = lat;
           longitude[i] = lng;
           i++;
