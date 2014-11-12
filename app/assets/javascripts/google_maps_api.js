@@ -48,7 +48,7 @@ function computeTotalDistance(directionsResult){
 function calculateRouteTotalDistance(route){
 
   var totalDistance = 0;
-
+  var i =0;
   for (i = 0; i < route.legs.length; i++){
     totalDistance += route.legs[i].distance.value;
   }
@@ -139,20 +139,20 @@ function calculateRoute(){
 
                   case 'ZERO_RESULTS':
                   case 'INVALID_REQUEST':
-                      alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
-                              + destination + "'. \n Digite novamente.");
+                      window.alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" +
+                            destination + "'. \n Digite novamente.");
                       break;
 
                   case 'UNKNOWN_ERROR':
                   case 'REQUEST_DENIED':
                   case 'OVER_QUERY_LIMIT':
-                      alert('Erro inesperado');
+                      window.alert('Erro inesperado');
                       break;
 
                   case 'NOT_FOUND':
-                      if(origin  != ""){
-                        alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '"
-                               + destination  + "'. \n Digite novamente.");
+                      if(origin  !== ""){
+                        window.alert("Não foi possível encontrar uma rota entre \n '" + origin + "' e '" +
+                            destination  + "'. \n Digite novamente.");
                       }
                       else{
                         // Nothing to do
@@ -162,7 +162,7 @@ function calculateRoute(){
                   default:
                       directionsDisplay.setDirections(response);
                       initialize();
-                      break;
+                      // break;
             }
 
       });
@@ -356,14 +356,14 @@ function getCoordinatesOfPatch(patchesArray){
 
     var quantityOfPatches = patchesArray.length;
 
-    var patchesSize = new Array(quantityOfPatches);
+    var patchesSize = [quantityOfPatches];
 
     var i = 0;
     for(i = 0; i < quantityOfPatches; i++){
           patchesSize[i] = patchesArray[i].length;
     }
 
-    var patchesCoordinates = new Array(quantityOfPatches);
+    var patchesCoordinates = [quantityOfPatches];
 
     i = 0;
     for(i = 0; i < quantityOfPatches; i++){
@@ -401,10 +401,12 @@ function countTheAccidentsByPatch(latitude, longitude){
   var accidentsInPatch = [];
   var j = 0;
 
+  var i = 0;
   for(i=0;i<routePatchesCoordinates.length;i++){
     accidentsInPatch[i] = 0;
   }
 
+  i = 0;
   for(i=0;i<routePatchesCoordinates.length;i++){
     if(routePatchesCoordinates[i].startLatitude > routePatchesCoordinates[i].endLatitude){
       j = 0;
@@ -415,7 +417,6 @@ function countTheAccidentsByPatch(latitude, longitude){
         j++;
       }
     }
-
     else if(routePatchesCoordinates[i].startLatitude < routePatchesCoordinates[i].endLatitude){
       j=0;
       while(j < latitude.length){
@@ -424,6 +425,9 @@ function countTheAccidentsByPatch(latitude, longitude){
         }
         j++;
       }
+    }
+    else{
+      // Nothing to do
     }
 
   }
@@ -510,9 +514,6 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
   var longitude = [];
   var latitudeLimit;
   var longitudeLimit;
-  var clicked = false;
-
-
 
   for(x = 0; x < brnumber.length; x++){
     for(i = 0; i < brArray.length; i++){
@@ -522,7 +523,6 @@ function getCoordinatesToMarkers(brnumber,maiorLatitude, menorLatitude, maiorLon
       }
     }
   }
-
 
   for(p = 0; p < position.length; p++){
     lat = parseFloat(latitudeArray[position[p]]);
@@ -591,7 +591,7 @@ var markersOnMap;
 var quantityOfMarkersOnMap;
 
 function setUpMarkersArray(){
-  markersOnMap = new Array();
+  markersOnMap = [];
   quantityOfMarkersOnMap = new Number();
 }
 
@@ -616,18 +616,8 @@ function deleteMarkersOnMap(){
       markersOnMap.pop();
       quantityOfMarkersOnMap = quantityOfMarkersOnMap - 1;
     }
-
-    /*// If the array got empty, the quantity of markers should be 0
-    if(quantityOfMarkersOnMap == 0){
-      return true;
-    }
-    else{
-      return false;
-    }*/
-
   }
   else{
-    // return false;
     // Nothing to do
   }
 
