@@ -30,9 +30,12 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
 function computeTotalDistance(directionsResult){
 
   var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
+      enableButton = $('#removeSinalizationAccidents').removeAttr('disabled');
+      enableButton = $('#sinalizeAccidentsInPatch').removeAttr('disabled'); 
 
   $(document).ready(function(){
     $("#sinalizeAccidents").popover('show');
+    $("#removeSinalizationAccidents").popover('show');
   });
 
   var total = 0;
@@ -114,6 +117,7 @@ function initialize(){
 
       calculateRoute();
 }
+
 
 function calculateRoute(){
 
@@ -588,7 +592,13 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
                 }
           });
       });
-
+      
+      $(document).ready(function(){
+          $("#removeSinalizationAccidents").click(function(){
+              removeAllMarkersFromMap();
+              deleteMarkersOnMap();
+          });
+      });
 }
 
 // Array that contains all markers that is visible on map

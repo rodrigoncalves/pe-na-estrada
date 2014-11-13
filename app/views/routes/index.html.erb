@@ -66,10 +66,19 @@
 <br>
 <br>
 <% if @origin_informed_by_user.blank? == false%>
-<button id="sinalizeAccidents" class = "btn btn-danger" data-container="body"
-             data-toggle="popover" data-placement="right" data-trigger="hover" disabled="true"
-             data-content="Será marcado no mapa os acidentes que aconteceram nas proximidades da sua rota.">
+<button id="sinalizeAccidents" class="btn btn-danger" data-container="body" 
+            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true" data-content="Será marcado no mapa os acidentes que aconteceram nas proximidades da sua rota.">
 Sinalizar acidentes
+</button>
+<button id="removeSinalizationAccidents" class="btn btn-danger" data-container="body" 
+            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true"
+            data-content = "Será desmarcado no mapa os acidentes que aconteceram nas proximidades da sua rota.">
+Desmarcar acidentes
+</button>
+<button id="sinalizeAccidentsInPatch" class="btn btn-danger" data-container="body" 
+            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true"
+            data-content = "Será exibido no mapa o trecho que possui mais acidentes na rota traçada.">
+Sinalizar trecho mais perigoso
 </button>
 <%end%>
 
