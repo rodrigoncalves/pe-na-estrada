@@ -383,7 +383,7 @@ function countTheAccidentsByPatch(latitude, longitude){
   var route = directionsDisplay.directions.routes[0];
 
   // Set the quantity of patchs as you want
-  quantityOfPatches = 5;
+  quantityOfPatches = 30;
 
   var routeSliced = sliceRoute(route, quantityOfPatches);
   /*
@@ -472,8 +472,16 @@ function sinalizeMostDangerousPatch(route){
       var pointArray = new google.maps.MVCArray(route);
 
       heatmap = new google.maps.visualization.HeatmapLayer({
+
         // The data passed here will be appering in the heatmap layer
-        data: pointArray
+        data: pointArray,
+
+        // Opacity of the map layer
+        opacity: 0.8,
+
+        // Radius of each heatmap pointArray
+        radius: 11
+
       });
 
       // Sets the heapmap layer on the map
