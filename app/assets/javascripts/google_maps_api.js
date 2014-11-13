@@ -8,28 +8,28 @@ google.maps.event.addDomListener(window, 'load', function(){
 });
 
 // Data used for tests
-var taxiData = [
-  new google.maps.LatLng(37.782551, -122.445368),
-  new google.maps.LatLng(37.782745, -122.444586),
-  new google.maps.LatLng(37.782842, -122.443688),
-  new google.maps.LatLng(37.782919, -122.442815),
-  new google.maps.LatLng(37.782992, -122.442112),
-  new google.maps.LatLng(37.783100, -122.441461),
-  new google.maps.LatLng(37.783206, -122.440829),
-  new google.maps.LatLng(37.783273, -122.440324),
-  new google.maps.LatLng(37.783316, -122.440023),
-  new google.maps.LatLng(37.783357, -122.439794),
-  new google.maps.LatLng(37.783371, -122.439687),
-  new google.maps.LatLng(37.783368, -122.439666),
-  new google.maps.LatLng(37.783383, -122.439594),
-  new google.maps.LatLng(37.783508, -122.439525),
-  new google.maps.LatLng(37.783842, -122.439591),
-  new google.maps.LatLng(37.784147, -122.439668),
-  new google.maps.LatLng(37.784206, -122.439686),
-  new google.maps.LatLng(37.784386, -122.439790),
-  new google.maps.LatLng(37.784701, -122.439902),
-  new google.maps.LatLng(37.784965, -122.439938)
-];
+ // var taxiData = [
+//   new google.maps.LatLng(37.782551, -122.445368),
+//   new google.maps.LatLng(37.782745, -122.444586),
+//   new google.maps.LatLng(37.782842, -122.443688),
+//   new google.maps.LatLng(37.782919, -122.442815),
+//   new google.maps.LatLng(37.782992, -122.442112),
+//   new google.maps.LatLng(37.783100, -122.441461),
+//   new google.maps.LatLng(37.783206, -122.440829),
+//   new google.maps.LatLng(37.783273, -122.440324),
+//   new google.maps.LatLng(37.783316, -122.440023),
+//   new google.maps.LatLng(37.783357, -122.439794),
+//   new google.maps.LatLng(37.783371, -122.439687),
+//   new google.maps.LatLng(37.783368, -122.439666),
+//   new google.maps.LatLng(37.783383, -122.439594),
+//   new google.maps.LatLng(37.783508, -122.439525),
+//   new google.maps.LatLng(37.783842, -122.439591),
+//   new google.maps.LatLng(37.784147, -122.439668),
+//   new google.maps.LatLng(37.784206, -122.439686),
+//   new google.maps.LatLng(37.784386, -122.439790),
+//   new google.maps.LatLng(37.784701, -122.439902),
+//   new google.maps.LatLng(37.784965, -122.439938)
+//];
 
 
 // Gives to the map the option to drag it and change the route
@@ -136,16 +136,6 @@ function initialize(){
 
       map = new google.maps.Map(mapDiv, mapOptions);
 
-      // Contains the data from the array
-      var pointArray = new google.maps.MVCArray(taxiData);
-
-      heatmap = new google.maps.visualization.HeatmapLayer({
-        // The data passed here will be appering in the heatmap layer
-        data: pointArray
-      });
-
-      // Sets the heapmap layer on the map
-      heatmap.setMap(map);
 
       directionsDisplay.setMap(map);
       directionsDisplay.setPanel(directionsPanelDiv);
@@ -158,6 +148,7 @@ function initialize(){
       calculateRoute();
 }
 
+// Function used to calculate the route between the origin and destination using Google Maps services
 function calculateRoute(){
 
       var origin = $("#origin").val();
@@ -177,7 +168,6 @@ function calculateRoute(){
                       var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
                       $("#distance").html(text);
                       directionsDisplay.setDirections(response);
-                      sinalizeMostDangerousPatch(directionsDisplay.directions.routes[0]);
                       getInfoAboutRoute(directionsDisplay.directions);
                       break;
 
@@ -219,7 +209,10 @@ function setCurrentRoute(routeToSet){
   currentRoute = routeToSet;
 }
 
-// Initialize the patches array as an array of arrays
+/*
+     Initialize the patches array as an array of arrays
+     patch = trecho
+ */
 function initializePatchesArray(patchesArray, quantityOfPatchs){
      // Each position in 'patches[]' array is an array that will contain the steps for this patch
     var p = 0;
@@ -346,7 +339,7 @@ function calculatePatchDistance(patch){
 }
 
 /*
-    Get the start and ending coordinates of patchesArray.
+    Get the start and end coordinates of patchesArray.
     param patchesArray - Array with the patches
     return An array that contains the start and ending coordinates from all patches in google.maps.LatLng object
  */
@@ -404,9 +397,6 @@ function countTheAccidentsByPatch(latitude, longitude){
   //Get quant of patch for declaration the array
   var quantityOfPatches = routeSliced.length;
 
-  //Array with coordinates of the patch most dangerous
-  var coordinatesOfPatchMostDangerous = new Array(quantityOfPatches);
-
   var accidentsInPatch = [];
   var j = 0;
 
@@ -437,39 +427,57 @@ function countTheAccidentsByPatch(latitude, longitude){
 
   }
   //Receives the all coordinates(latitude and longitude) of the portions more accidents
-  coordinatesOfPatchMostDangerous[0] = identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced);
+  identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced);
+
   return accidentsInPatch;
 }
 
-//Patch which has seen more accidents
+// Patch which has seen more accidents
 function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced){
 
-  //Variable auxiliar for view what patch have more accidents
+  // Auxiliary variable to see which patch has more accidents
   var moreAccidentsPatch = 0;
   var positionMoreAccidentsPatch = 0;
 
-  //scans the array looking for the portions more accidents
+  // Scans the array looking for the portions more accidents
   for (var i = 0; i < accidentsInPatch.length; i++) {
     if (accidentsInPatch[i] > moreAccidentsPatch) {
       moreAccidentsPatch = accidentsInPatch[i];
-      positionMoreAccidentsPatch = i;
-    };
-
-  };
+            positionMoreAccidentsPatch = i;
+    }
+  }
 
   var quantityOfSteps = routeSliced[positionMoreAccidentsPatch].length;
   var coordinatesOfPatchMostDangerous = [];
-  for (i = 0; i < quantityOfSteps; i++) {
-    coordinatesOfPatchMostDangerous[i] = routeSliced[positionMoreAccidentsPatch][i].path;
-  };
-  //Returns the latitude and longitude of the portions more accidents
-  return coordinatesOfPatchMostDangerous;
-}
+  var k = 0;
+  var j = 0;
+  var route = directionsDisplay.directions.routes[0];
+  var quantityCoordinatesByStep;
 
+  for (i = 0; i < quantityOfSteps; i++) {
+    quantityCoordinatesByStep  = routeSliced[positionMoreAccidentsPatch][i].path.length;
+    for(k = 0; k < quantityCoordinatesByStep; k++){
+      coordinatesOfPatchMostDangerous[j] = routeSliced[positionMoreAccidentsPatch][i].path[k];
+      j++;
+    }
+  }
+       // Receves as parameter the latitude and longitude of the portions more accidents
+       sinalizeMostDangerousPatch(coordinatesOfPatchMostDangerous);
+
+}
 
 function sinalizeMostDangerousPatch(route){
 
+      // Contains the data from the array
+      var pointArray = new google.maps.MVCArray(route);
 
+      heatmap = new google.maps.visualization.HeatmapLayer({
+        // The data passed here will be appering in the heatmap layer
+        data: pointArray
+      });
+
+      // Sets the heapmap layer on the map
+      heatmap.setMap(map);
 
 }
 
