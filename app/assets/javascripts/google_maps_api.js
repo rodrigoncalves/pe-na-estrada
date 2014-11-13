@@ -7,7 +7,30 @@ google.maps.event.addDomListener(window, 'load', function(){
 
 });
 
-var map;
+// Data used for tests
+var taxiData = [
+  new google.maps.LatLng(37.782551, -122.445368),
+  new google.maps.LatLng(37.782745, -122.444586),
+  new google.maps.LatLng(37.782842, -122.443688),
+  new google.maps.LatLng(37.782919, -122.442815),
+  new google.maps.LatLng(37.782992, -122.442112),
+  new google.maps.LatLng(37.783100, -122.441461),
+  new google.maps.LatLng(37.783206, -122.440829),
+  new google.maps.LatLng(37.783273, -122.440324),
+  new google.maps.LatLng(37.783316, -122.440023),
+  new google.maps.LatLng(37.783357, -122.439794),
+  new google.maps.LatLng(37.783371, -122.439687),
+  new google.maps.LatLng(37.783368, -122.439666),
+  new google.maps.LatLng(37.783383, -122.439594),
+  new google.maps.LatLng(37.783508, -122.439525),
+  new google.maps.LatLng(37.783842, -122.439591),
+  new google.maps.LatLng(37.784147, -122.439668),
+  new google.maps.LatLng(37.784206, -122.439686),
+  new google.maps.LatLng(37.784386, -122.439790),
+  new google.maps.LatLng(37.784701, -122.439902),
+  new google.maps.LatLng(37.784965, -122.439938)
+];
+
 
 // Gives to the map the option to drag it and change the route
   var rendererOptions = {
@@ -71,6 +94,9 @@ function setMapOptions(){
             // Removes the default features of the map
             disableDefaultUI: true,
 
+            // Setting map type
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+
             // Chooses which elements are wanted in the map
             panControl: false,
             zoomControl: true,
@@ -95,6 +121,12 @@ function setMapOptions(){
       return mapOptions;
 }
 
+// Contains the heatmap layer
+var heatmap;
+
+// Contains the map
+var map;
+
 function initialize(){
 
       var mapOptions = setMapOptions();
@@ -103,6 +135,17 @@ function initialize(){
       var mapDiv = document.getElementById("directions");
 
       map = new google.maps.Map(mapDiv, mapOptions);
+
+      // Contains the data from the array
+      var pointArray = new google.maps.MVCArray(taxiData);
+
+      heatmap = new google.maps.visualization.HeatmapLayer({
+        // The data passed here will be appering in the heatmap layer
+        data: pointArray
+      });
+
+      // Sets the heapmap layer on the map
+      heatmap.setMap(map);
 
       directionsDisplay.setMap(map);
       directionsDisplay.setPanel(directionsPanelDiv);
@@ -400,7 +443,7 @@ function countTheAccidentsByPatch(latitude, longitude){
 
 //Patch which has seen more accidents
 function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced){
-  
+
   //Variable auxiliar for view what patch have more accidents
   var moreAccidentsPatch = 0;
   var positionMoreAccidentsPatch = 0;
@@ -411,7 +454,7 @@ function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, route
       moreAccidentsPatch = accidentsInPatch[i];
       positionMoreAccidentsPatch = i;
     };
-    
+
   };
 
   var quantityOfSteps = routeSliced[positionMoreAccidentsPatch].length;

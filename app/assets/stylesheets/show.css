@@ -1,5 +1,5 @@
 #main_panel{
-	
+
 	/*text-align: center;*/
 	margin-left: 5%;
 	margin-right: 5%;
@@ -16,7 +16,9 @@
 }
 
 #directions{
-
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
 	position: relative;
 }
 
