@@ -62,3 +62,13 @@ gem "codeclimate-test-reporter", group: :test, require: nil
 group :test do
   gem 'shoulda'
 end
+
+
+group :development, :test do
+  gem "teaspoon"
+end
+
+# Gem used to test
+group :development, :test do
+  gem "qunit-rails"
+end
