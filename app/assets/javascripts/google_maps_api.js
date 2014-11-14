@@ -27,9 +27,9 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
 });
 
 // Compute the total distance from the origin to the destination
-function computeTotalDistance(directionsResult){
+function computeTotalDistance(){
 
-  var enableButton = $('#sinalizeAccidents').removeAttr('disabled');
+  $('#sinalizeAccidents').removeAttr('disabled');
 
   $(document).ready(function(){
     $("#sinalizeAccidents").popover('show');
@@ -37,7 +37,7 @@ function computeTotalDistance(directionsResult){
   });
 
   var total = 0;
-  var myRoute = directionsResult.routes[0];
+  var myRoute = getCurrentRoute();
 
   total = calculateRouteTotalDistance(myRoute);
 
@@ -110,7 +110,7 @@ function initialize(){
 
       // When the directions change, calculate the new distance
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-            computeTotalDistance(directionsDisplay.directions);
+            computeTotalDistance();
       });
 
       calculateRoute();
@@ -201,48 +201,6 @@ function calculateRemainingSteps(totalOfSteps, quantityOfPatchs){
   return remainingSteps;
 }
 
-/*
-    Concatenate all positions from 'routeSteps' array into a single array
-    param routeSteps - Array that contains in each position the steps from each leg
-    param totalOfLegs - Quantity of legs in the route
-    return An array that contains all the steps from the route
- */
-function joinAllSteps(routeSteps, totalOfLegs){
-    
-    var routeAllSteps = [];
-
-    var i = 0;
-    for(i = 0; i < totalOfLegs; i++){
-      routeAllSteps = routeAllSteps.concat(routeSteps[i]);
-    }
-
-    return routeAllSteps;
-}
-
-/*
-    Get all steps from all legs in a route and then concatenate these steps into a single array
-    param routeLegs - Array of google.maps.DirectionsLeg objects that contains all legs in a route
-    return An array with all steps from a route
- */
-function getStepsFromLegs(routeLegs){
-    
-    // Quantity of legs on route
-    var totalOfLegs = routeLegs.length;
-
-    var routeSteps = [totalOfLegs];
-
-    var i = 0;
-    for(i = 0; i < totalOfLegs; i++){
-      routeSteps[i] = routeLegs[i].steps;
-    }
-
-    // Put all steps from all legs into a single array
-    var routeAllSteps = joinAllSteps(routeSteps, totalOfLegs);
-
-    return routeAllSteps;
-
-}
-
 function fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps){
      
      var quantityOfPatches = patches.length;
@@ -310,13 +268,16 @@ function distributeStepsOnPatches(routeAllSteps, quantityOfPatches){
     param quantityOfPatches - Quantity of patchs to slice the route
     return An array with the patches.
  */
-function sliceRoute(routeToSlice, quantityOfPatches){
+function sliceRoute(routeToSlice){
+
+    // Set the quantity of patchs as you want
+    var quantityOfPatches = 5;
 
     // Array with the route legs
-    var routeLegs = routeToSlice.legs;
+    var routeLegs = routeToSlice.legs[0];
 
     // All steps in route
-    var routeAllSteps  = getStepsFromLegs(routeLegs);
+    var routeAllSteps  = routeLegs.steps;
     
     // Separate the steps on patches
     var patches = distributeStepsOnPatches(routeAllSteps, quantityOfPatches);
@@ -354,6 +315,7 @@ function calculatePatchDistance(patch){
  */
 function getCoordinatesOfPatch(patchesArray){
 
+
     var quantityOfPatches = patchesArray.length;
 
     var patchesSize = [quantityOfPatches];
@@ -387,16 +349,15 @@ function getCoordinatesOfPatch(patchesArray){
     return patchesCoordinates;
 }
 
-function countTheAccidentsByPatch(latitude){
+function countTheAccidentsByPatch(latitude, longitude){
 
-  var route = directionsDisplay.directions.routes[0];
+  var route = getCurrentRoute();
 
-  // Set the quantity of patchs as you want
-  var quantityOfPatches = 5;
-
-  var routeSliced = sliceRoute(route, quantityOfPatches);
+  var routeSliced = sliceRoute(route);
 
   var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
+
+  var quantityOfPatches = routeSliced.length;
 
   //Array with coordinates of the patch most dangerous
   var coordinatesOfPatchMostDangerous = [quantityOfPatches];
@@ -416,12 +377,16 @@ function countTheAccidentsByPatch(latitude){
     while(j < latitude.length){
       if(routePatchesCoordinates[i].startLatitude > routePatchesCoordinates[i].endLatitude){
         if(latitude[j] < routePatchesCoordinates[i].startLatitude && latitude[j] > routePatchesCoordinates[i].endLatitude){
-          accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          if(longitude[j] < routePatchesCoordinates[i].startLongitude && longitude[j] > routePatchesCoordinates[i].endLongitude){
+            accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          }
         }
       }
       else if(routePatchesCoordinates[i].startLatitude < routePatchesCoordinates[i].endLatitude){
         if(latitude[j] > routePatchesCoordinates[i].startLatitude && latitude[j] < routePatchesCoordinates[i].endLatitude){
-          accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          if(longitude[j] > routePatchesCoordinates[i].startLongitude && longitude[j] < routePatchesCoordinates[i].endLongitude){
+            accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          }
         }
       }
       else{
@@ -432,10 +397,8 @@ function countTheAccidentsByPatch(latitude){
 
   }
 
-  // Receives the all coordinates(latitude and longitude) of the portions more accidents
-  coordinatesOfPatchMostDangerous[0] = identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced);
+  identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced);
 
-  return accidentsInPatch;
 }
 
 
@@ -464,8 +427,6 @@ function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, route
     coordinatesOfPatchMostDangerous[i] = routeSliced[positionMoreAccidentsPatch][i].path;
   }
 
-  //Returns the latitude and longitude of the portions more accidents
-  return coordinatesOfPatchMostDangerous;
 }
 
 /*
@@ -541,7 +502,6 @@ function getCoordinatesFromRoute(brnumber,myroute){
 
   var coordinates = [];
   var j = 0; // Count for highways in the route
-  var accidents=[];
   var coordinatesLimit;
 
   coordinatesLimit = {
@@ -556,44 +516,16 @@ function getCoordinatesFromRoute(brnumber,myroute){
       coordinatesLimit = checkCoordinate(coordinatesLimit,coordinates[j]);
   }
 
-   accidents = getTheUsableAccidents();
-   getCoordinatesToMarkers(accidents, brnumber, coordinatesLimit, coordinates);
+   getCoordinatesToMarkers(brnumber, coordinatesLimit, coordinates);
 
 }
 
-/*
-  Removes the null coordinates of the coordinate arrays
-*/
-function getTheUsableAccidents() {
-
-  var accidents = [];
-  var i = 0;
-  var j = 0;
+function getCoordinatesToMarkers(brnumber, coordinatesLimit, coordinates){
 
   // Get the latitudes, longitudes and highways of accidents from database using the 'gon' gem
   var latitudeArray = gon.latitude;
   var longitudeArray = gon.longitude;
   var brArray = gon.br;
-
-  for(j = 0; j < latitudeArray.length; j++){
-
-    if(latitudeArray[j] !== null){  
-      var accident = {
-        latitude: latitudeArray[j],
-        longitude: longitudeArray[j],
-        br: brArray[j]
-      };
-
-      accidents[i] = accident;
-      i++;
-    }
-
-  }
-  
-  return accidents;
-}
-
-function getCoordinatesToMarkers(accidents, brnumber, coordinatesLimit, coordinates){
 
   var j = 0; // Position in brs Array
   var i = 0; // Position in coordinates(latitude,longitude) Array
@@ -606,8 +538,8 @@ function getCoordinatesToMarkers(accidents, brnumber, coordinatesLimit, coordina
 
   var x = 0;
   for(x = 0; x < brnumber.length; x++){
-    for(i = 0; i < accidents.length; i++){
-      if (accidents[i].br === brnumber[x]){
+    for(i = 0; i < brArray.length; i++){
+      if (brArray[i] === brnumber[x]){
           position[j] = i;
           j++;
       }
@@ -616,8 +548,8 @@ function getCoordinatesToMarkers(accidents, brnumber, coordinatesLimit, coordina
 
   var p = 0;
   for(p = 0; p < position.length; p++){
-    lat = parseFloat(accidents[position[p]].latitude);
-    lng = parseFloat(accidents[position[p]].longitude);
+    lat = parseFloat(latitudeArray[position[p]]);
+    lng = parseFloat(longitudeArray[position[p]]);
 
     if(lat <= coordinatesLimit.maiorLatitude && lat >= coordinatesLimit.menorLatitude){
       if(lng <= coordinatesLimit.maiorLongitude && lng >= coordinatesLimit.menorLongitude){
@@ -638,7 +570,6 @@ function markAccidents(coordinates, latitude, longitude){
       var i = 0; // Used to swap the vectors latitudesToMark and longitudesToMark
       var latitudesToMark = [];
       var longitudesToMark = [];
-      var accidentsInPatch= [];
 
       while(s < coordinates.length){
 
@@ -647,7 +578,7 @@ function markAccidents(coordinates, latitude, longitude){
                   var latitudeLimit = latitude[p] - coordinates[s].lat();
                   var longitudeLimit = longitude[p] - coordinates[s].lng();
 
-                  if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
+                  if(latitudeLimit > -0.02 && latitudeLimit < 0.02 && longitudeLimit > -0.02 && longitudeLimit < 0.02){
                        latitudesToMark[i] = latitude[p];
                        longitudesToMark[i] = longitude[p];
                        i++;
@@ -657,7 +588,7 @@ function markAccidents(coordinates, latitude, longitude){
             s++;
       }
 
-      accidentsInPatch = countTheAccidentsByPatch(latitudesToMark);
+      countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
 
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             removeAllMarkersFromMap();
@@ -681,11 +612,9 @@ function markAccidents(coordinates, latitude, longitude){
 
 // Array that contains all markers that is visible on map
 var markersOnMap;
-var quantityOfMarkersOnMap;
 
 function setUpMarkersArray(){
   markersOnMap = [];
-  quantityOfMarkersOnMap = new Number();
 }
 
 /*
@@ -693,7 +622,7 @@ function setUpMarkersArray(){
     param marker - Marker that will be saved on markersOnMap array
  */
 function saveMarkerOnMap(markerToSave){
-  quantityOfMarkersOnMap = markersOnMap.push(markerToSave);
+  markersOnMap.push(markerToSave);
 }
 
 // Delete all markers on markersOnMap array
@@ -707,7 +636,6 @@ function deleteMarkersOnMap(){
     var i = 0;
     for(i = 0; i < markersOnMapLength; i++){
       markersOnMap.pop();
-      quantityOfMarkersOnMap = quantityOfMarkersOnMap - 1;
     }
   }
   else{
