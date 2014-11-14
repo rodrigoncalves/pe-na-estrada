@@ -28,7 +28,7 @@
 // may get better load performance if you require the specific files that are being used in the test that tests them.
 //= require application
 
-
+module('google_maps_api');
 
 // Silly test for testing
 test("Truth is always true", function() {
@@ -39,4 +39,53 @@ test("Truth is always true", function() {
 test("Testing if function 'calculateRouteTotalDistance' exists", function(){
 
     ok(calculateRouteTotalDistance, 'This function exists');
+});
+
+/*
+test("Testing if function 'calculateRouteTotalDistance' should not pass", function(){
+
+    equal(calculateRouteTotalDistance(2), 2,'The method dont right');
+});*/
+
+
+test("Testing if function 'calculateRemainingSteps' exists", function(){
+
+    ok(calculateRemainingSteps, 'This function exists');
+});
+
+test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 8 much as patchs  ", function(){
+
+    equal(calculateRemainingSteps(10, 8), 2,'The method works through 10 steps as total and 8 much as patchs');
+});
+
+test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 2 much as patchs  ", function(){
+
+    equal(calculateRemainingSteps(10, 2), 0,'The method works through 10 steps as total and 2 much as patchs');
+});
+
+test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 3 much as patchs  ", function(){
+
+    equal(calculateRemainingSteps(10, 3), 1,'The method works through 10 steps as total and 3 much as patchs');
+});
+
+test("Testing if function 'calculateRemainingSteps' should pass with the second number being more", function(){
+
+    equal(calculateRemainingSteps(10, 11), 10,'The method works through 10 steps as total and 11 much as patchs');
+});
+
+
+test("Testing if function 'calculateRemainingSteps' should pass with a  negative number ", function(){
+
+    equal(calculateRemainingSteps(-5, 2), -1,'The method works through -5 steps as total and 2 much as patchs');
+});
+
+test("Testing if function 'calculateRemainingSteps' should pass with a two negative number ", function(){
+
+    equal(calculateRemainingSteps(-5, -2), -1,'The method works through -5 steps as total and 2 much as patchs');
+});
+
+
+test("Testing if function 'calculateRemainingSteps' should pass if 18649575 steps as total and 2 much as patchs  ", function(){
+
+    equal(calculateRemainingSteps(18649575, 2), 1,'The method works through 18649575 steps as total and 2 much as patchs');
 });
