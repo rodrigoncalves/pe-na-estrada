@@ -89,3 +89,35 @@ test("Testing if function 'calculateRemainingSteps' should pass if 18649575 step
 
     equal(calculateRemainingSteps(18649575, 2), 1,'The method works through 18649575 steps as total and 2 much as patchs');
 });
+
+test("Testing if function 'calculateStepsPerPatch' exists", function(){
+
+    ok(calculateStepsPerPatch,'The method exists');
+});
+
+test("Testing if function 'calculateStepsPerPatch' should pass with patch equals steps  ", function(){
+
+    equal(calculateStepsPerPatch(10, 10), 1,'The method method receives 10 steps and 10 patch and returns 1');
+});
+
+test("Testing if function 'calculateStepsPerPatch' should pass with 2 steps per patch", function(){
+
+    equal(calculateStepsPerPatch(10, 5), 2,'The method method receives 10 steps and 5 patch and returns 2');
+});
+
+test("Testing if function 'calculateStepsPerPatch' should pass with all steps in a patch", function(){
+
+    equal(calculateStepsPerPatch(10, 1), 10,'The method method receives 10 steps and 1 patch and returns 10');
+});
+
+test("Testing if function 'calculateStepsPerPatch' should pass with 3 steps per patch with 10 steps and 3 patchs", 
+	function(){
+
+    	equal(calculateStepsPerPatch(10, 3), 3,'The method method receives 10 steps and 3 patch and returns 3');
+});
+
+test("Testing if function 'calculateStepsPerPatch' should pass with 8 steps per patch with 25 steps and 3 patchs", 
+	function(){
+
+    	equal(calculateStepsPerPatch(25, 3), 8,'The method method receives 25 steps and 3 patch and returns 8');
+});
