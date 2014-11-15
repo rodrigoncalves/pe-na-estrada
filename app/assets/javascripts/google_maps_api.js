@@ -412,7 +412,9 @@ function countTheAccidentsByPatch(latitude, longitude){
       j = 0;
       while(j < latitude.length){
         if(latitude[j] < routePatchesCoordinates[i].startLatitude && latitude[j] > routePatchesCoordinates[i].endLatitude){
-          accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          if(longitude[j] < routePatchesCoordinates[i].startLongitude && longitude[j] > routePatchesCoordinates[i].endLongitude){
+            accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          }
         }
         j++;
       }
@@ -422,7 +424,9 @@ function countTheAccidentsByPatch(latitude, longitude){
       j=0;
       while(j < latitude.length){
         if(latitude[j] > routePatchesCoordinates[i].startLatitude && latitude[j] < routePatchesCoordinates[i].endLatitude){
-          accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          if(longitude[j] > routePatchesCoordinates[i].startLongitude && longitude[j] < routePatchesCoordinates[i].endLongitude){
+            accidentsInPatch[i] = accidentsInPatch[i] + 1;
+          }
         }
         j++;
       }
@@ -629,7 +633,7 @@ function markAccidents(latitudeCoordinate, longitudeCoordinate, latitude, longit
                   latitudeLimit = latitude[p] - latitudeCoordinate[s];
                   longitudeLimit = longitude[p] - longitudeCoordinate[s];
 
-                  if(latitudeLimit > -0.5 && latitudeLimit < 0.5 && longitudeLimit > -0.5 && longitudeLimit < 0.5){
+                  if(latitudeLimit > -0.02 && latitudeLimit < 0.02 && longitudeLimit > -0.02 && longitudeLimit < 0.02){
                        latitudesToMark[i] = latitude[p];
                        longitudesToMark[i] = longitude[p];
                        i++;
