@@ -1,6 +1,5 @@
-<script src="//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,visualization&language=pt-BR"></script>
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js'></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=pt-BR"></script>
 <script src="/assets/google_maps_api.js?body=1"></script>
 
 <div class="row">
@@ -65,22 +64,23 @@
 
 <br>
 <br>
+<div id="button">
 <% if @origin_informed_by_user.blank? == false%>
 <button id="sinalizeAccidents" class="btn btn-danger" data-container="body" 
-            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true" data-content="Será marcado no mapa os acidentes que aconteceram nas proximidades da sua rota.">
+            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true">
 Sinalizar acidentes
 </button>
 <button id="removeSinalizationAccidents" class="btn btn-danger" data-container="body" 
-            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true"
-            data-content = "Será desmarcado no mapa os acidentes que aconteceram nas proximidades da sua rota.">
+            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true">
 Desmarcar acidentes
 </button>
 <button id="sinalizeAccidentsInPatch" class="btn btn-danger" data-container="body" 
-            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true"
-            data-content = "Será exibido no mapa o trecho que possui mais acidentes na rota traçada.">
+            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true">
 Sinalizar trecho mais perigoso
 </button>
 <%end%>
+<br>
+</div>
 
 <div class="row">
   <div class="col-lg-8">
