@@ -1,64 +1,57 @@
 
-// Load the assert.js and sinalize_patch_constants.js scripts
+// Load the sinalize_patch_validation.js scripts
 (function() {
-  var assertScript = document.createElement('script');
-  assertScript.type = 'text/javascript';
-  assertScript.src = 'assert.js';
-  
-  var constantsScript = document.createElement('script');
-  constantsScript.type = 'text/javascript';
-  constantsScript.src = 'sinalize_patch_constants.js';
+  var validationScript = document.createElement('script');
+  validationScript.type = 'text/javascript';
+  validationScript.src = 'sinalize_patch_validation.js';
 
-  document.getElementsByTagName('head')[0].appendChild(assertScript);
-  document.getElementsByTagName('head')[0].appendChild(constantsScript);
+  document.getElementsByTagName('head')[0].appendChild(validationScript);
 })();
 
-// Initialize the patches array as an array of arrays
-function initializePatchesArray(patchesArray, quantityOfPatches){
-    // Each position in 'patches[]' array is an array that will contain the steps for this patch
-    var p = 0;
-    for(p = 0; p < quantityOfPatches; p++){
-        patchesArray[p] = new Array();
-    }
-}
-
+/**
+    Calculate the quantity of steps per patch and the remaining steps to add on the last patch
+    param totalOfSteps - Quantity of steps in the route
+    param quantityOfPatches - Quantity of patches to to fit the steps
+    return An object with the quantity of steps per patch and the remaining steps
+ */
 function calculateStepsPerPatch(totalOfSteps, quantityOfPatches){
+
+    quantityOfPatches = validateQuantityOfPatches(quantityOfPatches, totalOfSteps);
 
     var remainingSteps = calculateRemainingSteps(totalOfSteps, quantityOfPatches);
 
     var quantityOfStepsPerPatch = (totalOfSteps - remainingSteps) / quantityOfPatches;
 
-    return quantityOfStepsPerPatch;
+    var stepsPerPatch = {
+      quantityOfStepsPerPatch: quantityOfStepsPerPatch,
+      remainingSteps: remainingSteps
+    };
+
+    return stepsPerPatch;
 }
 
+/**
+    Calculate the remaining steps to fit on the last patch
+    param totalOfSteps - Quantity of steps in the route
+    param quantityOfPatches - Quantity of patches to to fit the steps
+    return The remaining steps
+ */
 function calculateRemainingSteps(totalOfSteps, quantityOfPatches){
-  
-  try{
-    assert(quantityOfPatches != 0, QUANTITY_OF_PATCHES_IS_ZERO);
-    assert(quantityOfPatches > 0), QUANTITY_OF_PATCHES_IS_NEGATIVE;
-  }
-  catch(thrownError){
 
-    switch(thrownError.message){
-           case QUANTITY_OF_PATCHES_IS_ZERO:
-                 quantityOfPatches = DEFAULT_QUANTITY_OF_PATCHES;
-                 break;
-           case QUANTITY_OF_PATCHES_IS_NEGATIVE:
-                 // Do the treatment for negative numbers here
-                 // Setted to DEFAULT_QUANTITY_OF_PATCHES as default
-                 quantityOfPatches = DEFAULT_QUANTITY_OF_PATCHES;
-                 break;
-           default:
-                 // Nothing to do 
-    }
-
-  }
+  quantityOfPatches = validateQuantityOfPatches(quantityOfPatches, totalOfSteps);
 
   var remainingSteps = totalOfSteps % quantityOfPatches;
 
   return remainingSteps;
 }
 
+/**
+    Add the remaining steps to the last patch
+    param patches - Array with the patches and it steps
+    param routeAllSteps - Array with all the steps of a route
+    param remainingSteps - Steps to fit on the last patch
+    return The array with the patches with the remaining steps on the last patch
+ */
 function fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps){
      
      var quantityOfPatches = patches.length;
@@ -77,7 +70,20 @@ function fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps){
      return patches;
 }
 
-/*
+/**
+    Initialize each position of an array as an array
+    param array - Array to be initialized
+    param sizeOfArray - Size of the array
+ */
+function initializeArrayPositionsAsAnArray(array, sizeOfArray){
+    // Each position in 'patches[]' array is an array that will contain the steps for this patch
+    var p = 0;
+    for(p = 0; p < sizeOfArray; p++){
+        array[p] = [];
+    }
+}
+
+/**
     Separate the steps from 'routeAllSteps' array equally in 'quantityOfPatches' patches.
     And then add the remaining steps to the last patch.
     param routeAllSteps - Array of google.maps.DirectionsStep objects that contains all steps of the route
@@ -87,13 +93,16 @@ function fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps){
 function distributeStepsOnPatches(routeAllSteps, quantityOfPatches){
 
      var totalOfSteps = routeAllSteps.length;
-     var quantityOfStepsPerPatch = calculateStepsPerPatch(totalOfSteps, quantityOfPatches);
-     
-     var patches = [quantityOfPatches];
-     initializePatchesArray(patches, quantityOfPatches);
 
-     // Will be added at the last patch
-     var remainingSteps = calculateRemainingSteps(totalOfSteps, quantityOfPatches);
+     quantityOfPatches = validateQuantityOfPatches(quantityOfPatches, totalOfSteps);
+
+     var stepsPerPatch = calculateStepsPerPatch(totalOfSteps, quantityOfPatches);
+     
+     var quantityOfStepsPerPatch = stepsPerPatch.quantityOfStepsPerPatch;
+     var remainingSteps = stepsPerPatch.remainingSteps;
+
+     var patches = [quantityOfPatches];
+     initializeArrayPositionsAsAnArray(patches, quantityOfPatches);
 
      var patchIndex = 0;
      var reachPatchMaxElements = 0;
@@ -120,10 +129,9 @@ function distributeStepsOnPatches(routeAllSteps, quantityOfPatches){
      return completedPatches;
 }
 
-/*
-    Slice the route in 'quantityOfPatches' patches.
+/**
+    Slice the route in patches.
     param routeToSlice - 'google.maps.DirectionsRoute' object that contains the route to slice
-    param quantityOfPatches - Quantity of patchs to slice the route
     return An array with the patches.
  */
 function sliceRoute(routeToSlice){
@@ -144,7 +152,7 @@ function sliceRoute(routeToSlice){
 }
 
 
-/*
+/**
     Calculate the distance covered by a patch
     param patch - Array that contains the steps of the patch
     return The distance covered by this patch in kilometers
@@ -167,13 +175,12 @@ function calculatePatchDistance(patch){
     return patchDistance;
 }
 
-/*
-    Get the start and ending coordinates of patchesArray.
+/**
+    Get the start and end coordinates of patchesArray.
     param patchesArray - Array with the patches
-    return An array that contains the start and ending coordinates from all patches in google.maps.LatLng object
+    return An array that contains the start and ending coordinates from all patches
  */
 function getCoordinatesOfPatch(patchesArray){
-
 
     var quantityOfPatches = patchesArray.length;
 
@@ -208,8 +215,11 @@ function getCoordinatesOfPatch(patchesArray){
     return patchesCoordinates;
 }
 
-
-
+/**
+    Count the accidents occurred in each patch
+    param latitude - Array with the latitudes of the accidents
+    param longitude - Array with the longitudes of the accidents
+ */
 function countTheAccidentsByPatch(latitude, longitude){
 
   var route = getCurrentRoute();
@@ -217,8 +227,6 @@ function countTheAccidentsByPatch(latitude, longitude){
   var routeSliced = sliceRoute(route);
 
   var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
-
-  var quantityOfPatches = routeSliced.length;
 
   var accidentsInPatch = [];
   var j = 0;
@@ -255,13 +263,16 @@ function countTheAccidentsByPatch(latitude, longitude){
 
   }
 
-  identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced);
-
+  identifyDangerousPatch(accidentsInPatch, routeSliced);
 }
 
 
-// Patch which has seen more accidents
-function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced){
+/**
+    Identify the patch which have more accidents
+    param accidentsInPatch - Array with the accidents in the patches
+    param routeSliced - Array with the patches of a route
+ */
+function identifyDangerousPatch(accidentsInPatch, routeSliced){
 
   // Auxiliary variable to see which patch has more accidents
   var moreAccidentsPatch = 0;
@@ -276,7 +287,7 @@ function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, route
   }
 
   var quantityOfSteps = routeSliced[positionMoreAccidentsPatch].length;
-  var coordinatesOfPatchMostDangerous = [];
+  var coordinatesOfMostDangerousPatch = [];
   var k = 0;
   var j = 0;
   var route = getCurrentRoute();
@@ -285,7 +296,7 @@ function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, route
   for (i = 0; i < quantityOfSteps; i++) {
     quantityCoordinatesByStep  = routeSliced[positionMoreAccidentsPatch][i].path.length;
     for(k = 0; k < quantityCoordinatesByStep; k++){
-      coordinatesOfPatchMostDangerous[j] = routeSliced[positionMoreAccidentsPatch][i].path[k];
+      coordinatesOfMostDangerousPatch[j] = routeSliced[positionMoreAccidentsPatch][i].path[k];
       j++;
     }
   }
@@ -293,19 +304,20 @@ function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, route
   $(document).ready(function(){
 
       $("#sinalizeAccidentsInPatch").click(function(){
-         sinalizeMostDangerousPatch(coordinatesOfPatchMostDangerous);    
+         sinalizeMostDangerousPatch(coordinatesOfMostDangerousPatch);    
       });
   });
-       
-       
 
 }
 
-
-function sinalizeMostDangerousPatch(route){
+/**
+    Sinalize the most dangerous patch in a route using heatmap
+    param coordinatesToSinalize - Array with the coordinates of the patch to sinalize
+ */
+function sinalizeMostDangerousPatch(coordinatesToSinalize){
 
       // Contains the data from the array
-      var pointArray = new google.maps.MVCArray(route);
+      var pointArray = new google.maps.MVCArray(coordinatesToSinalize);
 
       heatmap = new google.maps.visualization.HeatmapLayer({
 
