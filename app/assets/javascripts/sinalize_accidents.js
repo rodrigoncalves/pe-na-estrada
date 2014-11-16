@@ -179,11 +179,13 @@ function markAccidents(coordinates, latitude, longitude){
       $(document).ready(function(){
           $("#sinalizeAccidents").click(function(){
                 // Sweeps the arrays marking on the map the accident given by it coordinates
-                while(i >= 0){
+                var quantityOfPointsToMark = latitudesToMark.length;
+                while(quantityOfPointsToMark >= 0){
 
-                    markAccident(latitudesToMark[i], longitudesToMark[i]);
+                    markAccident(latitudesToMark[quantityOfPointsToMark],
+                                         longitudesToMark[quantityOfPointsToMark]);
 
-                    i = i - 1;
+                    quantityOfPointsToMark = quantityOfPointsToMark - 1;
                 }
           });
 
