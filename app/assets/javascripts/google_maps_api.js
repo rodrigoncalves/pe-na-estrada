@@ -163,8 +163,7 @@ function calculateRoute(){
                       var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
                       $("#distance").html(text);
                       directionsDisplay.setDirections(response);
-                      getHighwaysFromRoute(directionsDisplay.directions);
-
+                      getHighwaysFromRoute();
                       break;
 
                   case 'ZERO_RESULTS':
@@ -190,7 +189,6 @@ function calculateRoute(){
                       break;
 
                   default:
-                      directionsDisplay.setDirections(response);
                       initialize();
                       // break;
             }

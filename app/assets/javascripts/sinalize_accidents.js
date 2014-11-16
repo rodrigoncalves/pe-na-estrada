@@ -1,4 +1,10 @@
+/* global DirectionsDisplay */
+/* global countTheAccidentsByPatch */
+/* global map */
 
+/*
+  Get the current route from API Gmaps
+ */
 function getCurrentRoute(){
   // Get the first route created by Google maps
   var currentRoute = directionsDisplay.directions.routes[0];
@@ -9,14 +15,14 @@ function getCurrentRoute(){
   Get the highways in the route
   param result - Variable that contains the route
 */
-function getHighwaysFromRoute(result){
+function getHighwaysFromRoute(){
 
-  var myroute = result.routes[0];
+  var myroute = getCurrentRoute();
   var mylegs = myroute.legs[0];
   var length = mylegs.steps.length;
   var initialposition = 0;
   var endposition = 0;
-  var brnumber = [];
+  var highwaysInRoute = [];
   var j = 0; // Count for highways in the route
 
   var i = 0;
@@ -30,16 +36,16 @@ function getHighwaysFromRoute(result){
       var substring = instructions.substring(initialposition,endposition);
 
       if(substring.indexOf("0") === 3){
-        brnumber[j] = substring.substring(4,6);
+        highwaysInRoute[j] = substring.substring(4,6);
       }
       else{
-        brnumber[j] = substring.substring(3,6);
+        highwaysInRoute[j] = substring.substring(3,6);
       }
       j++;
 
     }
   }
-  getCoordinatesFromRoute(brnumber,myroute);
+  getCoordinatesFromRoute(highwaysInRoute,myroute);
 }
 
 /*
@@ -49,20 +55,12 @@ function getHighwaysFromRoute(result){
 */
 function checkCoordinate(coordinatesLimit, coordinate){
 
-      // Check the latitude
-      if(coordinate.lat() > coordinatesLimit.maiorLatitude){
-        coordinatesLimit.maiorLatitude = coordinate.lat();
-      }
-      else if(coordinate.lat() < coordinatesLimit.menorLatitude){
-        coordinatesLimit.menorLatitude = coordinate.lat();
-      }
 
-      // Check the longitude
-      if(coordinate.lng() > coordinatesLimit.maiorLongitude){
-        coordinatesLimit.maiorLongitude = coordinate.lng();
+      if(coordinate > coordinatesLimit.greaterLatitude){
+        coordinatesLimit.greaterLatitude = coordinate;
       }
-      else if(coordinate.lng() < coordinatesLimit.menorLongitude){
-        coordinatesLimit.menorLongitude = coordinate.lng();
+      else if(coordinate < coordinatesLimit.lowerLatitude){
+        coordinatesLimit.lowerLatitude = coordinate;
       }
 
       return coordinatesLimit;
@@ -71,32 +69,36 @@ function checkCoordinate(coordinatesLimit, coordinate){
 
 /*
   Get the coordinates in the route
-  param brnumber   - Array with the route highway's number
+  param highwaysInRoute   - Array with the route highway's number
   param coordinate - Variable with the route
 */
-function getCoordinatesFromRoute(brnumber,myroute){
+function getCoordinatesFromRoute(highwaysInRoute,myroute){
 
   var coordinates = [];
   var j = 0; // Count for highways in the route
-  var coordinatesLimit;
+  var latitudesLimit;
+  var longitudesLimit;
 
-  coordinatesLimit = {
-        maiorLatitude: 0,
-        menorLatitude: myroute.overview_path[0].lat(),
-        maiorLongitude: 0,
-        menorLongitude: myroute.overview_path[0].lng()
+  latitudesLimit = {
+      greaterLatitude: 0,
+      lowerLatitude: myroute.overview_path[0].lat()
+  };
+  longitudesLimit = {
+      maiorLongitude: 0,
+      menorLongitude: myroute.overview_path[0].lng()
   };
 
   for(j=0 ; j < myroute.overview_path.length; j++){
       coordinates[j] = myroute.overview_path[j];
-      coordinatesLimit = checkCoordinate(coordinatesLimit,coordinates[j]);
+      latitudesLimit = checkCoordinate(latitudesLimit,coordinates[j].lat());
+      longitudesLimit = checkCoordinate(longitudesLimit,coordinates[j].lng());
   }
 
-   getCoordinatesToMarkers(brnumber, coordinatesLimit, coordinates);
+   getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates);
 
 }
 
-function getCoordinatesToMarkers(brnumber, coordinatesLimit, coordinates){
+function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates){
 
   // Get the latitudes, longitudes and highways of accidents from database using the 'gon' gem
   var latitudeArray = gon.latitude;
@@ -113,9 +115,9 @@ function getCoordinatesToMarkers(brnumber, coordinatesLimit, coordinates){
   var longitude = [];
 
   var x = 0;
-  for(x = 0; x < brnumber.length; x++){
+  for(x = 0; x < highwaysInRoute.length; x++){
     for(i = 0; i < brArray.length; i++){
-      if (brArray[i] === brnumber[x]){
+      if (brArray[i] === highwaysInRoute[x]){
           position[j] = i;
           j++;
       }
@@ -127,8 +129,8 @@ function getCoordinatesToMarkers(brnumber, coordinatesLimit, coordinates){
     lat = parseFloat(latitudeArray[position[p]]);
     lng = parseFloat(longitudeArray[position[p]]);
 
-    if(lat <= coordinatesLimit.maiorLatitude && lat >= coordinatesLimit.menorLatitude){
-      if(lng <= coordinatesLimit.maiorLongitude && lng >= coordinatesLimit.menorLongitude){
+    if(lat <= latitudesLimit.greaterLatitude && lat >= latitudesLimit.lowerLatitude){
+      if(lng <= longitudesLimit.maiorLongitude && lng >= longitudesLimit.menorLongitude){
           latitude[i]  = lat;
           longitude[i] = lng;
           i++;
@@ -154,10 +156,12 @@ function markAccidents(coordinates, latitude, longitude){
                   var latitudeLimit = latitude[p] - coordinates[s].lat();
                   var longitudeLimit = longitude[p] - coordinates[s].lng();
 
-                  if(latitudeLimit > -0.02 && latitudeLimit < 0.02 && longitudeLimit > -0.02 && longitudeLimit < 0.02){
+                  if(latitudeLimit > -0.02 && latitudeLimit < 0.02){
+                    if(longitudeLimit > -0.02 && longitudeLimit < 0.02){
                        latitudesToMark[i] = latitude[p];
                        longitudesToMark[i] = longitude[p];
                        i++;
+                    }
                   }
             }
 
@@ -169,7 +173,7 @@ function markAccidents(coordinates, latitude, longitude){
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             removeAllMarkersFromMap();
             deleteMarkersOnMap();
-            getHighwaysFromRoute(directionsDisplay.directions);
+            getHighwaysFromRoute();
       });
 
       $(document).ready(function(){
@@ -219,10 +223,6 @@ function deleteMarkersOnMap(){
       markersOnMap.pop();
     }
   }
-  else{
-    // Nothing to do
-  }
-
 }
 
 /*
@@ -250,9 +250,6 @@ function removeAllMarkersFromMap(){
       removeMarkerFromMap(markerToBeRemoved);
     }
 
-  }
-  else{
-    // Nothing to do
   }
 }
 
