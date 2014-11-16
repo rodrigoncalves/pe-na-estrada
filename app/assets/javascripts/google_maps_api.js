@@ -7,7 +7,24 @@ google.maps.event.addDomListener(window, 'load', function(){
 
 });
 
-var map;
+
+// Receives all functions from sinalize_accidents file
+(function() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'sinalize_accidents.js';
+  
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+
+// Receives all functions from sinalize_patch file
+(function() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'sinalize_patch.js';
+  
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
 
 // Gives to the map the option to drag it and change the route
   var rendererOptions = {
@@ -29,11 +46,11 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
 // Compute the total distance from the origin to the destination
 function computeTotalDistance(){
 
-  $('#sinalizeAccidents').removeAttr('disabled');
-
   $(document).ready(function(){
-    $("#sinalizeAccidents").popover('show');
-    $("#sinalizeAccidents").popover('hide');
+    $('#sinalizeAccidents').removeAttr('disabled');
+    $('#removeSinalizationAccidents').removeAttr('disabled');
+    $('#sinalizeAccidentsInPatch').removeAttr('disabled'); 
+
   });
 
   var total = 0;
@@ -72,6 +89,9 @@ function setMapOptions(){
             // Removes the default features of the map
             disableDefaultUI: true,
 
+            // Setting map type
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+
             // Chooses which elements are wanted in the map
             panControl: false,
             zoomControl: true,
@@ -96,6 +116,12 @@ function setMapOptions(){
       return mapOptions;
 }
 
+// Contains the heatmap layer
+var heatmap;
+
+// Contains the map
+var map;
+
 function initialize(){
 
       var mapOptions = setMapOptions();
@@ -104,6 +130,7 @@ function initialize(){
       var mapDiv = document.getElementById("directions");
 
       map = new google.maps.Map(mapDiv, mapOptions);
+
 
       directionsDisplay.setMap(map);
       directionsDisplay.setPanel(directionsPanelDiv);
@@ -116,6 +143,7 @@ function initialize(){
       calculateRoute();
 }
 
+// Function used to calculate the route between the origin and destination using Google Maps services
 function calculateRoute(){
 
       var origin = $("#origin").val();
@@ -136,6 +164,7 @@ function calculateRoute(){
                       $("#distance").html(text);
                       directionsDisplay.setDirections(response);
                       getHighwaysFromRoute(directionsDisplay.directions);
+
                       break;
 
                   case 'ZERO_RESULTS':
@@ -170,20 +199,7 @@ function calculateRoute(){
 
 }
 
-// Receives all functions from sinalize_accidents file
-(function() {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'sinalize_accidents.js';
-  
-  document.getElementsByTagName('head')[0].appendChild(script);
-})();
 
-// Receives all functions from sinalize_patch file
-(function() {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'sinalize_patch.js';
-  
-  document.getElementsByTagName('head')[0].appendChild(script);
-})();
+
+
+

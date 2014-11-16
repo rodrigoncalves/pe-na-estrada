@@ -182,6 +182,11 @@ function markAccidents(coordinates, latitude, longitude){
                     i = i - 1;
                 }
           });
+
+           $("#removeSinalizationAccidents").click(function(){
+               removeAllMarkersFromMap();
+               deleteMarkersOnMap();
+            });
       });
 
 }

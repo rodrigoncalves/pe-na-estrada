@@ -18,7 +18,7 @@ function initializePatchesArray(patchesArray, quantityOfPatches){
     // Each position in 'patches[]' array is an array that will contain the steps for this patch
     var p = 0;
     for(p = 0; p < quantityOfPatches; p++){
-        patchesArray[p] = [];
+        patchesArray[p] = new Array();
     }
 }
 
@@ -34,7 +34,7 @@ function calculateStepsPerPatch(totalOfSteps, quantityOfPatches){
 function calculateRemainingSteps(totalOfSteps, quantityOfPatches){
   
   try{
-    assert(quantityOfPatches != 5, QUANTITY_OF_PATCHES_IS_ZERO);
+    assert(quantityOfPatches != 0, QUANTITY_OF_PATCHES_IS_ZERO);
     assert(quantityOfPatches > 0), QUANTITY_OF_PATCHES_IS_NEGATIVE;
   }
   catch(thrownError){
@@ -129,7 +129,7 @@ function distributeStepsOnPatches(routeAllSteps, quantityOfPatches){
 function sliceRoute(routeToSlice){
 
     // Set the quantity of patchs as you want
-    var quantityOfPatches = 5;
+    var quantityOfPatches = 10;
 
     // Array with the route legs
     var routeLegs = routeToSlice.legs[0];
@@ -142,6 +142,7 @@ function sliceRoute(routeToSlice){
 
      return patches;
 }
+
 
 /*
     Calculate the distance covered by a patch
@@ -207,6 +208,8 @@ function getCoordinatesOfPatch(patchesArray){
     return patchesCoordinates;
 }
 
+
+
 function countTheAccidentsByPatch(latitude, longitude){
 
   var route = getCurrentRoute();
@@ -259,27 +262,65 @@ function countTheAccidentsByPatch(latitude, longitude){
 
 // Patch which has seen more accidents
 function identifyDangerousPatch(accidentsInPatch, routePatchesCoordinates, routeSliced){
-  
-  // Variable auxiliar for view what patch have more accidents
+
+  // Auxiliary variable to see which patch has more accidents
   var moreAccidentsPatch = 0;
   var positionMoreAccidentsPatch = 0;
 
-  // scans the array looking for the portions more accidents
-  var i = 0;
-  for (i = 0; i < accidentsInPatch.length; i++) {
+  // Scans the array looking for the portions more accidents
+  for (var i = 0; i < accidentsInPatch.length; i++) {
     if (accidentsInPatch[i] > moreAccidentsPatch) {
       moreAccidentsPatch = accidentsInPatch[i];
-      positionMoreAccidentsPatch = i;
+            positionMoreAccidentsPatch = i;
     }
-    
   }
 
   var quantityOfSteps = routeSliced[positionMoreAccidentsPatch].length;
   var coordinatesOfPatchMostDangerous = [];
+  var k = 0;
+  var j = 0;
+  var route = getCurrentRoute();
+  var quantityCoordinatesByStep;
 
-  i = 0;
   for (i = 0; i < quantityOfSteps; i++) {
-    coordinatesOfPatchMostDangerous[i] = routeSliced[positionMoreAccidentsPatch][i].path;
+    quantityCoordinatesByStep  = routeSliced[positionMoreAccidentsPatch][i].path.length;
+    for(k = 0; k < quantityCoordinatesByStep; k++){
+      coordinatesOfPatchMostDangerous[j] = routeSliced[positionMoreAccidentsPatch][i].path[k];
+      j++;
+    }
   }
+  // Receves as parameter the latitude and longitude of the portions more accidents
+  $(document).ready(function(){
+
+      $("#sinalizeAccidentsInPatch").click(function(){
+         sinalizeMostDangerousPatch(coordinatesOfPatchMostDangerous);    
+      });
+  });
+       
+       
+
+}
+
+
+function sinalizeMostDangerousPatch(route){
+
+      // Contains the data from the array
+      var pointArray = new google.maps.MVCArray(route);
+
+      heatmap = new google.maps.visualization.HeatmapLayer({
+
+        // The data passed here will be appering in the heatmap layer
+        data: pointArray,
+
+        // Opacity of the map layer
+        opacity: 0.8,
+
+        // Radius of each heatmap pointArray
+        radius: 11
+
+      });
+
+      // Sets the heapmap layer on the map
+      heatmap.setMap(map);
 
 }
