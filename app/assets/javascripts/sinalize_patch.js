@@ -1,3 +1,5 @@
+/* global heatmap */
+/* global map */
 
 // Load the sinalize_patch_validation.js scripts
 (function() {

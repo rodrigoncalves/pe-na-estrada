@@ -7,23 +7,21 @@ google.maps.event.addDomListener(window, 'load', function(){
 
 });
 
-
-// Receives all functions from sinalize_accidents file
+// Load the sinalize_accidents.js and the sinalize_patch.js scripts
 (function() {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'sinalize_accidents.js';
   
-  document.getElementsByTagName('head')[0].appendChild(script);
-})();
+  // Receives all functions from sinalize_accidents file
+  var sinalizeAccidentScript = document.createElement('script');
+  sinalizeAccidentScript.type = 'text/javascript';
+  sinalizeAccidentScript.src = 'sinalize_accidents.js';
+  
+  // Receives all functions from sinalize_patch file
+  var sinalizePatchScript = document.createElement('script');
+  sinalizePatchScript.type = 'text/javascript';
+  sinalizePatchScript.src = 'sinalize_patch.js';
 
-// Receives all functions from sinalize_patch file
-(function() {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'sinalize_patch.js';
-  
-  document.getElementsByTagName('head')[0].appendChild(script);
+  document.getElementsByTagName('head')[0].appendChild(sinalizeAccidentScript);
+  document.getElementsByTagName('head')[0].appendChild(sinalizePatchScript);
 })();
 
 // Gives to the map the option to drag it and change the route
