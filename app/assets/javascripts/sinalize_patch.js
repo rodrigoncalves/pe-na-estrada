@@ -1,25 +1,60 @@
 
+// Load the assert.js and sinalize_patch_constants.js scripts
+(function() {
+  var assertScript = document.createElement('script');
+  assertScript.type = 'text/javascript';
+  assertScript.src = 'assert.js';
+  
+  var constantsScript = document.createElement('script');
+  constantsScript.type = 'text/javascript';
+  constantsScript.src = 'sinalize_patch_constants.js';
+
+  document.getElementsByTagName('head')[0].appendChild(assertScript);
+  document.getElementsByTagName('head')[0].appendChild(constantsScript);
+})();
+
 // Initialize the patches array as an array of arrays
-function initializePatchesArray(patchesArray, quantityOfPatchs){
+function initializePatchesArray(patchesArray, quantityOfPatches){
     // Each position in 'patches[]' array is an array that will contain the steps for this patch
     var p = 0;
-    for(p = 0; p < quantityOfPatchs; p++){
+    for(p = 0; p < quantityOfPatches; p++){
         patchesArray[p] = [];
     }
 }
 
-function calculateStepsPerPatch(totalOfSteps, quantityOfPatchs){
+function calculateStepsPerPatch(totalOfSteps, quantityOfPatches){
 
-    var remainingSteps = calculateRemainingSteps(totalOfSteps, quantityOfPatchs);
+    var remainingSteps = calculateRemainingSteps(totalOfSteps, quantityOfPatches);
 
-    var quantityOfStepsPerPatch = (totalOfSteps - remainingSteps) / quantityOfPatchs;
+    var quantityOfStepsPerPatch = (totalOfSteps - remainingSteps) / quantityOfPatches;
 
     return quantityOfStepsPerPatch;
 }
 
-function calculateRemainingSteps(totalOfSteps, quantityOfPatchs){
+function calculateRemainingSteps(totalOfSteps, quantityOfPatches){
+  
+  try{
+    assert(quantityOfPatches != 5, QUANTITY_OF_PATCHES_IS_ZERO);
+    assert(quantityOfPatches > 0), QUANTITY_OF_PATCHES_IS_NEGATIVE;
+  }
+  catch(thrownError){
 
-  var remainingSteps = totalOfSteps % quantityOfPatchs;
+    switch(thrownError.message){
+           case QUANTITY_OF_PATCHES_IS_ZERO:
+                 quantityOfPatches = DEFAULT_QUANTITY_OF_PATCHES;
+                 break;
+           case QUANTITY_OF_PATCHES_IS_NEGATIVE:
+                 // Do the treatment for negative numbers here
+                 // Setted to DEFAULT_QUANTITY_OF_PATCHES as default
+                 quantityOfPatches = DEFAULT_QUANTITY_OF_PATCHES;
+                 break;
+           default:
+                 // Nothing to do 
+    }
+
+  }
+
+  var remainingSteps = totalOfSteps % quantityOfPatches;
 
   return remainingSteps;
 }
