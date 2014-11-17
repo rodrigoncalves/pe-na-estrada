@@ -86,6 +86,19 @@ function initializeArrayPositionsAsAnArray(array, sizeOfArray){
 }
 
 /**
+    Initialize each position of an array as an array
+    param array - Array to be initialized
+    param sizeOfArray - Size of the array
+ */
+function initializeArrayPositionsAsAnArray(array, sizeOfArray){
+    // Each position in 'patches[]' array is an array that will contain the steps for this patch
+    var p = 0;
+    for(p = 0; p < sizeOfArray; p++){
+        array[p] = [];
+    }
+}
+
+/**
     Separate the steps from 'routeAllSteps' array equally in 'quantityOfPatches' patches.
     And then add the remaining steps to the last patch.
     param routeAllSteps - Array of google.maps.DirectionsStep objects that contains all steps of the route
@@ -228,7 +241,6 @@ function countTheAccidentsByPatch(latitude, longitude){
   var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
 
   var accidentsInPatch = [];
-  var status = false;
   var j = 0;
   var i = 0;
 
@@ -244,7 +256,7 @@ function countTheAccidentsByPatch(latitude, longitude){
 
       var latitudeStartLimit = routePatchesCoordinates[i].startLatitude;
       var latitudeEndLimit = routePatchesCoordinates[i].endLatitude;
-      var longitudeStartLimit = routePatchesCoordinates[i].startLongitude
+      var longitudeStartLimit = routePatchesCoordinates[i].startLongitude;
       var longitudeEndLimit = routePatchesCoordinates[i].endLongitude;
 
       var differenceLatitudeLimit =  latitudeStartLimit - latitudeEndLimit;
