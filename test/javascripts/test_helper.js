@@ -30,6 +30,7 @@
 
 module('google_maps_api');
 
+
 // Silly test for testing
 test("Truth is always true", function() {
 
@@ -41,29 +42,31 @@ test("Testing if function 'calculateRouteTotalDistance' exists", function(){
     ok(calculateRouteTotalDistance, 'This function exists');
 });
 
-/*
-test("Testing if function 'calculateRouteTotalDistance' should not pass", function(){
-
-    equal(calculateRouteTotalDistance(2), 2,'The method dont right');
-});*/
-
-
 test("Testing if function 'calculateRemainingSteps' exists", function(){
 
     ok(calculateRemainingSteps, 'This function exists');
 });
 
-test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 8 much as patchs  ", function(){
+test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 8 much as patchs  ", 
+	function(){
 
     equal(calculateRemainingSteps(10, 8), 2,'The method works through 10 steps as total and 8 much as patchs');
 });
 
-test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 2 much as patchs  ", function(){
+test("Testing if function 'calculateRemainingSteps' should not pass if 10 steps as total and 8 much as patchs  ", 
+	function(){
+
+    notEqual(calculateRemainingSteps(10, 8), 1,'The method works through 10 steps as total and 8 much as patchs');
+});
+
+test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 2 much as patchs  ", 
+	function(){
 
     equal(calculateRemainingSteps(10, 2), 0,'The method works through 10 steps as total and 2 much as patchs');
 });
 
-test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 3 much as patchs  ", function(){
+test("Testing if function 'calculateRemainingSteps' should pass if 10 steps as total and 3 much as patchs  ", 
+	function(){
 
     equal(calculateRemainingSteps(10, 3), 1,'The method works through 10 steps as total and 3 much as patchs');
 });
@@ -79,15 +82,32 @@ test("Testing if function 'calculateRemainingSteps' should pass with a  negative
     equal(calculateRemainingSteps(-5, 2), -1,'The method works through -5 steps as total and 2 much as patchs');
 });
 
+
+test("Testing if function 'calculateRemainingSteps' should not pass with a  negative number and retunr positive", 
+	function(){
+
+    notEqual(calculateRemainingSteps(-5, 2), 1,'The method works through -5 steps as total and 2 much as patchs');
+});
+
 test("Testing if function 'calculateRemainingSteps' should pass with a two negative number ", function(){
 
     equal(calculateRemainingSteps(-5, -2), -1,'The method works through -5 steps as total and 2 much as patchs');
 });
 
 
-test("Testing if function 'calculateRemainingSteps' should pass if 18649575 steps as total and 2 much as patchs  ", function(){
+test("Testing if function 'calculateRemainingSteps' should pass if 18649575 steps as total and 2 much as patchs  ", 
+	function(){
 
-    equal(calculateRemainingSteps(18649575, 2), 1,'The method works through 18649575 steps as total and 2 much as patchs');
+    equal(calculateRemainingSteps(18649575, 2), 1,'The method works through 18649575 steps as total and 2 much as 
+    	patchs');
+});
+
+
+test("Testing if function 'calculateRemainingSteps' should not pass if 18649575 steps as total and 2 much as patchs  ", 
+	function(){
+
+    notEqual(calculateRemainingSteps(18649575, 2), 1243125,'The method not works through 18649575 steps 
+    	as total and 2 much as patchs');
 });
 
 test("Testing if function 'calculateStepsPerPatch' exists", function(){
@@ -97,27 +117,188 @@ test("Testing if function 'calculateStepsPerPatch' exists", function(){
 
 test("Testing if function 'calculateStepsPerPatch' should pass with patch equals steps  ", function(){
 
-    equal(calculateStepsPerPatch(10, 10), 1,'The method method receives 10 steps and 10 patch and returns 1');
+    equal(calculateStepsPerPatch(10, 10), 1,'The method receives 10 steps and 10 patch and returns 1');
 });
 
 test("Testing if function 'calculateStepsPerPatch' should pass with 2 steps per patch", function(){
 
-    equal(calculateStepsPerPatch(10, 5), 2,'The method method receives 10 steps and 5 patch and returns 2');
+    equal(calculateStepsPerPatch(10, 5), 2,'The method receives 10 steps and 5 patch and returns 2');
+});
+
+
+test("Testing if function 'calculateStepsPerPatch' should not pass with 2 steps per patch", function(){
+
+    notEqual(calculateStepsPerPatch(10, 5), 10,'The method not receives 10 steps and 5 patch and returns 2');
 });
 
 test("Testing if function 'calculateStepsPerPatch' should pass with all steps in a patch", function(){
 
-    equal(calculateStepsPerPatch(10, 1), 10,'The method method receives 10 steps and 1 patch and returns 10');
+    equal(calculateStepsPerPatch(10, 1), 10,'The method receives 10 steps and 1 patch and returns 10');
 });
 
 test("Testing if function 'calculateStepsPerPatch' should pass with 3 steps per patch with 10 steps and 3 patchs", 
 	function(){
 
-    	equal(calculateStepsPerPatch(10, 3), 3,'The method method receives 10 steps and 3 patch and returns 3');
+    	equal(calculateStepsPerPatch(10, 3), 3,'The method receives 10 steps and 3 patch and returns 3');
 });
 
 test("Testing if function 'calculateStepsPerPatch' should pass with 8 steps per patch with 25 steps and 3 patchs", 
 	function(){
 
-    	equal(calculateStepsPerPatch(25, 3), 8,'The method method receives 25 steps and 3 patch and returns 8');
+    	equal(calculateStepsPerPatch(25, 3), 8,'The method receives 25 steps and 3 patch and returns 8');
+});
+
+test("Testing if function 'calculateRoute' exists", function(){
+
+    ok(calculateRoute,'The method exists');
+});
+
+
+test("Testing if function 'computeTotalDistance' exists", function(){
+
+    ok(computeTotalDistance,'The method exists');
+});
+
+
+test("Testing if function 'calculateRouteTotalDistance' exists", function(){
+
+    ok(calculateRouteTotalDistance,'The method exists');
+});
+
+
+test("Testing if function 'setMapOptions' exists", function(){
+
+    ok(setMapOptions,'The method exists');
+});
+
+
+test("Testing if function 'initialize' exists", function(){
+
+    ok(initialize,'The method exists');
+});
+
+
+test("Testing if function 'setCurrentRoute' exists", function(){
+
+    ok(setCurrentRoute,'The method exists');
+});
+
+
+test("Testing if function 'initializePatchesArray' exists", function(){
+
+    ok(initializePatchesArray,'The method exists');
+});
+
+
+test("Testing if function 'calculateRoute' exists", function(){
+
+    ok(sliceRoute,'The method exists');
+});
+
+
+test("Testing if function 'calculatePatchDistance' exists", function(){
+
+    ok(calculatePatchDistance,'The method exists');
+});
+
+
+test("Testing if function 'getCoordinatesOfPatch' exists", function(){
+
+    ok(getCoordinatesOfPatch,'The method exists');
+});
+
+test("Testing if function 'countTheAccidentsByPatch' exists", function(){
+
+    ok(countTheAccidentsByPatch,'The method exists');
+});
+
+
+test("Testing if function 'identifyDangerousPatch' exists", function(){
+
+    ok(identifyDangerousPatch,'The method exists');
+});
+
+
+test("Testing if function 'sinalizeMostDangerousPatch' exists", function(){
+
+    ok(sinalizeMostDangerousPatch,'The method exists');
+});
+
+test("Testing if function 'getInfoAboutRoute' exists", function(){
+
+    ok(getInfoAboutRoute,'The method exists');
+});
+
+
+test("Testing if function 'getCoordinatesToMarkers' exists", function(){
+
+    ok(getCoordinatesToMarkers,'The method exists');
+});
+
+
+test("Testing if function 'countTheAccidentsByPatch' exists", function(){
+
+    ok(countTheAccidentsByPatch,'The method exists');
+});
+
+test("Testing if function 'identifyDangerousPatch' exists", function(){
+
+    ok(identifyDangerousPatch,'The method exists');
+});
+
+
+test("Testing if function 'sinalizeMostDangerousPatch' exists", function(){
+
+    ok(sinalizeMostDangerousPatch,'The method exists');
+});
+
+
+test("Testing if function 'getInfoAboutRoute' exists", function(){
+
+    ok(getInfoAboutRoute,'The method exists');
+});
+
+
+test("Testing if function 'getCoordinatesToMarkers' exists", function(){
+
+    ok(getCoordinatesToMarkers,'The method exists');
+});
+
+
+test("Testing if function 'markAccidents' exists", function(){
+
+    ok(markAccidents,'The method exists');
+});
+
+
+test("Testing if function 'setUpMarkersArray' exists", function(){
+
+    ok(setUpMarkersArray,'The method exists');
+});
+
+
+test("Testing if function 'saveMarkerOnMap' exists", function(){
+
+    ok(saveMarkerOnMap,'The method exists');
+});
+
+
+test("Testing if function 'deleteMarkersOnMap' exists", function(){
+
+    ok(deleteMarkersOnMap,'The method exists');
+});
+
+test("Testing if function 'removeMarkerFromMap' exists", function(){
+
+    ok(removeMarkerFromMap,'The method exists');
+});
+
+test("Testing if function 'removeAllMarkersFromMap' exists", function(){
+
+    ok(removeAllMarkersFromMap,'The method exists');
+});
+
+test("Testing if function 'markAccident' exists", function(){
+
+    ok(markAccident,'The method exists');
 });
