@@ -66,16 +66,13 @@
 <br>
 <div id="button">
 <% if @origin_informed_by_user.blank? == false%>
-<button id="sinalizeAccidents" class="btn btn-danger" data-container="body" 
-            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true">
+<button id="sinalizeAccidents" class="btn btn-danger">
 Sinalizar acidentes
 </button>
-<button id="removeSinalizationAccidents" class="btn btn-danger" data-container="body" 
-            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true">
+<button id="removeSinalizationAccidents" class="btn btn-danger">
 Desmarcar acidentes
 </button>
-<button id="sinalizeAccidentsInPatch" class="btn btn-danger" data-container="body" 
-            data-toggle = "popover" data-placement="right" data-trigger="hover" disabled="true">
+<button id="sinalizeAccidentsInPatch" class="btn btn-danger">
 Sinalizar trecho mais perigoso
 </button>
 <%end%>

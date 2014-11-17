@@ -1,14 +1,14 @@
 /* global heatmap */
 /* global map */
 
-// Load the sinalize_patch_validation.js scripts
-(function() {
-  var validationScript = document.createElement('script');
-  validationScript.type = 'text/javascript';
-  validationScript.src = 'sinalize_patch_validation.js';
+// // Load the sinalize_patch_validation.js scripts
+// (function() {
+//   var validationScript = document.createElement('script');
+//   validationScript.type = 'text/javascript';
+//   validationScript.src = 'sinalize_patch_validation.js';
 
-  document.getElementsByTagName('head')[0].appendChild(validationScript);
-})();
+//   document.getElementsByTagName('head')[0].appendChild(validationScript);
+// })();
 
 /**
     Calculate the quantity of steps per patch and the remaining steps to add on the last patch
@@ -56,20 +56,20 @@ function calculateRemainingSteps(totalOfSteps, quantityOfPatches){
  */
 function fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps){
      
-     var quantityOfPatches = patches.length;
-     var totalOfSteps = routeAllSteps.length;
+ var quantityOfPatches = patches.length;
+ var totalOfSteps = routeAllSteps.length;
 
-     // Last patch position in 'patches[]' array
-     var lastPatch = quantityOfPatches - 1;
+ // Last patch position in 'patches[]' array
+ var lastPatch = quantityOfPatches - 1;
 
-     // Adding the remaining steps to the last patch
-     var t = 0;
-     for(t = 0; t < remainingSteps; t++){
-         var routeStepsIndex = totalOfSteps - (remainingSteps - t);
-         patches[lastPatch].push(routeAllSteps[routeStepsIndex]);
-     }
+ // Adding the remaining steps to the last patch
+ var t = 0;
+ for(t = 0; t < remainingSteps; t++){
+     var routeStepsIndex = totalOfSteps - (remainingSteps - t);
+     patches[lastPatch].push(routeAllSteps[routeStepsIndex]);
+ }
 
-     return patches;
+ return patches;
 }
 
 /**
@@ -78,11 +78,11 @@ function fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps){
     param sizeOfArray - Size of the array
  */
 function initializeArrayPositionsAsAnArray(array, sizeOfArray){
-    // Each position in 'patches[]' array is an array that will contain the steps for this patch
-    var p = 0;
-    for(p = 0; p < sizeOfArray; p++){
-        array[p] = [];
-    }
+  // Each position in 'patches[]' array is an array that will contain the steps for this patch
+  var p = 0;
+  for(p = 0; p < sizeOfArray; p++){
+      array[p] = [];
+  }
 }
 
 /**
@@ -94,41 +94,38 @@ function initializeArrayPositionsAsAnArray(array, sizeOfArray){
  */
 function distributeStepsOnPatches(routeAllSteps, quantityOfPatches){
 
-     var totalOfSteps = routeAllSteps.length;
+   var totalOfSteps = routeAllSteps.length;
 
-     quantityOfPatches = validateQuantityOfPatches(quantityOfPatches, totalOfSteps);
+   quantityOfPatches = validateQuantityOfPatches(quantityOfPatches, totalOfSteps);
 
-     var stepsPerPatch = calculateStepsPerPatch(totalOfSteps, quantityOfPatches);
-     
-     var quantityOfStepsPerPatch = stepsPerPatch.quantityOfStepsPerPatch;
-     var remainingSteps = stepsPerPatch.remainingSteps;
+   var stepsPerPatch = calculateStepsPerPatch(totalOfSteps, quantityOfPatches);
+   
+   var quantityOfStepsPerPatch = stepsPerPatch.quantityOfStepsPerPatch;
+   var remainingSteps = stepsPerPatch.remainingSteps;
 
-     var patches = [quantityOfPatches];
-     initializeArrayPositionsAsAnArray(patches, quantityOfPatches);
+   var patches = [quantityOfPatches];
+   initializeArrayPositionsAsAnArray(patches, quantityOfPatches);
 
-     var patchIndex = 0;
-     var reachPatchMaxElements = 0;
-     var quantityOfStepsToFitOnPatches = totalOfSteps - remainingSteps;
+   var patchIndex = 0;
+   var reachPatchMaxElements = 0;
+   var quantityOfStepsToFitOnPatches = totalOfSteps - remainingSteps;
 
-     var i = 0;
-     for(i = 0; i < quantityOfStepsToFitOnPatches; i++){
+   var i = 0;
+   for(i = 0; i < quantityOfStepsToFitOnPatches; i++){
 
-           var stepToPush = routeAllSteps[i];
-           patches[patchIndex].push(stepToPush);
-           reachPatchMaxElements++;
+     var stepToPush = routeAllSteps[i];
+     patches[patchIndex].push(stepToPush);
+     reachPatchMaxElements++;
 
-           if(reachPatchMaxElements === quantityOfStepsPerPatch){
-               patchIndex++;
-               reachPatchMaxElements = 0;
-           }
-           else{
-               // Nothing to do
-           }
+     if(reachPatchMaxElements === quantityOfStepsPerPatch){
+         patchIndex++;
+         reachPatchMaxElements = 0;
      }
+   }
 
-     var completedPatches = fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps);
+   var completedPatches = fitRemainingStepsOnLastPatch(patches, routeAllSteps, remainingSteps);
 
-     return completedPatches;
+   return completedPatches;
 }
 
 /**
@@ -139,7 +136,7 @@ function distributeStepsOnPatches(routeAllSteps, quantityOfPatches){
 function sliceRoute(routeToSlice){
 
     // Set the quantity of patchs as you want
-    var quantityOfPatches = 10;
+    var quantityOfPatches = 0;
 
     // Array with the route legs
     var routeLegs = routeToSlice.legs[0];
@@ -150,7 +147,7 @@ function sliceRoute(routeToSlice){
     // Separate the steps on patches
     var patches = distributeStepsOnPatches(routeAllSteps, quantityOfPatches);
 
-     return patches;
+    return patches;
 }
 
 
@@ -198,20 +195,20 @@ function getCoordinatesOfPatch(patchesArray){
     i = 0;
     for(i = 0; i < quantityOfPatches; i++){
 
-          var firstStepOnPatchIndex = 0;
-          var lastStepOnPatchIndex = patchesSize[i] - 1;
+      var firstStepOnPatchIndex = 0;
+      var lastStepOnPatchIndex = patchesSize[i] - 1;
 
-          var coordinates = {
+      var coordinates = {
 
-              startLatitude: patchesArray[i][firstStepOnPatchIndex].start_location.lat(),
-              startLongitude: patchesArray[i][firstStepOnPatchIndex].start_location.lng(),
-              endLatitude:  patchesArray[i][lastStepOnPatchIndex].end_location.lat(),
-              endLongitude: patchesArray[i][lastStepOnPatchIndex].end_location.lng(),
-              // Distance covered by this patch
-              distance: calculatePatchDistance(patchesArray[i])
-          };
+          startLatitude: patchesArray[i][firstStepOnPatchIndex].start_location.lat(),
+          startLongitude: patchesArray[i][firstStepOnPatchIndex].start_location.lng(),
+          endLatitude:  patchesArray[i][lastStepOnPatchIndex].end_location.lat(),
+          endLongitude: patchesArray[i][lastStepOnPatchIndex].end_location.lng(),
+          // Distance covered by this patch
+          distance: calculatePatchDistance(patchesArray[i])
+      };
 
-          patchesCoordinates[i] = coordinates;
+      patchesCoordinates[i] = coordinates;
     }
 
     return patchesCoordinates;
@@ -231,9 +228,10 @@ function countTheAccidentsByPatch(latitude, longitude){
   var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
 
   var accidentsInPatch = [];
+  var status = false;
   var j = 0;
-
   var i = 0;
+
   for(i = 0; i < routePatchesCoordinates.length; i++){
     accidentsInPatch[i] = 0;
   }
@@ -243,22 +241,19 @@ function countTheAccidentsByPatch(latitude, longitude){
 
     j = 0;
     while(j < latitude.length){
-      if(routePatchesCoordinates[i].startLatitude > routePatchesCoordinates[i].endLatitude){
-        if(latitude[j] < routePatchesCoordinates[i].startLatitude && latitude[j] > routePatchesCoordinates[i].endLatitude){
-          if(longitude[j] < routePatchesCoordinates[i].startLongitude && longitude[j] > routePatchesCoordinates[i].endLongitude){
-            accidentsInPatch[i] = accidentsInPatch[i] + 1;
-          }
+
+      var latitudeStartLimit = routePatchesCoordinates[i].startLatitude;
+      var latitudeEndLimit = routePatchesCoordinates[i].endLatitude;
+      var longitudeStartLimit = routePatchesCoordinates[i].startLongitude
+      var longitudeEndLimit = routePatchesCoordinates[i].endLongitude;
+
+      var differenceLatitudeLimit =  latitudeStartLimit - latitudeEndLimit;
+      var differenceLongitudeLimit =  longitudeStartLimit - longitudeEndLimit;
+
+      if((latitudeStartLimit - latitude[j]) <= differenceLatitudeLimit){
+        if((longitudeStartLimit - longitude[j]) <= differenceLongitudeLimit){
+          accidentsInPatch[i] = accidentsInPatch[i] + 1;
         }
-      }
-      else if(routePatchesCoordinates[i].startLatitude < routePatchesCoordinates[i].endLatitude){
-        if(latitude[j] > routePatchesCoordinates[i].startLatitude && latitude[j] < routePatchesCoordinates[i].endLatitude){
-          if(longitude[j] > routePatchesCoordinates[i].startLongitude && longitude[j] < routePatchesCoordinates[i].endLongitude){
-            accidentsInPatch[i] = accidentsInPatch[i] + 1;
-          }
-        }
-      }
-      else{
-        // Nothing to do
       }
       j++;
     }
@@ -267,7 +262,6 @@ function countTheAccidentsByPatch(latitude, longitude){
 
   identifyDangerousPatch(accidentsInPatch, routeSliced);
 }
-
 
 /**
     Identify the patch which have more accidents
@@ -290,10 +284,9 @@ function identifyDangerousPatch(accidentsInPatch, routeSliced){
 
   var quantityOfSteps = routeSliced[positionMoreAccidentsPatch].length;
   var coordinatesOfMostDangerousPatch = [];
+  var quantityCoordinatesByStep;
   var k = 0;
   var j = 0;
-  var route = getCurrentRoute();
-  var quantityCoordinatesByStep;
 
   for (i = 0; i < quantityOfSteps; i++) {
     quantityCoordinatesByStep  = routeSliced[positionMoreAccidentsPatch][i].path.length;

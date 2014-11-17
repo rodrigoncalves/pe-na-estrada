@@ -1,11 +1,10 @@
+// (function() {
+//   var assertScript = document.createElement('script');
+//   assertScript.type = 'text/javascript';
+//   assertScript.src = 'assert.js';
 
-(function() {
-  var assertScript = document.createElement('script');
-  assertScript.type = 'text/javascript';
-  assertScript.src = 'assert.js';
-
-  document.getElementsByTagName('head')[0].appendChild(assertScript);
-})();
+//   document.getElementsByTagName('head')[0].appendChild(assertScript);
+// })();
 
 const DEFAULT_QUANTITY_OF_PATCHES = 10;
 
