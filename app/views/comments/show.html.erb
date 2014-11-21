@@ -1,0 +1,11 @@
+<% if @comments.blank?  == false %>
+	<% @comments.each do |comment| %>
+  		<%= comment.title %>
+  		<%= comment.text %>
+	<%end%>
+<%else%>
+
+	<h2> Essa rodovia não possui nenhum comentário </h2>
+
+<%end%>
+

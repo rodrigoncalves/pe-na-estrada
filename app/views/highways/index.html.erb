@@ -46,7 +46,7 @@
           </h1>
          </div>
 
-        <table class="table table-hover">
+        <table class="table table-hover" align="right">
           <tr>
             <td style="text-align: center;"><b><%= "BR"%></b></td>
             <td></td>
@@ -54,6 +54,10 @@
             <td></td>
             <td style="text-align: center;"><b><%= "Posição no ranking de acidentes por quilômetro"%></b></td>
             <td></td>
+            <td style="text-align: center;"><b><%= "Comentários"%>
+            </b></td>
+            <td></td>
+
           </tr>
 
           <% @highway.each do |highway| %>
@@ -76,6 +80,14 @@
                <td style="text-align: center;">
                 <%= "#{highway.rankingPosition}º" %>
               </td>
+              <td style="text-align: left;">
+                <% @id_highway = "#{highway.id}" %>
+                <button type="button" class="btn btn-sucess" >
+                <%= link_to "..", comments_path(@highway_commented) %>
+                <!--<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>-->
+                </button>
+              </td>
+              </div>
             </tr>
           <% end %>
 
