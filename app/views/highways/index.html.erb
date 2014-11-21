@@ -81,11 +81,8 @@
                 <%= "#{highway.rankingPosition}º" %>
               </td>
               <td style="text-align: left;">
-                <% @id_highway = "#{highway.id}" %>
-                <button type="button" class="btn btn-sucess" >
-                <%= link_to "..", comments_path(@highway_commented) %>
-                <!--<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>-->
-                </button>
+                <td style="text-align: center;" onclick="location.href = '<%=comment_path(1)%>';" style="cursor: hand;">
+               <i class="fa fa-comments-o"></i>
               </td>
               </div>
             </tr>
