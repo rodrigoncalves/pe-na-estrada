@@ -1,8 +1,8 @@
 <% if @comments.blank?  == false %>
 	<% @comments.each do |comment| %>
   			<div class="panel panel-success">
-        		<div class="panel-heading">
-        			<%= comment.title %></div>
+        		<div class="panel-heading" style="color:#fff;">
+        			<b><%= comment.title %></b></div>
   				<div class="panel-body">
     				<%= comment.text %>
   				</div>
