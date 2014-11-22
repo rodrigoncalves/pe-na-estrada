@@ -36,7 +36,6 @@
   </div>
         
   <% if @highway.blank? == false %>
-
     <div class="col-lg-6" align="center">
       <div id="search_for_highway_result" class="panel panel-success" style="width: 500px;">
 
@@ -54,10 +53,8 @@
             <td></td>
             <td style="text-align: center;"><b><%= "Posição no ranking de acidentes por quilômetro"%></b></td>
             <td></td>
-            <td style="text-align: center;"><b><%= "Comentários"%>
-            </b></td>
+            <td style="text-align: center;"><b><%= "Comentários"%></b></td>
             <td></td>
-
           </tr>
 
           <% @highway.each do |highway| %>
@@ -80,12 +77,14 @@
                <td style="text-align: center;">
                 <%= "#{highway.rankingPosition}º" %>
               </td>
-              <td style="text-align: left;">
-                <td style="text-align: center;" onclick="location.href = '<%=comment_path(1)%>';" style="cursor: hand;">
-               <i class="fa fa-comments-o"></i>
+              <td></td>
+               <td style="text-align: center;" onclick="location.href='<%=highway_path(highway)%>'" style="cursor:pointer;">
+                <i class="fa fa-comments-o"></i>
               </td>
+              <td></td>
               </div>
-            </tr>
+            </tr>       
+
           <% end %>
 
         </table>
