@@ -8,12 +8,12 @@ google.maps.event.addDomListener(window, 'load', function(){
 });
 
 // (function() {
-  
+
 //   // Receives all functions from sinalize_accidents file
 //   var sinalizeAccidentScript = document.createElement('script');
 //   sinalizeAccidentScript.type = 'text/javascript';
 //   sinalizeAccidentScript.src = 'sinalize_accidents.js';
-  
+
 //   // Receives all functions from sinalize_patch file
 //   var sinalizePatchScript = document.createElement('script');
 //   sinalizePatchScript.type = 'text/javascript';
@@ -40,6 +40,14 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
   initialize();
 });
 
+function getChoosenRoute(){
+  var choosenRoute = directionsDisplay.getRouteIndex();
+
+  // alert(choosenRoute);
+
+  return choosenRoute;
+}
+
 // Compute the total distance from the origin to the destination
 function computeTotalDistance(){
 
@@ -47,7 +55,6 @@ function computeTotalDistance(){
   var myRoute = getCurrentRoute();
 
   total = calculateRouteTotalDistance(myRoute);
-
 
   total = total / 1000;
   $("#total").html(total + " km");
@@ -128,6 +135,7 @@ function initialize(){
       // When the directions change, calculate the new distance
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             computeTotalDistance();
+
       });
 
       calculateRoute();
@@ -141,7 +149,10 @@ function calculateRoute(){
       var request = {
           origin:      origin,
           destination: destination,
-          travelMode:  google.maps.TravelMode.DRIVING
+          travelMode:  google.maps.TravelMode.DRIVING,
+
+          // Set the option below as true to obtain alternative routes
+          provideRouteAlternatives: true
       };
 
       directionsService.route(request, function(response, status){
