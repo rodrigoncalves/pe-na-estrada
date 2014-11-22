@@ -182,4 +182,8 @@ class HighwaysController < ApplicationController
 
   end
 
+  def show
+    @highway = Highway.find(params[:id])
+  end
+
 end
