@@ -132,11 +132,10 @@ class HighwaysController < ApplicationController
     end
   end
 
-  def show
+  def ranking_1
     @highways = Highway.all
     find_highway_to_accident
   end
-
 
   def calculate_accidentsRatePercent accidents_number, total_accidents
     if accidents_number == 0
@@ -154,6 +153,15 @@ class HighwaysController < ApplicationController
     @highway2 = Highway.all_highways_by_accidentsRatePercent
   end
 
+
+  def ranking_2
+    @highways2 = Highway.all
+    #count the accidents
+    @accidents2 = Accident.total_accidents
+    #order the accidents
+
+    find_highway_to_accident_percent
+  end
   def find_highway_to_accident_percent
     br_accident = nil
     count_accident = nil
@@ -172,16 +180,6 @@ class HighwaysController < ApplicationController
       end
     end
 
-  end
-
-
-  def new
-    @highways2 = Highway.all
-    #count the accidents
-    @accidents2 = Accident.total_accidents
-    #order the accidents
-
-    find_highway_to_accident_percent
   end
 
 end
