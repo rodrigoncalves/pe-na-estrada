@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  resources :highways
+  resources :highways do
+    resources :comments
+  end
   resources :routes
 
   resources :accidents
@@ -10,7 +12,6 @@ Rails.application.routes.draw do
   resources :home
   resources :region
   resources :ranking
-  resources :comments
   
   resources :highways do
     collection { post :import}

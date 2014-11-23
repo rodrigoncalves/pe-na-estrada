@@ -184,6 +184,8 @@ class HighwaysController < ApplicationController
 
   def show
     @highway = Highway.find(params[:id])
+    @comment = Comment.new
+    @comments = Comment.all
   end
 
 end
