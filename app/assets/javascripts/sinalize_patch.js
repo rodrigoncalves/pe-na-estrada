@@ -323,6 +323,8 @@ function identifyDangerousPatch(accidentsInPatch, routeSliced){
  */
 function sinalizeMostDangerousPatch(coordinatesToSinalize){
 
+      unsinalizeMostDangerousPatch();
+      
       // Contains the data from the array
       var pointArray = new google.maps.MVCArray(coordinatesToSinalize);
 
@@ -342,4 +344,11 @@ function sinalizeMostDangerousPatch(coordinatesToSinalize){
       // Sets the heapmap layer on the map
       heatmap.setMap(map);
 
+}
+
+function unsinalizeMostDangerousPatch(){
+  var thereIsHeatmap = heatmap != null && heatmap != undefined;
+  if(thereIsHeatmap){
+    heatmap.setMap(null);                                                                                                       
+  }
 }
