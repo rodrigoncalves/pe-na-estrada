@@ -7,9 +7,56 @@
   return - The current route 
  */
 function getCurrentRoute(){
-  // Get the first route created by Google maps
-  var currentRoute = directionsDisplay.directions.routes[0];
+
+  var quantityOfRoutes = directionsDisplay.directions.routes.length;
+  var choosenRoute = getChoosenRoute();
+  var currentRoute = directionsDisplay.directions.routes[choosenRoute];
+
   return currentRoute;
+}
+
+function getChoosenRoute(){
+
+  choosenRouteAsString = $("#choosen_route").val();
+  
+  var choosenRoute = parseInt(choosenRouteAsString);
+
+  if(isNaN(choosenRoute)){
+    choosenRoute = 0;
+  }
+
+  return choosenRoute;
+}
+
+function displayFoundRoutes(quantityOfRoutes){
+  
+  var allOptions = [quantityOfRoutes];
+  
+  var i = 0;
+  for(i = 0; i < quantityOfRoutes; i++){
+    var dataToPush = "";
+    // Defines the first route the default one
+    if(i === 0){
+      dataToPush = "<option value="+i+" selected>Rota "+(i+1)+" (padrão)</option>";
+    }else{
+      dataToPush = "<option value="+i+">Rota "+(i+1)+"</option>";
+    }
+    allOptions[i] = dataToPush;
+  }
+
+  var options = "";
+  var s = 0;
+  while(s<quantityOfRoutes){
+    options = options.concat(allOptions[s]);
+    s++;
+  }
+
+  var selectTagStart = "<select id='choosen_route' name='choosen_route'>";
+  var selectTagEnd = "</select>";
+  var htmlToInsert = "Foram encontradas "+quantityOfRoutes+" rotas.<br>" +"Escolha sua rota: "+
+                               selectTagStart+options+selectTagEnd;
+
+  $("#routes_list").html(htmlToInsert);
 }
 
 /*
@@ -241,11 +288,11 @@ function markAccidents(coordinates, latitude, longitude){
 
   countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
 
-  google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-    removeAllMarkersFromMap();
-    deleteMarkersOnMap();
-    getHighwaysFromRoute();
-  });
+  // google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+  //   removeAllMarkersFromMap();
+  //   deleteMarkersOnMap();
+  //   getHighwaysFromRoute();
+  // });
 
   $(document).ready(function(){
     $("#sinalizeAccidents").click(function(){

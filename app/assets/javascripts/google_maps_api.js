@@ -26,7 +26,8 @@ google.maps.event.addDomListener(window, 'load', function(){
 // Gives to the map the option to drag it and change the route
   var rendererOptions = {
     // Draggable is turned on when the option below is set as 'true'
-    draggable: false
+    draggable: false,
+    hideRouteList: true
   };
 
 
@@ -40,21 +41,13 @@ handler.buildMap({internal: {id: 'directions'}}, function(){
   initialize();
 });
 
-function getChoosenRoute(){
-  var choosenRoute = directionsDisplay.getRouteIndex();
-
-  // alert(choosenRoute);
-
-  return choosenRoute;
-}
-
 // Compute the total distance from the origin to the destination
 function computeTotalDistance(){
 
   var total = 0;
-  var myRoute = getCurrentRoute();
+  var route = getCurrentRoute();
 
-  total = calculateRouteTotalDistance(myRoute);
+  total = calculateRouteTotalDistance(route);
 
   total = total / 1000;
   $("#total").html(total + " km");
@@ -135,7 +128,6 @@ function initialize(){
       // When the directions change, calculate the new distance
       google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
             computeTotalDistance();
-
       });
 
       calculateRoute();
@@ -164,6 +156,19 @@ function calculateRoute(){
                       var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
                       $("#distance").html(text);
                       directionsDisplay.setDirections(response);
+                      
+                      displayFoundRoutes(directionsDisplay.directions.routes.length);
+                      
+                      $(document).ready(function(){ 
+                        $("#choosen_route").change(function(){
+                          var choosenIndex = getChoosenRoute();
+                          directionsDisplay.setRouteIndex(choosenIndex);
+                          computeTotalDistance();
+                          cleanMap();
+                          getHighwaysFromRoute(); // Start depuration here
+                        });
+                      });
+
                       getHighwaysFromRoute();
                       break;
 
@@ -196,6 +201,13 @@ function calculateRoute(){
 
       });
 
+}
+
+// Clean all staff from map
+function cleanMap(){
+  unsinalizeMostDangerousPatch();
+  removeAllMarkersFromMap();
+  deleteMarkersOnMap();
 }
 
 
