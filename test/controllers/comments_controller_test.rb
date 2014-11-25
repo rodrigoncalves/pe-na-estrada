@@ -1,7 +1,10 @@
 require 'test_helper'
 
 class CommentsControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+	
+ QUANTITY_OF_FIXTURES = 3
+
+	def setup
+	  @highways_controller = HighwaysController.new
+	end
 end

@@ -1,9 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  text: MyString
+  idBr: "MyString"
+  title: "MyString"
+  text: "MyString"
 
 two:
-  title: MyString
-  text: MyString
+  idBr:
+  title:
+  text:
+
+three:
+  idBr: ""
+  title: ""
+  text: ""

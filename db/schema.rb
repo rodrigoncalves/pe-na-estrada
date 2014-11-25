@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20141119151457) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "idBr"
+    t.string   "highways_idBr"
   end
 
   create_table "highways", force: true do |t|
@@ -39,6 +40,7 @@ ActiveRecord::Schema.define(version: 20141119151457) do
     t.float    "accidentsRate"
     t.float    "accidentsRatePercent"
     t.integer  "rankingPosition"
+    t.string   "comments_id"
   end
 
   create_table "routes", force: true do |t|
