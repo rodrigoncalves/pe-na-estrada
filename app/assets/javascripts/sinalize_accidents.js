@@ -65,8 +65,8 @@ function displayFoundRoutes(quantityOfRoutes){
 */
 function getHighwaysFromRoute(){
 
-  var myroute = getCurrentRoute();
-  var mylegs = myroute.legs[0];
+  var route = getCurrentRoute();
+  var mylegs = route.legs[0];
   var length = mylegs.steps.length;
   var initialposition = 0;
   var endposition = 0;
@@ -75,13 +75,16 @@ function getHighwaysFromRoute(){
   var j = 0; // Count for highways in the route
   var i = 0;
 
+  // The quantity of charachters occuped by the highway tag 'BR-000'
+  var QUANTITY_OF_CHARACTERS_IN_HIGHWAY_TAG = 6;
+
   for (i = 0; i < length; i++){
 
     var instructions = mylegs.steps[i].instructions;
     if(instructions.indexOf("BR-") !== -1){
 
       initialposition = instructions.indexOf("BR-");
-      endposition = initialposition + 6;
+      endposition = initialposition + QUANTITY_OF_CHARACTERS_IN_HIGHWAY_TAG;
       var highwaysString = instructions.substring(initialposition,endposition);
 
       highwayNumber = defineHighwaysNumber(highwaysString,highwaysInRoute); 
@@ -92,11 +95,11 @@ function getHighwaysFromRoute(){
         highwaysInRoute[j] = highwayNumber; 
         j++; 
       } 
-
-
     }
-  }
-  getCoordinatesFromRoute(highwaysInRoute,myroute);
+
+  } // End of for
+
+  getCoordinatesFromRoute(highwaysInRoute, route);
 }
 
 /* 
@@ -288,14 +291,10 @@ function markAccidents(coordinates, latitude, longitude){
 
   countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
 
-  // google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-  //   removeAllMarkersFromMap();
-  //   deleteMarkersOnMap();
-  //   getHighwaysFromRoute();
-  // });
-
   $(document).ready(function(){
     $("#sinalizeAccidents").click(function(){
+      removeAllMarkersFromMap();
+      deleteMarkersOnMap();
       // Sweeps the arrays marking on the map the accident given by it coordinates
       var quantityOfPointsToMark = latitudesToMark.length;
       while(quantityOfPointsToMark >= 0){
