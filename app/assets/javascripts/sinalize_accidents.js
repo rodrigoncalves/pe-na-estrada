@@ -2,7 +2,7 @@
 /* global countTheAccidentsByPatch */
 /* global map */
 
-/*
+/**
   Get the current route from API Gmaps
   return - The current route 
  */
@@ -15,6 +15,10 @@ function getCurrentRoute(){
   return currentRoute;
 }
 
+/**
+ * Get the choosen route by the user
+ * return the choosen route number
+ */
 function getChoosenRoute(){
 
   choosenRouteAsString = $("#choosen_route").val();
@@ -76,7 +80,7 @@ function getHighwaysFromRoute(){
   var i = 0;
 
   // The quantity of charachters occuped by the highway tag 'BR-000'
-  var QUANTITY_OF_CHARACTERS_IN_HIGHWAY_TAG = 6;
+  const QUANTITY_OF_CHARACTERS_IN_HIGHWAY_TAG = 6;
 
   for (i = 0; i < length; i++){
 
@@ -256,11 +260,86 @@ function getTheAccidentsInHighway(highwaysInRoute){
   return position;
 }
 
+/**
+ * Clean repeated coordinates
+ * param latitudes - Array that contains the latitudes to clean
+ * param longitudes - array that contains the longitudes to clean
+ * return an object with no repeated coordinates
+ *    Properties: latitudes: An array with the no repeated latitudes
+                       longitudes: An array with no repeated longitudes 
+ */
+function filterRepeatedCoordinates(latitudes, longitudes){
+  var quantityOfCoordinates = latitudes.length;
+
+  var cleanedLatitudes = [];
+  var cleanedLongitudes = [];
+  var i = 0;
+  for(i = 0; i < quantityOfCoordinates; i++){
+
+    var coordinate = {
+      lat: latitudes[i],
+      lng: longitudes[i]
+    };
+
+    var coordinatesArray = {
+      latArray: cleanedLatitudes,
+      lngArray: cleanedLongitudes
+    };
+
+    var coordinateNotExistsYet = !alreadyExistsInArray(coordinate, coordinatesArray);
+    if(coordinateNotExistsYet){
+      cleanedLatitudes.push(coordinate.lat);
+      cleanedLongitudes.push(coordinate.lng);
+    }
+  }
+
+  var cleanedCoordinates = {
+    latitudes: cleanedLatitudes,
+    longitudes: cleanedLongitudes
+  };
+
+  return cleanedCoordinates;
+}
+
+/**
+ * Check if the given coordinate is present on the given array
+ * param coordinate - Coordinate to check if exists in the given array
+ * param coordinatesArray - Array to search for the given coordinate in
+ * return true if exists or false if does not
+ */
+function alreadyExistsInArray(coordinate, coordinatesArray){
+  var quantityOfCoordinates = coordinatesArray.latArray.length;
+ 
+  var alreadyExists = false;
+  if(quantityOfCoordinates > 0){
+
+    var i = 0;
+    for(i = 0; i < quantityOfCoordinates; i++){
+      var currentLatitude = coordinatesArray.latArray[i];
+      var currentLongitude = coordinatesArray.lngArray[i];
+
+      var existsThisLatitude = (coordinate.lat === currentLatitude);
+      var existsThisLongitude = (coordinate.lng === currentLongitude);
+      var existsThisCoordinate = existsThisLatitude && existsThisLongitude;
+
+      if(existsThisCoordinate){
+        alreadyExists = true;
+        break;
+      }
+
+    }
+  }else{
+    alreadyExists = false;
+  }
+
+  return alreadyExists;
+}
+
 /* 
   This function get the coordinates of the accidentes in routete 
+  param coordinates - Array that contains the coordinates from route 
   param latitude - Array that contains the latitudes of the accidents in route 
   param longitude - Array that contains the longitudes of the accidents in route 
-  param coordinates - Array that contains the coordinates from route 
  */ 
 function markAccidents(coordinates, latitude, longitude){
 
@@ -288,6 +367,11 @@ function markAccidents(coordinates, latitude, longitude){
 
     s++;
   }
+
+  var cleanedCoordinates = filterRepeatedCoordinates(latitudesToMark, longitudesToMark);
+
+  latitudesToMark = cleanedCoordinates.latitudes;
+  longitudesToMark = cleanedCoordinates.longitudes;
 
   countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
 
