@@ -53,6 +53,17 @@ function computeTotalDistance(){
   $("#total").html(total + " km");
 }
 
+// Compute the total distance from the origin to the destination
+function computeTotalDistanceToSafeRoute(route){
+
+  var total = 0;
+
+  total = calculateRouteTotalDistance(route);
+
+  total = total / 1000;
+  $("#total").html(total + " km");
+}
+
 function calculateRouteTotalDistance(route){
 
   var totalDistance = 0;
@@ -153,24 +164,35 @@ function calculateRoute(){
             switch(status){
 
                   case statusOK:
-                      var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
-                      $("#distance").html(text);
-                      directionsDisplay.setDirections(response);
-                      
-                      displayFoundRoutes(directionsDisplay.directions.routes.length);
-                      
-                      $(document).ready(function(){ 
+                    var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
+                    $("#distance").html(text);
+                    directionsDisplay.setDirections(response);
+                    
+                    $(document).ready(function(){ 
+
+                      $("#chooseRoute").click(function(){
+                        displayFoundRoutes(directionsDisplay.directions.routes.length);
+                    
                         $("#choosen_route").change(function(){
-                          var choosenIndex = getChoosenRoute();
-                          directionsDisplay.setRouteIndex(choosenIndex);
-                          computeTotalDistance();
-                          cleanMap();
-                          getHighwaysFromRoute(); // Start depuration here
+                          provideRouteAlternatives();
                         });
+                  
+                      });
+                      
+                      $("#safeRoute").click(function(){
+
+                        // Clean the select options 
+                        var htmlToInsert = "";
+                        $("#routes_list").html(htmlToInsert);
+
+                        // Trace the route less dangerous
+                        traceSafeRoute();
                       });
 
-                      getHighwaysFromRoute();
-                      break;
+                    });
+
+                    getHighwaysFromRoute(directionsDisplay.directions.routes[0]);
+                    break;
 
                   case 'ZERO_RESULTS':
                   case 'INVALID_REQUEST':
@@ -211,6 +233,33 @@ function cleanMap(){
 }
 
 
+function provideRouteAlternatives () {
+  var choosenIndex = getChoosenRoute();
+  directionsDisplay.setRouteIndex(choosenIndex);
+  var route = getCurrentRoute();
+  computeTotalDistance();
+  cleanMap();
+  getHighwaysFromRoute(route); 
+}
 
+function traceSafeRoute(){
+  var maxNumberAccidents = gon.latitude.length;
+  var indexSafeRoute = 0;
+  var quantityOfAccidents = 0;
+  var route = directionsDisplay.directions.routes;
 
+  for(var x = 0; x < route.length;x++){
 
+    quantityOfAccidents = getHighwaysFromRoute(route[x]);
+
+    if(quantityOfAccidents < maxNumberAccidents){
+      maxNumberAccidents = quantityOfAccidents;
+      indexSafeRoute = x; 
+    }
+    
+  }
+  directionsDisplay.setRouteIndex(indexSafeRoute);
+  computeTotalDistanceToSafeRoute(route[indexSafeRoute]);
+  cleanMap();
+  getHighwaysFromRoute(route[indexSafeRoute]);
+}

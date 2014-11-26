@@ -18,7 +18,7 @@
 
 #directions{
 
-	position: relative;
+	position: absolute;
 }
 
 #trace_route_form{
@@ -95,12 +95,17 @@
 
 #directionsPanelView{
 	position:absolute;
-	top:30%;
+	top:40%;
 	left:100%;
 	text-align:center;
 	overflow: auto;
 	height: 130%;
 	width: 25%;
+}
+#routes_list{
+	position:relative;
+	top:100%;
+	left:20%;
 }
 #initial_ranking{
 

@@ -60,9 +60,6 @@
     </div>
   </div>
   
-  <div class="col-lg-3">
-    <div id="routes_list"></div>
-  </div>
 </div>
 
 <br>
@@ -78,7 +75,7 @@ Desmarcar acidentes
 <button id="sinalizeAccidentsInPatch" class="btn btn-danger">
 Sinalizar trecho mais perigoso
 </button>
-<%end%>
+
 <br>
 </div>
 
@@ -90,6 +87,16 @@ Sinalizar trecho mais perigoso
       </div>
     </div>
   </div>
+
+  <button id="chooseRoute" class="btn btn-success">Escolher outra Rota</button>
+  <button id="safeRoute" class="btn btn-success">
+  Traçar Rota Segura
+  </button>
+
+  <div class="col-lg-3">
+    <div id="routes_list"></div>
+  </div>
+
   <div class="col-lg-4">
     <!-- Instantiate the directions (step by step) panel -->
     <div id="directionsPanel" style="float:right;width:100%;height 100%">
@@ -97,6 +104,7 @@ Sinalizar trecho mais perigoso
     </div>
   </div>
 </div>
+<%end%>
 
 <%= hidden_field_tag 'origin' , @origin_informed_by_user %>
 <%= hidden_field_tag 'destination' , @destination_informed_by_user%>

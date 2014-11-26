@@ -63,9 +63,8 @@ function displayFoundRoutes(quantityOfRoutes){
   Get the highways in the route
   param result - Variable that contains the route
 */
-function getHighwaysFromRoute(){
+function getHighwaysFromRoute(route){
 
-  var route = getCurrentRoute();
   var mylegs = route.legs[0];
   var length = mylegs.steps.length;
   var initialposition = 0;
@@ -99,7 +98,8 @@ function getHighwaysFromRoute(){
 
   } // End of for
 
-  getCoordinatesFromRoute(highwaysInRoute, route);
+  var totalAccidents = getCoordinatesFromRoute(highwaysInRoute, route);
+  return totalAccidents;
 }
 
 /* 
@@ -188,8 +188,9 @@ function getCoordinatesFromRoute(highwaysInRoute,myroute){
       longitudesLimit = checkCoordinate(longitudesLimit,coordinates[j].lng());
   }
 
-  getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates);
 
+  var totalAccidents = getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates);
+  return totalAccidents;
 }
 
 /* 
@@ -228,7 +229,8 @@ function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit
     }
   }
 
-   markAccidents(coordinates, latitude, longitude);
+   var totalAccidents = markAccidents(coordinates, latitude, longitude);
+   return totalAccidents;
 }
 
 /* 
@@ -257,7 +259,7 @@ function getTheAccidentsInHighway(highwaysInRoute){
 }
 
 /* 
-  This function get the coordinates of the accidentes in routete 
+  This function get the coordinates of the accidentes in route 
   param latitude - Array that contains the latitudes of the accidents in route 
   param longitude - Array that contains the longitudes of the accidents in route 
   param coordinates - Array that contains the coordinates from route 
@@ -311,7 +313,7 @@ function markAccidents(coordinates, latitude, longitude){
          deleteMarkersOnMap();
       });
   });
-
+  return latitudesToMark.length;
 }
 
 // Array that contains all markers that is visible on map
