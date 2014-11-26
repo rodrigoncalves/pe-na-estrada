@@ -2,6 +2,7 @@
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js'></script>
 <script src="/assets/google_maps_api.js?body=1"></script>
 
+
 <div class="row">
   <div class="col-lg-4">
     <!-- Form to take origin and destination to trace route -->
@@ -45,34 +46,44 @@
             </div>
 
             <br>
-            <%= o.button :submit, "Traçar Rota Padrão", :class => "btn btn-default", :id => "btn_trace_route" %>
 
-          </div>
+
+            <%= o.button :submit, "Traçar Rota", :class => "btn btn-default btn-sm ", :id => "btn_trace_route" %>
+            <button id="chooseRoute" class="btn btn-default btn-sm ">Escolher outra Rota</button>
+            <button id="safeRoute" class="btn btn-primary btn-sm ">Traçar Rota Segura</button>
+
+
+        </div>
+
     <% end %>
     <!-- End of origin and destination form -->
   </div>
 
-  <div class="col-lg-5">
+
+  <div class="col-lg-8">
     <div class="page-header">
       <h2><i class="fa fa-road"></i>  Trace sua rota aqui <br>
         <small>Informe uma origem e um destino</small>
       </h2>
     </div>
   </div>
-  
+
+
+
+
 </div>
 
 <br>
 <br>
 <div id="button">
 <% if @origin_informed_by_user.blank? == false%>
-<button id="sinalizeAccidents" class="btn btn-danger">
+<button id="sinalizeAccidents" class="btn btn-danger btn-sm">
 Sinalizar acidentes
 </button>
-<button id="removeSinalizationAccidents" class="btn btn-danger">
+<button id="removeSinalizationAccidents" class="btn btn-danger btn-sm">
 Desmarcar acidentes
 </button>
-<button id="sinalizeAccidentsInPatch" class="btn btn-danger">
+<button id="sinalizeAccidentsInPatch" class="btn btn-danger btn-sm">
 Sinalizar trecho mais perigoso
 </button>
 
@@ -88,10 +99,6 @@ Sinalizar trecho mais perigoso
     </div>
   </div>
 
-  <button id="chooseRoute" class="btn btn-success">Escolher outra Rota</button>
-  <button id="safeRoute" class="btn btn-success">
-  Traçar Rota Segura
-  </button>
 
   <div class="col-lg-3">
     <div id="routes_list"></div>

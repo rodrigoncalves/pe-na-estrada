@@ -1,5 +1,5 @@
 #main_panel{
-	
+
 	/*text-align: center;*/
 	margin-left: 5%;
 	margin-right: 5%;
@@ -16,9 +16,15 @@
 	margin-right: 15%;
 }
 
+#button{
+
+	top: 0%;
+}
+
 #directions{
 
 	position: absolute;
+	top: 1%;
 }
 
 #trace_route_form{
@@ -27,7 +33,7 @@
 	top: 14%;
 	left: 1%;
 	height: 100%;
-	width: 100%;
+	width: 150%;
 }
 
 #directionsPanel{
@@ -38,10 +44,13 @@
 }
 
 #top-menu{
+
 	position:absolute;
 
 }
+
 #rate_types{
+
 	position:relative;
 	top:0%;
 	left:-5%;
@@ -85,15 +94,18 @@
 }
 
 #about{
+
 	margin-right: 15%;
 }
 
 #content{
+
 	background: white;
 	overflow: hidden;
 }
 
 #directionsPanelView{
+
 	position:absolute;
 	top:40%;
 	left:100%;
@@ -102,11 +114,14 @@
 	height: 130%;
 	width: 25%;
 }
+
 #routes_list{
+
 	position:relative;
 	top:100%;
 	left:20%;
 }
+
 #initial_ranking{
 
 	-webkit-transition: height 0.5s;
