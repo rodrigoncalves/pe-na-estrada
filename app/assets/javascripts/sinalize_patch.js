@@ -452,44 +452,6 @@ function countTheAccidentsByPatch(latitude, longitude){
 
     accidentsInPatch[i] = coordinatesOnCurrentPatch.latitudes.length;
   }
-
-  // var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
-
-  // var accidentsInPatch = [];
-
-  // var j = 0;
-  // var i = 0;
-  // for(i = 0; i < routePatchesCoordinates.length; i++){
-  //   accidentsInPatch[i] = 0;
-  // }
-
-  // i = 0;
-  // for(i = 0; i < routePatchesCoordinates.length; i++){
-  //   j = 0;
-  //   while(j < latitude.length){
-
-  //     var latitudeStartLimit = routePatchesCoordinates[i].startLatitude;
-  //     var latitudeEndLimit = routePatchesCoordinates[i].endLatitude;
-  //     var longitudeStartLimit = routePatchesCoordinates[i].startLongitude;
-  //     var longitudeEndLimit = routePatchesCoordinates[i].endLongitude;
-      
-  //     var differenceLatitudeLimit = latitudeStartLimit - latitudeEndLimit;
-  //     var differenceLongitudeLimit = longitudeStartLimit - longitudeEndLimit;
-
-  //       if((latitudeStartLimit - latitude[j]) <= differenceLatitudeLimit){
-  //         if((longitudeStartLimit - longitude[j]) <= differenceLongitudeLimit){
-  //         accidentsInPatch[i] = accidentsInPatch[i] + 1;
-  //         }
-  //       }
-
-  //     j++;
-
-  //   }
-
-  // }
-
-  // alert(accidentsInPatch);
-
   identifyDangerousPatch(accidentsInPatch, routeSliced);
 }
 
@@ -503,14 +465,18 @@ function identifyDangerousPatch(accidentsInPatch, routeSliced){
   // Auxiliary variable to see which patch has more accidents
   var moreAccidentsPatch = 0;
   var positionMoreAccidentsPatch = 0;
+  var quantityPatchsMoreDangerous = 0;
 
   // Scans the array looking for the portions more accidents
   for (var i = 0; i < accidentsInPatch.length; i++) {
     if (accidentsInPatch[i] > moreAccidentsPatch) {
       moreAccidentsPatch = accidentsInPatch[i];
       positionMoreAccidentsPatch = i;
+      quantityPatchsMoreDangerous++;
     }
   }
+
+  var existsAccidents = (quantityPatchsMoreDangerous>0);
 
   var quantityOfSteps = routeSliced[positionMoreAccidentsPatch].length;
   var coordinatesOfMostDangerousPatch = [];
@@ -525,14 +491,18 @@ function identifyDangerousPatch(accidentsInPatch, routeSliced){
       j++;
     }
   }
-  // Receves as parameter the latitude and longitude of the portions more accidents
+
   $(document).ready(function(){
 
       $("#sinalizeAccidentsInPatch").click(function(){
-          sinalizeMostDangerousPatch(coordinatesOfMostDangerousPatch);    
+        if (existsAccidents) {
+          sinalizeMostDangerousPatch(coordinatesOfMostDangerousPatch);
+        } 
+        else{
+          window.alert("Não é possível exibir um trecho mais perigoso nessa rota, pois ela não possui acidentes");
+        }    
       });
   });
-
 }
 
 /**
