@@ -73,17 +73,17 @@ test("Testing function 'calculateRemainingSteps' should pass if 10 steps as tota
 
 test("Testing function 'calculateRemainingSteps' should pass with the second number being more", function(){
 
-    equal(calculateRemainingSteps(10, 11), 0,'The method works through 10 steps as total and 11 much as patchs');
+    equal(calculateRemainingSteps(10, 11), 10,'The method works through 10 steps as total and 11 much as patchs');
 });
 
 
 test("Testing function 'calculateRemainingSteps' should pass with a  negative number ", function(){
 
-    equal(calculateRemainingSteps(-5, 2), 0,'The method works through -5 steps as total and 2 much as patchs');
+    equal(calculateRemainingSteps(-5, 2), -1,'The method works through -5 steps as total and 2 much as patchs');
 });
 
 
-test("Testing function 'calculateRemainingSteps' should not pass with a  negative number and retunr positive", 
+test("Testing function 'calculateRemainingSteps' should not pass with a  negative number and return positive", 
 	function(){
 
     notEqual(calculateRemainingSteps(-5, 2), 1,'The method works through -5 steps as total and 2 much as patchs');
@@ -91,7 +91,7 @@ test("Testing function 'calculateRemainingSteps' should not pass with a  negativ
 
 test("Testing function 'calculateRemainingSteps' should pass with a two negative number ", function(){
 
-    equal(calculateRemainingSteps(-5, -2), 0,'The method works through -5 steps as total and 2 much as patchs');
+    equal(calculateRemainingSteps(-5, -2), -1,'The method works through -5 steps as total and 2 much as patchs');
 });
 
 
@@ -313,32 +313,4 @@ test("Testing function 'markAccident' exists", function(){
     ok(markAccident,'The method exists');
 });
 
-test("Testing function 'validateQuantityOfPatches' exists", function(){
 
-    ok(validateQuantityOfPatches,'The method exists');
-});
-
-
-test("Testing function 'calculateStepsPerPatch' should pass with 7 with 7 quantity Of Patches and 9 patchs", 
-    function(){
-
-    equal(validateQuantityOfPatches(7, 9), 7,'The method receives 7 quantity Of Patches and 9 patch and returns 7');
-});
-
-test("Testing function 'calculateStepsPerPatch' should not pass with 19 with 7 quantity Of Patches and 9 patchs", 
-    function(){
-
-    notEqual(validateQuantityOfPatches(19, 9), 7,'The method receives 7 quantity Of Patches and 9 patch and returns 19');
-});
-
-test("Testing function 'calculateStepsPerPatch' should pass with 9 with 0 quantity Of Patches and 9 patchs", 
-    function(){
-
-    equal(validateQuantityOfPatches(0, 9), 9,'The method receives 0 quantity Of Patches and 9 patch and returns 9');
-});
-
-test("Testing function 'calculateStepsPerPatch' should not pass with 9 with 1 quantity Of Patches and 9 patchs", 
-    function(){
-
-    notEqual(validateQuantityOfPatches(1, 9), 9,'The method receives 1 quantity Of Patches and 9 patch and returns 1');
-});
