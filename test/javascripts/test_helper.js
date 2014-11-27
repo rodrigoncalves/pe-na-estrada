@@ -313,4 +313,87 @@ test("Testing function 'markAccident' exists", function(){
     ok(markAccident,'The method exists');
 });
 
+test("Testing function 'validateQuantityOfPatches' exists", function(){
 
+    ok(validateQuantityOfPatches,'The method exists');
+});
+
+
+test("Testing function 'validateQuantityOfPatches' should pass with 7 with 7 quantity Of Patches and 9 patchs", 
+    function(){
+
+    equal(validateQuantityOfPatches(7, 9), 7,'The method receives 7 quantity Of Patches and 9 patch and returns 7');
+});
+
+test("Testing function 'validateQuantityOfPatches' should not pass with 19 with 7 quantity Of Patches and 9 patchs", 
+    function(){
+
+    notEqual(validateQuantityOfPatches(19, 9), 7,'The method receives 7 quantity Of Patches and 9 patch and returns 19');
+});
+
+test("Testing function 'validateQuantityOfPatches' should pass with 9 with 0 quantity Of Patches and 9 patchs", 
+    function(){
+
+    equal(validateQuantityOfPatches(0, 9), 0,'The method receives 0 quantity Of Patches and 9 patch and returns 9');
+});
+
+test("Testing function 'validateQuantityOfPatches' should not pass with 9 with 1 quantity Of Patches and 9 patchs", 
+    function(){
+
+    notEqual(validateQuantityOfPatches(1, 9), 9,'The method receives 1 quantity Of Patches and 9 patch and returns 1');
+});
+
+test("Testing function 'validateQuantityOfPatches' should pass with 0 with 0 quantity Of Patches and 0 patchs", 
+    function(){
+
+    equal(validateQuantityOfPatches(0, 0), 0,'The method receives 0 quantity Of Patches and 0 patch and returns 0');
+});
+
+test("Testing function 'validateQuantityOfPatches' should  pass with 5 with -10 quantity Of Patches and 5 patchs", 
+    function(){
+
+    equal(validateQuantityOfPatches(-10, 5), -10,
+        'The method receives -10 quantity Of Patches and 5 patch and returns 5');
+});
+
+test("Testing function 'validateQuantityOfPatches' should not pass with 5 with -10 quantity Of Patches and 10 patchs", 
+    function(){
+
+    notEqual(validateQuantityOfPatches(-10, 10), 5,
+        'The method receives -10 quantity Of Patches and 10 patch and not returns 5');
+});
+
+test("Testing function 'validateQuantityOfPatches' should  pass with 5 with -10 quantity Of Patches and 5 patchs", 
+    function(){
+
+    equal(validateQuantityOfPatches(-10, 5), -10,
+        'The method receives -10 quantity Of Patches and 5 patch and returns 5');
+});
+
+test("Testing function 'validateQuantityOfPatches' should not pass with 10 with -10 quantity Of Patches and 5 patchs", 
+    function(){
+
+    notEqual(validateQuantityOfPatches(-10, 5), 10,
+        'The method receives -10 quantity Of Patches and 5 patch and returns 10');
+});
+
+test("Testing function 'validateQuantityOfPatches' should  pass with 10 with 10 quantity Of Patches and 5 patchs", 
+    function(){
+
+    equal(validateQuantityOfPatches(10, 5), 10,
+        'The method receives 10 quantity Of Patches and 5 patch and returns 10');
+});
+
+test("Testing function 'validateQuantityOfPatches' should not pass with 0 with 10 quantity Of Patches and 5 patchs", 
+    function(){
+
+    notEqual(validateQuantityOfPatches(10, 5), 0,
+        'The method receives 10 quantity Of Patches and 5 patch and returns 0');
+});
+
+test("Testing function 'validateQuantityOfPatches' should  pass with 10 with 10 quantity Of Patches and 0 patchs", 
+    function(){
+
+    equal(validateQuantityOfPatches(10, 0), 10,
+        'The method receives 10 quantity Of Patches and 0 patch and returns 10');
+});
