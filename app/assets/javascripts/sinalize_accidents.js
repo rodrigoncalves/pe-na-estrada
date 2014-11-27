@@ -2,14 +2,65 @@
 /* global countTheAccidentsByPatch */
 /* global map */
 
-/*
+/**
   Get the current route from API Gmaps
   return - The current route 
  */
 function getCurrentRoute(){
-  // Get the first route created by Google maps
-  var currentRoute = directionsDisplay.directions.routes[0];
+
+  var quantityOfRoutes = directionsDisplay.directions.routes.length;
+  var choosenRoute = getChoosenRoute();
+  var currentRoute = directionsDisplay.directions.routes[choosenRoute];
+
   return currentRoute;
+}
+
+/**
+ * Get the choosen route by the user
+ * return the choosen route number
+ */
+function getChoosenRoute(){
+
+  choosenRouteAsString = $("#choosen_route").val();
+  
+  var choosenRoute = parseInt(choosenRouteAsString);
+
+  if(isNaN(choosenRoute)){
+    choosenRoute = 0;
+  }
+
+  return choosenRoute;
+}
+
+function displayFoundRoutes(quantityOfRoutes){
+  
+  var allOptions = [quantityOfRoutes];
+  
+  var i = 0;
+  for(i = 0; i < quantityOfRoutes; i++){
+    var dataToPush = "";
+    // Defines the first route the default one
+    if(i === 0){
+      dataToPush = "<option value="+i+" selected>Rota "+(i+1)+" (padrão)</option>";
+    }else{
+      dataToPush = "<option value="+i+">Rota "+(i+1)+"</option>";
+    }
+    allOptions[i] = dataToPush;
+  }
+
+  var options = "";
+  var s = 0;
+  while(s<quantityOfRoutes){
+    options = options.concat(allOptions[s]);
+    s++;
+  }
+
+  var selectTagStart = "<select id='choosen_route' name='choosen_route'>";
+  var selectTagEnd = "</select>";
+  var htmlToInsert = "Foram encontradas "+quantityOfRoutes+" rotas.<br>" +"Escolha sua rota: "+
+                               selectTagStart+options+selectTagEnd;
+
+  $("#routes_list").html(htmlToInsert);
 }
 
 /*
@@ -18,8 +69,8 @@ function getCurrentRoute(){
 */
 function getHighwaysFromRoute(){
 
-  var myroute = getCurrentRoute();
-  var mylegs = myroute.legs[0];
+  var route = getCurrentRoute();
+  var mylegs = route.legs[0];
   var length = mylegs.steps.length;
   var initialposition = 0;
   var endposition = 0;
@@ -28,13 +79,16 @@ function getHighwaysFromRoute(){
   var j = 0; // Count for highways in the route
   var i = 0;
 
+  // The quantity of charachters occuped by the highway tag 'BR-000'
+  const QUANTITY_OF_CHARACTERS_IN_HIGHWAY_TAG = 6;
+
   for (i = 0; i < length; i++){
 
     var instructions = mylegs.steps[i].instructions;
     if(instructions.indexOf("BR-") !== -1){
 
       initialposition = instructions.indexOf("BR-");
-      endposition = initialposition + 6;
+      endposition = initialposition + QUANTITY_OF_CHARACTERS_IN_HIGHWAY_TAG;
       var highwaysString = instructions.substring(initialposition,endposition);
 
       highwayNumber = defineHighwaysNumber(highwaysString,highwaysInRoute); 
@@ -45,11 +99,11 @@ function getHighwaysFromRoute(){
         highwaysInRoute[j] = highwayNumber; 
         j++; 
       } 
-
-
     }
-  }
-  getCoordinatesFromRoute(highwaysInRoute,myroute);
+
+  } // End of for
+
+  getCoordinatesFromRoute(highwaysInRoute, route);
 }
 
 /* 
@@ -206,11 +260,86 @@ function getTheAccidentsInHighway(highwaysInRoute){
   return position;
 }
 
+/**
+ * Clean repeated coordinates
+ * param latitudes - Array that contains the latitudes to clean
+ * param longitudes - array that contains the longitudes to clean
+ * return an object with no repeated coordinates
+ *    Properties: latitudes: An array with the no repeated latitudes
+                       longitudes: An array with no repeated longitudes 
+ */
+function filterRepeatedCoordinates(latitudes, longitudes){
+  var quantityOfCoordinates = latitudes.length;
+
+  var cleanedLatitudes = [];
+  var cleanedLongitudes = [];
+  var i = 0;
+  for(i = 0; i < quantityOfCoordinates; i++){
+
+    var coordinate = {
+      lat: latitudes[i],
+      lng: longitudes[i]
+    };
+
+    var coordinatesArray = {
+      latArray: cleanedLatitudes,
+      lngArray: cleanedLongitudes
+    };
+
+    var coordinateNotExistsYet = !alreadyExistsInArray(coordinate, coordinatesArray);
+    if(coordinateNotExistsYet){
+      cleanedLatitudes.push(coordinate.lat);
+      cleanedLongitudes.push(coordinate.lng);
+    }
+  }
+
+  var cleanedCoordinates = {
+    latitudes: cleanedLatitudes,
+    longitudes: cleanedLongitudes
+  };
+
+  return cleanedCoordinates;
+}
+
+/**
+ * Check if the given coordinate is present on the given array
+ * param coordinate - Coordinate to check if exists in the given array
+ * param coordinatesArray - Array to search for the given coordinate in
+ * return true if exists or false if does not
+ */
+function alreadyExistsInArray(coordinate, coordinatesArray){
+  var quantityOfCoordinates = coordinatesArray.latArray.length;
+ 
+  var alreadyExists = false;
+  if(quantityOfCoordinates > 0){
+
+    var i = 0;
+    for(i = 0; i < quantityOfCoordinates; i++){
+      var currentLatitude = coordinatesArray.latArray[i];
+      var currentLongitude = coordinatesArray.lngArray[i];
+
+      var existsThisLatitude = (coordinate.lat === currentLatitude);
+      var existsThisLongitude = (coordinate.lng === currentLongitude);
+      var existsThisCoordinate = existsThisLatitude && existsThisLongitude;
+
+      if(existsThisCoordinate){
+        alreadyExists = true;
+        break;
+      }
+
+    }
+  }else{
+    alreadyExists = false;
+  }
+
+  return alreadyExists;
+}
+
 /* 
   This function get the coordinates of the accidentes in routete 
+  param coordinates - Array that contains the coordinates from route 
   param latitude - Array that contains the latitudes of the accidents in route 
   param longitude - Array that contains the longitudes of the accidents in route 
-  param coordinates - Array that contains the coordinates from route 
  */ 
 function markAccidents(coordinates, latitude, longitude){
 
@@ -239,16 +368,17 @@ function markAccidents(coordinates, latitude, longitude){
     s++;
   }
 
-  countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
+  var cleanedCoordinates = filterRepeatedCoordinates(latitudesToMark, longitudesToMark);
 
-  google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-    removeAllMarkersFromMap();
-    deleteMarkersOnMap();
-    getHighwaysFromRoute();
-  });
+  latitudesToMark = cleanedCoordinates.latitudes;
+  longitudesToMark = cleanedCoordinates.longitudes;
+
+  countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
 
   $(document).ready(function(){
     $("#sinalizeAccidents").click(function(){
+      removeAllMarkersFromMap();
+      deleteMarkersOnMap();
       // Sweeps the arrays marking on the map the accident given by it coordinates
       var quantityOfPointsToMark = latitudesToMark.length;
       while(quantityOfPointsToMark >= 0){
