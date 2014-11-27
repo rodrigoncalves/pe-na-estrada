@@ -1,0 +1,17 @@
+<% if @comments.blank?  == false %>
+	<% @comments.each do |comment| %>
+  			<div class="panel panel-success">
+        		<div class="panel-heading">
+        			<%= comment.title %></div>
+  				<div class="panel-body">
+    				<%= comment.text %>
+  				</div>
+  			</div> 
+	<%end%>
+	
+<%else%>
+
+	<h2> Essa rodovia não possui nenhum comentário </h2>
+
+<%end%>
+

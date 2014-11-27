@@ -3,7 +3,7 @@ class CreateHighways < ActiveRecord::Migration
     create_table :highways do |t|
       t.string :idBr
       t.integer :mileage
-
+      t.references :comments
       t.timestamps
     end
   end
