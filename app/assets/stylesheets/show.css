@@ -1,5 +1,5 @@
 #main_panel{
-	
+
 	/*text-align: center;*/
 	margin-left: 5%;
 	margin-right: 5%;
@@ -16,9 +16,15 @@
 	margin-right: 15%;
 }
 
+#button{
+
+	top: 0%;
+}
+
 #directions{
 
-	position: relative;
+	position: absolute;
+	top: 1%;
 }
 
 #trace_route_form{
@@ -27,7 +33,7 @@
 	top: 14%;
 	left: 1%;
 	height: 100%;
-	width: 100%;
+	width: 150%;
 }
 
 #directionsPanel{
@@ -38,10 +44,13 @@
 }
 
 #top-menu{
+
 	position:absolute;
 
 }
+
 #rate_types{
+
 	position:relative;
 	top:0%;
 	left:-5%;
@@ -85,39 +94,32 @@
 }
 
 #about{
+
 	margin-right: 15%;
 }
 
 #content{
+
 	background: white;
 	overflow: hidden;
 }
 
 #directionsPanelView{
+
 	position:absolute;
-	top:30%;
+	top:40%;
 	left:100%;
 	text-align:center;
 	overflow: auto;
 	height: 130%;
 	width: 25%;
 }
-#initial_ranking{
 
-	-webkit-transition: height 0.5s;
-    	transition: height 0.5s;
-	position: relative;
-	width: 40%;
-	height: 60px;
-	font-size: 11px;
-	cursor: wait;
-	overflow: hidden;
-}
+#routes_list{
 
-#initial_ranking:hover{
-
-	height: 550px;
-	cursor: pointer;
+	position:relative;
+	top:100%;
+	left:20%;
 }
 
 #initial_about{
@@ -132,9 +134,6 @@
 	text-align: justify;
 	font-size: 12pt;
 	margin-right: 50%;
-}
-#specific_highway{
-
 }
 #highway_info{
 	text-align: center;
@@ -160,4 +159,14 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+#chooseRoute{
+	position: absolute;
+	top: 86%;
+	left: 34%;
+}
+#safeRoute{
+	position: absolute;
+	top: 86%;
+	left: 79%;
 }

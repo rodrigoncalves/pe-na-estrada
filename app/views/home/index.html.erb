@@ -1,53 +1,52 @@
-<% content_for :title do %>Home | Pé na estrada<% end %>
+<% content_for :title do %>Home | Pé na estrada<% end %> 
+<div class="jumbotron"> 
+  <div class="container"> 
+    <h1>Seja Bem Vindo</h1> 
+    <p class="lead"> 
+    <p> O Pé na estrada foi desenvolvido com o intuito de disponibilizar informações sobre os acidentes ocorridos nas rodovias federais de acordo  com os dados disponibilizados pela Polícia Rodoviária Federal (PRF).</p> 
+    </p> 
+  </div> 
+</div> 
 
-<div class="row"> 
-  <div id="initial_about" class="col-lg-6">
-    <font size="5pt">DESCRIÇÃO DO SOFTWARE</font>
-    <br>
-    <br>
-      Essa aplicação foi desenvolvida com o intuito de disponibilizar informações sobre os acidentes ocorridos nas rodovias federais de acordo  com os dados disponiblizados pela Polícia Rodoviária Federal (PRF). Você poderá acompanhar em nosso site rankings dos acidentes em cada rodovia, pesquisar rodovias que você deseja obter informações e traçar rotas para planejar uma viagem mais segura. 
-    <br>
-    <br>
-    <font color="black" size="5pt">Seja Bem-Vindo!</font>
-  </div>  
+<div class="container white_cont"> 
+  <div class="container-fluid"> 
+    <div class="row"> 
+      <div class="span10"> 
+        
+        <table align="center" style="width:900px "> 
+          <tr> 
+          <br> 
+            <td> 
+              <p class="fa fa-search fa-5x"></p> 
+            </td> 
+            <td> 
+              <big>Pesquise por uma rodovia federal 
+            </td> 
+            <td> 
+              <p class="fa fa-car fa-5x"></p> 
+            </td> 
+            <td> 
+              <big>Trace rotas para sua viagem visualizando os acidentes nas rotas e qual a rota mais segura<br><br><br> 
+            </td> 
+          </tr> 
 
-  <div id="initial_ranking" class="col-lg-6">
-    <div class="panel panel-warning">
-      
-          <div class="panel panel-heading">
-            <h5 class="panel-title" align="center">Ranking</h5>
-          </div>
-          
-          <div class="panel-body">
-            
-            <table class="table table-hover table-responsive" >
-              <thread>
-                <tr>
-                <th>Posição</th>
-                <th>BR</th>
-                <th>Acidentes/Km</th>
-                </tr>
-              </thread>
-              <tbody>
-                <% @highway.each do |h| %>
-                  <% if h.rankingPosition < 11 %>
-                    <tr></tr>
-                    <td><%= h.rankingPosition %>º</td>
-                    <td><%= h.idBr %></td>
-                    <td><%= format("%.4f",h.accidentsRate) %></td>
-                  <% end %>
-                <% end %>
-              </tbody>
-            </table>
+          <tr> 
+            <td> 
+              <p class="fa fa-comments-o fa-5x"></p> 
+            </td> 
+            <td> 
+              <big>Compartilhe com os outros usuários informações sobre uma rodovia<br><br><br> 
+            </td> 
 
-            <ul class="nav nav-pills nav-stacked">
-              <li class="link">
-                <%= link_to '  Visualizar mais', ranking_1_path, class: "fa fa-plus-square" %>
-              </li>
-            </ul>
-          
-          </div>
-    
-    </div>
-  </div>
-</div>
+            <td> 
+              <p class="fa fa-sort-numeric-asc fa-5x"></p> 
+            </td> 
+            <td> 
+              <big>Acompanhe a classificação de cada rodovia em relação aos acidentes<br><br><br> 
+            </td> 
+          </tr> 
+        </table> 
+      </div> 
+    </div> 
+  </div> 
+</div> 

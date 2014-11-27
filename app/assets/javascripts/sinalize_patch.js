@@ -431,11 +431,10 @@ function getPathOfPatches(patches){
  * Count the accidents occurred in each patch
  * param latitude - Array with the latitudes of the accidents
  * param longitude - Array with the longitudes of the accidents
+ * param route - Receives the current route
  */
-function countTheAccidentsByPatch(latitude, longitude){
+function countTheAccidentsByPatch(latitude, longitude,route){
 
-  var route = getCurrentRoute();
-  
   var routeSliced = sliceRoute(route);
 
   var patchesPaths = getPathOfPatches(routeSliced);

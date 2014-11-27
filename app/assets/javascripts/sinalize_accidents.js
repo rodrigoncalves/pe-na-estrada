@@ -2,9 +2,10 @@
 /* global countTheAccidentsByPatch */
 /* global map */
 
+
 /**
   Get the current route from API Gmaps
-  return - The current route 
+  return - The current route
  */
 function getCurrentRoute(){
 
@@ -22,7 +23,7 @@ function getCurrentRoute(){
 function getChoosenRoute(){
 
   choosenRouteAsString = $("#choosen_route").val();
-  
+
   var choosenRoute = parseInt(choosenRouteAsString);
 
   if(isNaN(choosenRoute)){
@@ -33,9 +34,9 @@ function getChoosenRoute(){
 }
 
 function displayFoundRoutes(quantityOfRoutes){
-  
+
   var allOptions = [quantityOfRoutes];
-  
+
   var i = 0;
   for(i = 0; i < quantityOfRoutes; i++){
     var dataToPush = "";
@@ -67,9 +68,8 @@ function displayFoundRoutes(quantityOfRoutes){
   Get the highways in the route
   param result - Variable that contains the route
 */
-function getHighwaysFromRoute(){
+function getHighwaysFromRoute(route){
 
-  var route = getCurrentRoute();
   var mylegs = route.legs[0];
   var length = mylegs.steps.length;
   var initialposition = 0;
@@ -91,66 +91,67 @@ function getHighwaysFromRoute(){
       endposition = initialposition + QUANTITY_OF_CHARACTERS_IN_HIGHWAY_TAG;
       var highwaysString = instructions.substring(initialposition,endposition);
 
-      highwayNumber = defineHighwaysNumber(highwaysString,highwaysInRoute); 
+      highwayNumber = defineHighwaysNumber(highwaysString,highwaysInRoute);
 
-      alreadyExists = checkIfHighwaysExist(highwayNumber, highwaysInRoute); 
+      alreadyExists = checkIfHighwaysExist(highwayNumber, highwaysInRoute);
 
-      if(alreadyExists == false){ 
-        highwaysInRoute[j] = highwayNumber; 
-        j++; 
-      } 
+      if(alreadyExists == false){
+        highwaysInRoute[j] = highwayNumber;
+        j++;
+      }
     }
 
   } // End of for
 
-  getCoordinatesFromRoute(highwaysInRoute, route);
+  var totalAccidents = getCoordinatesFromRoute(highwaysInRoute, route);
+  return totalAccidents;
 }
 
-/* 
-  This function define the number of the highway 
-  param highwaysString - String on the format(BR-000) used to extracts the number 
-  param highwaysInRoute - Array that contains the highways in route 
-  return - Number of the highway 
- */ 
-function defineHighwaysNumber(highwaysString,highwaysInRoute){ 
+/*
+  This function define the number of the highway
+  param highwaysString - String on the format(BR-000) used to extracts the number
+  param highwaysInRoute - Array that contains the highways in route
+  return - Number of the highway
+ */
+function defineHighwaysNumber(highwaysString,highwaysInRoute){
 
-  var highwayNumber; 
+  var highwayNumber;
 
-  if(highwaysString.indexOf("0") === 3){ 
-    highwayNumber = highwaysString.substring(4,6); 
-  } 
-  else{ 
-    highwayNumber = highwaysString.substring(3,6); 
-  } 
+  if(highwaysString.indexOf("0") === 3){
+    highwayNumber = highwaysString.substring(4,6);
+  }
+  else{
+    highwayNumber = highwaysString.substring(3,6);
+  }
 
-  return highwayNumber; 
-} 
+  return highwayNumber;
+}
 
-/* 
-  This function checks if the highway is in the array of the highways 
-  param highwaysString - String that contains the number of the highway 
-  param highwaysInRoute - Array that contains the highways in route 
-  return - Return if the highway number already exists 
- */ 
-function checkIfHighwaysExist(highwayNumber, highwaysInRoute){ 
+/*
+  This function checks if the highway is in the array of the highways
+  param highwaysString - String that contains the number of the highway
+  param highwaysInRoute - Array that contains the highways in route
+  return - Return if the highway number already exists
+ */
+function checkIfHighwaysExist(highwayNumber, highwaysInRoute){
 
-  var exists = false; 
-  var i = 0; 
+  var exists = false;
+  var i = 0;
 
-  for(i = 0 ; i < highwaysInRoute.length ; i++){ 
-    if(highwaysInRoute[i] === highwayNumber){ 
-      exists = true; 
-    } 
-  } 
+  for(i = 0 ; i < highwaysInRoute.length ; i++){
+    if(highwaysInRoute[i] === highwayNumber){
+      exists = true;
+    }
+  }
 
-  return exists; 
-} 
+  return exists;
+}
 
 /*
   Checks if the coordinate is larger or smaller coordinate
   param coordinatesLimit - Object with the limit coordinates
   param coordinate       - Variable with the coordinate to be checked
-  return - Object with the limit coordinates 
+  return - Object with the limit coordinates
 */
 function checkCoordinate(coordinatesLimit, coordinate){
 
@@ -192,18 +193,19 @@ function getCoordinatesFromRoute(highwaysInRoute,myroute){
       longitudesLimit = checkCoordinate(longitudesLimit,coordinates[j].lng());
   }
 
-  getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates);
 
+  var totalAccidents = getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates, myroute);
+  return totalAccidents;
 }
 
-/* 
-  This function get the coordinates of the accidents in route 
-  param highwaysInRoute - Array that contains the highways in route 
-  param latitudesLimit - Object that contains the greater and the lower latitude in route 
-  param longitudesLimit - Object that contains the greater and the lower longitude in route 
-  param coordinates - Array that contains the coordinates from route 
- */ 
-function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates){
+/*
+  This function get the coordinates of the accidents in route
+  param highwaysInRoute - Array that contains the highways in route
+  param latitudesLimit - Object that contains the greater and the lower latitude in route
+  param longitudesLimit - Object that contains the greater and the lower longitude in route
+  param coordinates - Array that contains the coordinates from route
+ */
+function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates, route){
 
   // Get the latitudes, longitudes and highways of accidents from database using the 'gon' gem
   var latitudeArray = gon.latitude;
@@ -217,7 +219,7 @@ function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit
   var i = 0; // Position in coordinates(latitude,longitude) Array
   var p = 0;
 
-  position = getTheAccidentsInHighway(highwaysInRoute); 
+  position = getTheAccidentsInHighway(highwaysInRoute);
 
   for(p = 0; p < position.length; p++){
     lat = parseFloat(latitudeArray[position[p]]);
@@ -232,30 +234,31 @@ function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit
     }
   }
 
-   markAccidents(coordinates, latitude, longitude);
+   var totalAccidents = markAccidents(coordinates, latitude, longitude,route);
+   return totalAccidents;
 }
 
-/* 
-  This function get the highways of the accidents in route 
-  param highwaysInRoute - Array that contains the highways in route 
+/*
+  This function get the highways of the accidents in route
+  param highwaysInRoute - Array that contains the highways in route
   return - Array with the positions in latitudes e longitudes Array
- */ 
-function getTheAccidentsInHighway(highwaysInRoute){ 
+ */
+function getTheAccidentsInHighway(highwaysInRoute){
 
-  var brArray = gon.br; 
-  var position = []; 
-  var x = 0; 
-  var j = 0; // Count the positions 
-  var i = 0; 
+  var brArray = gon.br;
+  var position = [];
+  var x = 0;
+  var j = 0; // Count the positions
+  var i = 0;
 
-  for(x = 0; x < highwaysInRoute.length; x++){ 
-    for(i = 0; i < brArray.length; i++){ 
-      if (brArray[i] === highwaysInRoute[x]){ 
-        position[j] = i; 
-        j++; 
-      } 
-    } 
-  } 
+  for(x = 0; x < highwaysInRoute.length; x++){
+    for(i = 0; i < brArray.length; i++){
+      if (brArray[i] === highwaysInRoute[x]){
+        position[j] = i;
+        j++;
+      }
+    }
+  }
 
   return position;
 }
@@ -341,7 +344,7 @@ function alreadyExistsInArray(coordinate, coordinatesArray){
   param latitude - Array that contains the latitudes of the accidents in route 
   param longitude - Array that contains the longitudes of the accidents in route 
  */ 
-function markAccidents(coordinates, latitude, longitude){
+function markAccidents(coordinates, latitude, longitude,route){
 
   var s = 0;
   var p = 0;
@@ -374,7 +377,7 @@ function markAccidents(coordinates, latitude, longitude){
   latitudesToMark = cleanedCoordinates.latitudes;
   longitudesToMark = cleanedCoordinates.longitudes;
 
-  countTheAccidentsByPatch(latitudesToMark, longitudesToMark);
+  countTheAccidentsByPatch(latitudesToMark, longitudesToMark,route);
 
   $(document).ready(function(){
     $("#sinalizeAccidents").click(function(){
@@ -396,7 +399,7 @@ function markAccidents(coordinates, latitude, longitude){
          deleteMarkersOnMap();
       });
   });
-
+  return latitudesToMark.length;
 }
 
 // Array that contains all markers that is visible on map
@@ -465,18 +468,20 @@ function removeAllMarkersFromMap(){
 function markAccident(latitude, longitude){
 
  var marker;
- // var iconSize = new google.maps.Size();
+ var iconSize = new google.maps.Size();
 
- // iconSize.width = 10;
- // iconSize.height = 10;
+ // Size in pixels of the marker image
+ iconSize.width = 18;
+ iconSize.height = 18;
 
   marker = new google.maps.Marker({
+
         position:  new google.maps.LatLng(latitude, longitude),
-        // // Used to change marker layout
-        // icon:{
-        //   url: "/assets/ic_warning_amber_24dp.png",
-        //   size: iconSize
-        // },
+        // Used to change marker layout
+        icon:{
+          url: "/assets/ic_warning_black_18dp.png",
+          size: iconSize
+        },
         visible: true,
         map: map
   });
