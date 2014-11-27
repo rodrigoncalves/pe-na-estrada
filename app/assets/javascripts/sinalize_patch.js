@@ -86,19 +86,6 @@ function initializeArrayPositionsAsAnArray(array, sizeOfArray){
 }
 
 /**
-    Initialize each position of an array as an array
-    param array - Array to be initialized
-    param sizeOfArray - Size of the array
- */
-function initializeArrayPositionsAsAnArray(array, sizeOfArray){
-    // Each position in 'patches[]' array is an array that will contain the steps for this patch
-    var p = 0;
-    for(p = 0; p < sizeOfArray; p++){
-        array[p] = [];
-    }
-}
-
-/**
     Separate the steps from 'routeAllSteps' array equally in 'quantityOfPatches' patches.
     And then add the remaining steps to the last patch.
     param routeAllSteps - Array of google.maps.DirectionsStep objects that contains all steps of the route
@@ -149,7 +136,7 @@ function distributeStepsOnPatches(routeAllSteps, quantityOfPatches){
 function sliceRoute(routeToSlice){
 
     // Set the quantity of patchs as you want
-    var quantityOfPatches = 0;
+    var quantityOfPatches = 10;
 
     // Array with the route legs
     var routeLegs = routeToSlice.legs[0];
@@ -228,57 +215,288 @@ function getCoordinatesOfPatch(patchesArray){
 }
 
 /**
-    Count the accidents occurred in each patch
-    param latitude - Array with the latitudes of the accidents
-    param longitude - Array with the longitudes of the accidents
+ * Get the maximum and minimum latitudes and longitudes of the path
+ * param path - Path to calculate the critical points. Array with the coordinates (google.maps.LatLng objects) of the path
+ * return an object with the critical latitudes and longitudes
+ *    Properties:  maxLatitude: The maximum latitude found
+                        minLatitude: The minimum latitude found
+                        maxLongitude: The maximum longitude found
+                        minLongitude: The minimum longitude found
+ */
+function foundPathCriticalPoints(path){
+
+  var maxLatitude = getRouteMaxLatitude(path);
+  var minLatitude = getRouteMinLatitude(path);
+  var maxLongitude = getRouteMaxLongitude(path);
+  var minLongitude = getRouteMinLongitude(path);
+
+  var routeCriticalPoints = {
+    maxLatitude: maxLatitude,
+    minLatitude: minLatitude,
+    maxLongitude: maxLongitude,
+    minLongitude: minLongitude
+  };
+
+  return routeCriticalPoints;
+}
+
+/**
+ * Get the maximum longitude that appears in the route.
+ * param routePath -  The path of the route. Array with all coordinates of the route. google.maps.LatLng objects.
+ * return the greatest longitude that appears in the route
+ */
+function getRouteMaxLongitude(routePath){
+  const MIN_LONGITUDE_VALUE = -180;
+
+  var maxLongitude= MIN_LONGITUDE_VALUE;
+  var i = 0;
+  for(i = 0; i < routePath.length; i++){
+    var longitude = routePath[i].lng();
+    if(longitude > maxLongitude){
+      maxLongitude = longitude;
+    }
+  }
+
+  return maxLongitude;
+}
+
+/**
+ * Get the minimum longitude that appears in the route.
+ * param routePath -  The path of the route. Array with all coordinates of the route. google.maps.LatLng objects.
+ * return the lowest longitude that appears in the route
+ */
+function getRouteMinLongitude(routePath){
+  const MAX_LONGITUDE_VALUE = 180;
+
+  var minLongitude= MAX_LONGITUDE_VALUE;
+  var i = 0;
+  for(i = 0; i < routePath.length; i++){
+    var longitude = routePath[i].lng();
+    if(longitude < minLongitude){
+      minLongitude = longitude;
+    }
+  }
+
+  return minLongitude;
+}
+
+/**
+ * Get the maximum latitude that appears in the route.
+ * param routePath -  The path of the route. Array with all coordinates of the route. google.maps.LatLng objects.
+ * return the greatest latitude that appears in the route
+ */
+function getRouteMaxLatitude(routePath){
+  const MIN_LATITUDE_VALUE = -90;
+
+  var maxLatitude = MIN_LATITUDE_VALUE;
+  var i = 0;
+  for(i = 0; i < routePath.length; i++){
+    var latitude = routePath[i].lat();
+    if(latitude > maxLatitude){
+      maxLatitude = latitude;
+    }
+  }
+
+  return maxLatitude;
+}
+
+/**
+ * Get the minimum latitude that appears in the route.
+ * param routePath -  The path of the route. Array with all coordinates of the route. google.maps.LatLng objects.
+ * return the lowest latitude that appears in the route
+ */
+function getRouteMinLatitude(routePath){
+  const MAX_LATITUDE_VALUE = 90;
+
+  var minLatitude = MAX_LATITUDE_VALUE;
+  var i = 0;
+  for(i = 0; i < routePath.length; i++){
+    var latitude = routePath[i].lat();
+    if(latitude < minLatitude){
+      minLatitude = latitude;
+    }
+  }
+
+  return minLatitude;
+}
+
+
+/**
+ * Take out the coordinates which are out of the critical points of the path
+ * param latitudes - Array with the latitudes to be filtered
+ * param longitudes - Array with the longitudes to be filtered
+ * param path - Array with the coordinates (google.maps.LatLng objects) of the the path
+ * return an object with the arrays of filtered latitudes and longitudes
+ *    Properties: latitudes: Array with the filtered latitudes
+ *                     longitudes: Array with the filtered longitudes
+ */
+function filterCoordinatesOutOfPathCriticalPoints(latitudes, longitudes, path){
+  
+  var criticalPoints = foundPathCriticalPoints(path);
+  var maxLatitude = criticalPoints.maxLatitude;
+  var minLatitude = criticalPoints.minLatitude;
+  var maxLongitude = criticalPoints.maxLongitude;
+  var minLongitude = criticalPoints.minLongitude;
+
+  var quantityOfCoordinates = latitudes.length;
+
+  var latitudesFiltered = [];
+  var longitudesFiltered = [];
+
+  var i = 0;
+  for(i = 0; i < quantityOfCoordinates; i++){
+    var latitudeIsOk = (latitudes[i] <= maxLatitude) && (latitudes[i] >= minLatitude);
+    var longitudeIsOk = (longitudes[i] <= maxLongitude) && (longitudes[i] >= minLongitude);
+    var coordinatesIsInRange = latitudeIsOk && longitudeIsOk;
+
+    if(coordinatesIsInRange){
+      latitudesFiltered.push(latitudes[i]);
+      longitudesFiltered.push(longitudes[i]);
+    }
+  }
+
+  var coordinatesFiltered = {
+    latitudes: latitudesFiltered,
+    longitudes: longitudesFiltered
+  };
+
+  return coordinatesFiltered;
+}
+
+/**
+ * Calculate the quantity of steps of each patch in the patches array
+ * param patches - Array with the route patches 
+ * return an array with the respective quantity of steps of a patch in it's positions 
+ */
+function getQuantityOfStepsInPatches(patches){
+
+  var quantityOfPatches = patches.length;
+
+  var quantityOfStepsInPatches = [quantityOfPatches];
+
+  var i = 0;
+  for(i = 0; i < quantityOfPatches; i++){
+    var stepsInPatch = patches[i].length;
+    quantityOfStepsInPatches[i] = stepsInPatch;
+  }
+
+  return quantityOfStepsInPatches;
+}
+
+/**
+ * Get the cordinates from each step of each patch 
+ * param patches - Array with the route patches 
+ * return an array with all the coordinates (like google.maps.LatLng objects)
+ *    from each patch in it's respective position
+ */
+function getPathOfPatches(patches){
+
+  var quantityOfPatches = patches.length;
+
+  var quantityOfStepsInPatches = getQuantityOfStepsInPatches(patches);
+
+  var maxQuantityOfStepsInPatch;
+
+  var allStepsPaths = [quantityOfPatches];
+  initializeArrayPositionsAsAnArray(allStepsPaths, quantityOfPatches);
+
+  var x = 0;
+  var t = 0;
+  var j = 0;
+  var i = 0;
+  for(i = 0; i < quantityOfPatches; i++){
+
+    maxQuantityOfStepsInPatch  = quantityOfStepsInPatches[i];
+
+    for(j = 0; j < maxQuantityOfStepsInPatch; j++){
+
+      var currentStepPath = patches[i][j].path;
+      var currentStepPathSize = currentStepPath.length;
+
+      for(x = 0; x < currentStepPathSize; x++){
+       
+       allStepsPaths[t].push(currentStepPath[x]);
+
+      }
+
+    }
+    
+    t++;
+  }
+
+  return allStepsPaths;
+}
+
+/**
+ * Count the accidents occurred in each patch
+ * param latitude - Array with the latitudes of the accidents
+ * param longitude - Array with the longitudes of the accidents
  */
 function countTheAccidentsByPatch(latitude, longitude){
 
   var route = getCurrentRoute();
-
+  
   var routeSliced = sliceRoute(route);
 
-  var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
+  var patchesPaths = getPathOfPatches(routeSliced);
 
-  var accidentsInPatch = [];
-  var j = 0;
+  var quantityOfPatches = patchesPaths.length;
+
+  var accidentsInPatch = [quantityOfPatches];
+
   var i = 0;
+  for(i = 0; i < quantityOfPatches; i++){
 
-  for(i = 0; i < routePatchesCoordinates.length; i++){
-    accidentsInPatch[i] = 0;
+    var currentPatch = patchesPaths[i];
+    var coordinatesOnCurrentPatch = filterCoordinatesOutOfPathCriticalPoints(latitude, longitude, currentPatch);
+
+    accidentsInPatch[i] = coordinatesOnCurrentPatch.latitudes.length;
   }
 
-  i = 0;
-  for(i = 0; i < routePatchesCoordinates.length; i++){
+  // var routePatchesCoordinates = getCoordinatesOfPatch(routeSliced);
 
-    j = 0;
-    while(j < latitude.length){
+  // var accidentsInPatch = [];
 
-      var latitudeStartLimit = routePatchesCoordinates[i].startLatitude;
-      var latitudeEndLimit = routePatchesCoordinates[i].endLatitude;
-      var longitudeStartLimit = routePatchesCoordinates[i].startLongitude;
-      var longitudeEndLimit = routePatchesCoordinates[i].endLongitude;
+  // var j = 0;
+  // var i = 0;
+  // for(i = 0; i < routePatchesCoordinates.length; i++){
+  //   accidentsInPatch[i] = 0;
+  // }
 
-      var differenceLatitudeLimit =  latitudeStartLimit - latitudeEndLimit;
-      var differenceLongitudeLimit =  longitudeStartLimit - longitudeEndLimit;
+  // i = 0;
+  // for(i = 0; i < routePatchesCoordinates.length; i++){
+  //   j = 0;
+  //   while(j < latitude.length){
 
-      if((latitudeStartLimit - latitude[j]) <= differenceLatitudeLimit){
-        if((longitudeStartLimit - longitude[j]) <= differenceLongitudeLimit){
-          accidentsInPatch[i] = accidentsInPatch[i] + 1;
-        }
-      }
-      j++;
-    }
+  //     var latitudeStartLimit = routePatchesCoordinates[i].startLatitude;
+  //     var latitudeEndLimit = routePatchesCoordinates[i].endLatitude;
+  //     var longitudeStartLimit = routePatchesCoordinates[i].startLongitude;
+  //     var longitudeEndLimit = routePatchesCoordinates[i].endLongitude;
+      
+  //     var differenceLatitudeLimit = latitudeStartLimit - latitudeEndLimit;
+  //     var differenceLongitudeLimit = longitudeStartLimit - longitudeEndLimit;
 
-  }
+  //       if((latitudeStartLimit - latitude[j]) <= differenceLatitudeLimit){
+  //         if((longitudeStartLimit - longitude[j]) <= differenceLongitudeLimit){
+  //         accidentsInPatch[i] = accidentsInPatch[i] + 1;
+  //         }
+  //       }
+
+  //     j++;
+
+  //   }
+
+  // }
+
+  // alert(accidentsInPatch);
 
   identifyDangerousPatch(accidentsInPatch, routeSliced);
 }
 
 /**
-    Identify the patch which have more accidents
-    param accidentsInPatch - Array with the accidents in the patches
-    param routeSliced - Array with the patches of a route
+ * Identify the patch which have more accidents
+ * param accidentsInPatch - Array with the accidents in the patches
+ * param routeSliced - Array with the patches of a route
  */
 function identifyDangerousPatch(accidentsInPatch, routeSliced){
 
@@ -290,7 +508,7 @@ function identifyDangerousPatch(accidentsInPatch, routeSliced){
   for (var i = 0; i < accidentsInPatch.length; i++) {
     if (accidentsInPatch[i] > moreAccidentsPatch) {
       moreAccidentsPatch = accidentsInPatch[i];
-            positionMoreAccidentsPatch = i;
+      positionMoreAccidentsPatch = i;
     }
   }
 
@@ -311,15 +529,15 @@ function identifyDangerousPatch(accidentsInPatch, routeSliced){
   $(document).ready(function(){
 
       $("#sinalizeAccidentsInPatch").click(function(){
-         sinalizeMostDangerousPatch(coordinatesOfMostDangerousPatch);    
+          sinalizeMostDangerousPatch(coordinatesOfMostDangerousPatch);    
       });
   });
 
 }
 
 /**
-    Sinalize the most dangerous patch in a route using heatmap
-    param coordinatesToSinalize - Array with the coordinates of the patch to sinalize
+ * Sinalize the most dangerous patch in a route using heatmap
+ * param coordinatesToSinalize - Array with the coordinates of the patch to sinalize
  */
 function sinalizeMostDangerousPatch(coordinatesToSinalize){
 
@@ -346,6 +564,9 @@ function sinalizeMostDangerousPatch(coordinatesToSinalize){
 
 }
 
+/**
+ * Disable the current heatmap if it is set
+ */
 function unsinalizeMostDangerousPatch(){
   var thereIsHeatmap = heatmap != null && heatmap != undefined;
   if(thereIsHeatmap){

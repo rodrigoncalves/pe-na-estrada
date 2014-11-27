@@ -165,7 +165,7 @@ function calculateRoute(){
                           directionsDisplay.setRouteIndex(choosenIndex);
                           computeTotalDistance();
                           cleanMap();
-                          getHighwaysFromRoute(); // Start depuration here
+                          getHighwaysFromRoute();
                         });
                       });
 

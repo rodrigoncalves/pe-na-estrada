@@ -368,6 +368,7 @@ function markAccidents(coordinates, latitude, longitude){
     s++;
   }
 
+  // Clean the repeated coordinates
   var cleanedCoordinates = filterRepeatedCoordinates(latitudesToMark, longitudesToMark);
 
   latitudesToMark = cleanedCoordinates.latitudes;
