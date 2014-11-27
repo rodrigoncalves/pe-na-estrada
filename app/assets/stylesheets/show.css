@@ -142,29 +142,31 @@
 	top: 1%;
 	left: -5%;
 }
+
+#highway_info_comment{
+
+}
+
 #comment_panel{
-  position: relative;
-  top: 4%;
-  left: 30%;
-  height: 20%;
-  width: 80%;
+
 }
+
 #comment_form{
-  position: absolute;
-  top: 50%;
-  left: 10%;
+	margin-top: 10%;
 }
+
 #comment{
   text-align: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+/*  width: 100%;
+  height: 100%;*/
 }
+
 #chooseRoute{
 	position: absolute;
 	top: 86%;
 	left: 34%;
 }
+
 #safeRoute{
 	position: absolute;
 	top: 86%;

@@ -1,73 +1,17 @@
 <!-- Show the page of the highway clicked-->
-<div id = "highway" class="page-header" align="center" >
-  <div class="panel panel-success" style="width: 1100px;">
-    <div class="panel-body">
-      <% if @highway.idBr.length == 2%>
-        <b>Rodovia 0<%= @highway.idBr%></b>
-      <% else %>
-        <b>Rodovia <%= @highway.idBr%>
-      <% end %>
-    </div>
-  </div>
-</div>
-  <div class="panel panel-success" style="width: 300px;">
-  <table class="table table-hover" align="left">
-    <tr>
-      <td style="text-align: center;"><b><%= "Entensão da rodovia"%></b></td>
-      <td></td>
-      <td style="text-align: center;">
-        <% if @highway.mileage.blank? == false %>
-          <%= "#{@highway.mileage} Km" %>
-        <% else %>
-          <%= "Sem informações no momento" %>
-        <% end %>
-      </td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><b><%= "Posição no ranking"%></b></td>
-      <td></td>
-      <td style="text-align: center;">
-        <%= "#{@highway.rankingPosition}º" %>
-      </td>
-      <td></td>
-    </tr>       
-  </table>
-  </div>
+<div class="row">
 
-  <div id = "comment">
-    <!-- Mostrando os comentários da rodovia -->
-    <% highway_found = false %>
-    <% @comments.each do |comment| %>
-      <% if(comment.idBr == @highway.idBr)%>
-        <div class="panel panel-success"  id = "comment_panel">
-          <div class="panel-heading" style="color:#fff;">
-            <%= comment.title %></div>
-          <div class="panel-body">
-            <%= comment.text %>
-          </div>
-        </div> 
-        <% highway_found = true %>
-      <%end%>
-    <%end%>
-
-    <% if highway_found == false %>
-      <br><br><br>
-          <div id="comment_panel" class="alert alert-success" role="alert" style="text-align: center;">
-            Ainda não há nenhum comentário sobre essa rodovia.
-      </div>
-    <%end%>
-  </div>
-
-  <!-- Formulário de comentário da rodovia-->
+  <div class="col-lg-4">
+    <!-- Form to make a comment of a highway-->
     <div id = "comment_form">
-      <h7><i class="fa fa-comments-o"></i>Deixe aqui seu comentário sobre essa rodovia </h7>
+      <h7><i class="fa fa-comments-o"></i> Deixe aqui seu comentário sobre essa rodovia </h7>
     <%= form_for([@highway, @comment]) do |f| %>
-     
-      <%= f.text_field :title,     
+
+      <%= f.text_field :title,
                       placeholder: "Título",
                       required: true,
-                      :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~-,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+'%><br />
-      <%= f.text_area :text, 
+                      :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~-,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+' %><br />
+      <%= f.text_area :text,
                       placeholder: "Comentário",
                       required: true,
                       :pattern => '[a-zA-Z0-9 /\ãáàâéêíôóõúç~-,.:;ÃÁÀÂÉÊÍÔÓÕÚÇ]+'%><br />
@@ -76,6 +20,81 @@
 
       <%= f.submit "Comentar", :class => "btn btn-default"%>
     <% end %>
-      
+
     </div>
+  </div>
+
+  <div class="col-lg-8" id="highway_info_comment">
+    <div class="row">
+      <div id = "highway" class="page-header" align="center" >
+            <% if @highway.idBr.length == 2%>
+              <b>Rodovia 0<%= @highway.idBr%></b>
+            <% else %>
+              <b>Rodovia <%= @highway.idBr%></b>
+            <% end %>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="panel panel-success">
+        <table class="table table-hover" align="left">
+          <tr>
+            <td style="text-align: center;"><b><%= "Extensão da rodovia"%></b></td>
+            <td></td>
+            <td style="text-align: center;">
+              <% if @highway.mileage.blank? == false %>
+                <%= "#{@highway.mileage} Km" %>
+              <% else %>
+                <%= "Sem informações no momento" %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><b><%= "Posição no ranking"%></b></td>
+            <td></td>
+            <td style="text-align: center;">
+              <%= "#{@highway.rankingPosition}º" %>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<br><br>
+
+<div class="row">
+
+  <div class="col-lg-12">
+    <div id = "comment">
+      <!-- Mostrando os comentários da rodovia -->
+      <% highway_found = false %>
+      <% @comments.each do |comment| %>
+        <% if(comment.idBr == @highway.idBr)%>
+          <div class="panel panel-success"  id = "comment_panel">
+            <div class="panel-heading" style="color:#fff;">
+              <%= comment.title %></div>
+            <div class="panel-body">
+              <%= comment.text %>
+            </div>
+          </div>
+          <% highway_found = true %>
+        <%end%>
+      <%end%>
+
+      <% if highway_found == false %>
+        <br><br><br>
+            <div id="comment_panel" class="alert alert-success" role="alert" style="text-align: center;">
+              Ainda não há nenhum comentário sobre essa rodovia.
+        </div>
+      <%end%>
+    </div>
+  </div>
+
+</div>
+
 
