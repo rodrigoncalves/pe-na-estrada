@@ -68,7 +68,3 @@ group :development, :test do
   gem "teaspoon"
 end
 
-# Gem used to test
-group :development, :test do
-  gem "qunit-rails"
-end
