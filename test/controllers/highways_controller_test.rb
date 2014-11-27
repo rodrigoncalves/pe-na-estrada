@@ -798,13 +798,13 @@ class HighwaysControllerTest < ActionController::TestCase
 # Beginning of the tests of the action 'new'
   test "Tests if new return a Hash" do
 
-    assert_kind_of Hash, @highways_controller.new, "This should be a Hash object."
+    assert_kind_of Hash, @highways_controller.ranking_1, "This should be a Hash object."
 
   end
 
   test "Tests if the method new return the correct hash"  do
 
-    @highway_hash = @highways_controller.new
+    @highway_hash = @highways_controller.ranking_1
     assert @highway_hash.has_key?("70"), "This Hash should contain a key equal to 70"
     assert @highway_hash.has_value?(2), "This Hash should contain a value equal to 2"
 
@@ -815,11 +815,16 @@ class HighwaysControllerTest < ActionController::TestCase
 # Beginning of the tests of the action 'show'
   test "Tests if the method show return the correct hash" do
 
-    @highway_hash = @highways_controller.show
+    @highway_hash = @highways_controller.ranking_2
     assert @highway_hash.has_key?("70"), "This Hash should contain a key equal to 70"
     assert @highway_hash.has_value?(2), "This Hash should contain a value equal to 2"
 
   end
 # End of the tests of the action 'show'
+
+  test "Not should comment nil" do 
+    {:action=>"show", :comment=>{:idBr=>comments(:two).idBr, :title=>comments(:two).title, :text=>comments(:two).text}, :controller=>"highways/"}
+    assert_nil assigns(:comment)
+  end
 
 end

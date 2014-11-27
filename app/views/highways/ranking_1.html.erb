@@ -4,23 +4,23 @@
 <div id="ranking_header" class="page-header">
   <h3><i class="fa fa-trophy"></i>  Ranking das Rodovias Federais<br><br>
     <small>
-      <ul class="nav navbar-nav navbar-right">
-        <div class="dropdown" id="rate_types">
-          
+     <ul class="nav navbar-nav navbar-right">
+       <div class="dropdown" id="rate_types">
+        
           Você está visualizando o ranking na taxa de 
           <label class="dropdown-toggle" data-toggle="dropdown">
-            <font color="#EEC900">Porcentagem em relação ao total</font>
+            <font color="#EEC900">Acidentes/Km</font>
             <span class="fa fa-chevron-down"></span>
           </label>
 
           <ul class="dropdown-menu" role="menu" >
             <li role="presentation">
-              <%= link_to 'Acidentes/Km', highway_path(1) %>
+              <%= link_to 'Porcentagem em relação ao total', ranking_2_path  %>
             </li>
           </ul>
 
-        </div>
-      </ul><br>
+      </div>
+    </ul><br>
     </small>
   </h3> 
 </div>
@@ -41,19 +41,16 @@
             <tr>
             <th class="text-center">Posição</th>
             <th class="text-center">BR</th>
-            <th class="text-center">Participação no total<br> de acidentes(%)</th>
+            <th class="text-center">Acidentes/Km</th>
             </tr>
           </thread>
-
           <tbody>
-            <%position = 1%>
-            <% @highway2.each do |h| %>
-              <% if h.accidentsRatePercent != 0.0 && h.accidentsRatePercent != nil %>
+            <% @highway.each do |h| %>
+              <% if h.accidentsRate != 0.0 && h.accidentsRate != nil %>
                 <tr></tr>
-                <td><%= " #{position}º" %> </td>
+                <td><%= h.rankingPosition %>º </td>
                 <td><%= h.idBr %></td>
-                <td><%= format("%.4f",h.accidentsRatePercent)%>%</td>
-                <%position = position + 1%>
+                <td><%= format("%.4f",h.accidentsRate) %></td>
               <% end %>
             <% end %>
           </tbody>

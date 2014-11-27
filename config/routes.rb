@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  resources :highways
+  resources :highways do
+    resources :comments
+  end
   resources :routes
 
   resources :accidents
@@ -12,7 +14,7 @@ Rails.application.routes.draw do
   resources :ranking
   
   resources :highways do
-    collection { post :import }
+    collection { post :import}
   end
 
   resources :accidents do
@@ -20,6 +22,8 @@ Rails.application.routes.draw do
   end
 
    post '/routes/trace' => 'routes#trace_route', as: :trace_route
+   get '/highways/1/ranking' => 'highways#ranking_1', as: :ranking_1
+   get '/highways/2/ranking' => 'highways#ranking_2', as: :ranking_2
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
