@@ -322,31 +322,36 @@ test("Testing function 'validateQuantityOfPatches' exists", function(){
 test("Testing function 'validateQuantityOfPatches' should pass with 7 with 7 quantity Of Patches and 9 patchs", 
     function(){
 
-    equal(validateQuantityOfPatches(7, 9), 7,'The method receives 7 quantity Of Patches and 9 patch and returns 7');
+    equal(validateQuantityOfPatches(7, 9), 7,
+        'The method receives 7 quantity Of Patches and 9 patch and returns 7');
 });
 
 test("Testing function 'validateQuantityOfPatches' should not pass with 19 with 7 quantity Of Patches and 9 patchs", 
     function(){
 
-    notEqual(validateQuantityOfPatches(19, 9), 7,'The method receives 7 quantity Of Patches and 9 patch and returns 19');
+    notEqual(validateQuantityOfPatches(19, 9), 7,
+        'The method receives 7 quantity Of Patches and 9 patch and returns 19');
 });
 
 test("Testing function 'validateQuantityOfPatches' should pass with 9 with 0 quantity Of Patches and 9 patchs", 
     function(){
 
-    equal(validateQuantityOfPatches(0, 9), 0,'The method receives 0 quantity Of Patches and 9 patch and returns 9');
+    equal(validateQuantityOfPatches(0, 9), 0,
+        'The method receives 0 quantity Of Patches and 9 patch and returns 9');
 });
 
 test("Testing function 'validateQuantityOfPatches' should not pass with 9 with 1 quantity Of Patches and 9 patchs", 
     function(){
 
-    notEqual(validateQuantityOfPatches(1, 9), 9,'The method receives 1 quantity Of Patches and 9 patch and returns 1');
+    notEqual(validateQuantityOfPatches(1, 9), 9,
+        'The method receives 1 quantity Of Patches and 9 patch and returns 1');
 });
 
 test("Testing function 'validateQuantityOfPatches' should pass with 0 with 0 quantity Of Patches and 0 patchs", 
     function(){
 
-    equal(validateQuantityOfPatches(0, 0), 0,'The method receives 0 quantity Of Patches and 0 patch and returns 0');
+    equal(validateQuantityOfPatches(0, 0), 0,
+        'The method receives 0 quantity Of Patches and 0 patch and returns 0');
 });
 
 test("Testing function 'validateQuantityOfPatches' should  pass with 5 with -10 quantity Of Patches and 5 patchs", 
@@ -356,7 +361,7 @@ test("Testing function 'validateQuantityOfPatches' should  pass with 5 with -10 
         'The method receives -10 quantity Of Patches and 5 patch and returns 5');
 });
 
-test("Testing function 'validateQuantityOfPatches' should not pass with 5 with -10 quantity Of Patches and 10 patchs", 
+test("Testing function 'validateQuantityOfPatches'  should not pass with 5 with -10 quantity Of Patches and 10 patchs", 
     function(){
 
     notEqual(validateQuantityOfPatches(-10, 10), 5,
@@ -399,125 +404,193 @@ test("Testing function 'validateQuantityOfPatches' should  pass with 10 with 10 
 });
 
 
-test("Testing function 'filterRepeatedCoordinates' should returns the clear latitudes arry with clear array latitudes", 
-    function(){
-
-    var latitudes = [
-        37.782551,
-        37.782745,
-        37.782842,
-        37.782919,
-        37.782992,
-        37.783100,
-        37.783206,
-        37.783273,
-        37.783316,
-        37.783357,
-        37.783371,
-        37.783368,
-        37.783383,
-        37.783508,
-        37.783842,
-        37.784147,
-        37.784206,
-        37.784386,
-        37.784701,
-        37.784965
-    ];
-
-
-    var longitudes = [
-        122.445368,
-        122.444586,
-        122.443688,
-        122.442815,
-        122.442112,
-        122.441461,
-        122.440829,
-        122.440324,
-        122.440023,
-        122.439794,
-        122.439687,
-        122.439666,
-        122.439594,
-        122.439525,
-        122.439591,
-        122.439668,
-        122.439686,
-        122.439790,
-        122.439902,
-        122.439938
-    ];
-
-    var coordinatesToTest = {
-        latitude: latitudes,
-        longitude: longitudes
-    };
-
-   equal(coordinatesToTest.latitude, coordinatesToTest.latitude,
-        'The method receives clean latitudes and returns clean latitudes');
-});
-
-test("Testing function 'filterRepeatedCoordinates' should returns the clear longitudes arry with clear array longitudes", 
-    function(){
-
-    var latitudes = [
-        37.782551,
-        37.782745,
-        37.782842,
-        37.782919,
-        37.782992,
-        37.783100,
-        37.783206,
-        37.783273,
-        37.783316,
-        37.783357,
-        37.783371,
-        37.783368,
-        37.783383,
-        37.783508,
-        37.783842,
-        37.784147,
-        37.784206,
-        37.784386,
-        37.784701,
-        37.784965
-    ];
-
-
-    var longitudes = [
-        122.445368,
-        122.444586,
-        122.443688,
-        122.442815,
-        122.442112,
-        122.441461,
-        122.440829,
-        122.440324,
-        122.440023,
-        122.439794,
-        122.439687,
-        122.439666,
-        122.439594,
-        122.439525,
-        122.439591,
-        122.439668,
-        122.439686,
-        122.439790,
-        122.439902,
-        122.439938
-    ];
-
-    var coordinatesToTest = {
-        latitude: latitudes,
-        longitude: longitudes
-    };
-
-   equal(coordinatesToTest.longitude, coordinatesToTest.longitude,
-        'The method receives clean longitudes and returns clean longitudes');
-});
-
 test("Testing function 'filterRepeatedCoordinates' exists", function(){
 
     ok(filterRepeatedCoordinates,'The method exists');
+});
+
+test("Testing function 'filterRepeatedCoordinates' should returns the clear  latitudes arry with clear array latitudes", 
+    function(){
+
+    var latitudesToTest = [
+        37.782551,
+        37.782745,
+        37.782842
+    ];
+
+
+    var longitudesToTest = [
+        122.445368,
+        122.444586,
+        122.443688
+    ];
+
+    var coordinatesToTest = {
+        latitudes: latitudesToTest,
+        longitudes: longitudesToTest
+    };
+
+    var test = filterRepeatedCoordinates(latitudesToTest, longitudesToTest);
+
+    for (var i = 0; i < latitudesToTest.length; i++) {
+        equal(test.latitudes[i], latitudesToTest[i],
+        'The method receives clean latitudes and returns clean latitudes');
+    };
+});
+
+test("Testing function 'filterRepeatedCoordinates'  should returns the clear longitudes arry with clear array longitudes", 
+    function(){
+
+    var latitudesToTest = [
+        37.782551,
+        37.782745,
+        37.782842
+    ];
+
+
+    var longitudesToTest = [
+        122.445368,
+        122.444586,
+        122.443688
+    ];
+
+    var coordinatesToTest = {
+        latitudes: latitudesToTest,
+        longitudes: longitudesToTest
+    };
+
+    var test = filterRepeatedCoordinates(latitudesToTest, longitudesToTest);
+
+    for (var i = 0; i < latitudesToTest.length; i++) {
+        equal(test.longitudes[i], longitudesToTest[i],
+        'The method receives clean longitudes and returns clean longitudes');
+    };
+
+});
+
+
+test("Testing function 'filterRepeatedCoordinates' should returns the clear latitudes arry with more clear array latitudes", 
+    function(){
+
+    var latitudesToTest = [
+        37.782551,
+        37.782745,
+        37.782842,
+        37.782919,
+        37.782992,
+        37.783100,
+        37.783206,
+        37.783273,
+        37.783316,
+        37.783357,
+        37.783371,
+        37.783368,
+        37.783383,
+        37.783508,
+        37.783842,
+        37.784147,
+        37.784206,
+        37.784386,
+        37.784701,
+        37.784965
+    ];
+
+
+    var longitudesToTest = [
+        122.445368,
+        122.444586,
+        122.443688,
+        122.442815,
+        122.442112,
+        122.441461,
+        122.440829,
+        122.440324,
+        122.440023,
+        122.439794,
+        122.439687,
+        122.439666,
+        122.439594,
+        122.439525,
+        122.439591,
+        122.439668,
+        122.439686,
+        122.439790,
+        122.439902,
+        122.439938
+    ];
+
+    var coordinatesToTest = {
+        latitudes: latitudesToTest,
+        longitudes: longitudesToTest
+    };
+
+    var test = filterRepeatedCoordinates(latitudesToTest, longitudesToTest);
+
+    for (var i = 0; i < latitudesToTest.length; i++) {
+        equal(test.latitudes[i], latitudesToTest[i],
+        'The method receives clean latitudes and returns more clean latitudes');
+    };
+});
+
+test("Testing function 'filterRepeatedCoordinates' should returns the clear latitudes arry with more clear array latitudes", 
+    function(){
+
+    var latitudesToTest = [
+        37.782551,
+        37.782745,
+        37.782842,
+        37.782919,
+        37.782992,
+        37.783100,
+        37.783206,
+        37.783273,
+        37.783316,
+        37.783357,
+        37.783371,
+        37.783368,
+        37.783383,
+        37.783508,
+        37.783842,
+        37.784147,
+        37.784206,
+        37.784386,
+        37.784701,
+        37.784965
+    ];
+
+
+    var longitudesToTest = [
+        122.445368,
+        122.444586,
+        122.443688,
+        122.442815,
+        122.442112,
+        122.441461,
+        122.440829,
+        122.440324,
+        122.440023,
+        122.439794,
+        122.439687,
+        122.439666,
+        122.439594,
+        122.439525,
+        122.439591,
+        122.439668,
+        122.439686,
+        122.439790,
+        122.439902,
+        122.439938
+    ];
+
+    var coordinatesToTest = {
+        latitudes: latitudesToTest,
+        longitudes: longitudesToTest
+    };
+
+    var test = filterRepeatedCoordinates(latitudesToTest, longitudesToTest);
+
+    for (var i = 0; i < latitudesToTest.length; i++) {
+        equal(test.longitudes[i], longitudesToTest[i],
+        'The method receives clean longitudes and returns more clean longitudes');
+    };
 });
