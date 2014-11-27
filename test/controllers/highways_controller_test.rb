@@ -822,4 +822,9 @@ class HighwaysControllerTest < ActionController::TestCase
   end
 # End of the tests of the action 'show'
 
+  test "Not should comment nil" do 
+    {:action=>"show", :comment=>{:idBr=>comments(:two).idBr, :title=>comments(:two).title, :text=>comments(:two).text}, :controller=>"highways/"}
+    assert_nil assigns(:comment)
+  end
+
 end
