@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
 
-	def index
+  def index
     @comment = Comment.new
   end
 
@@ -16,19 +16,8 @@ class CommentsController < ApplicationController
       
   end
 
-=begin
-  
-rescue Exception => e
-  
-end
-  def count_comments_
-    @comment = Comment.count_comments
-  end
-=end
   def comment_params
-    params.fetch(:comment, {}).permit(:title, :text, :idBr)
+    params.fetch(:comment, {} ).permit(:title, :text, :idBr)
   end
-
-
 
 end
