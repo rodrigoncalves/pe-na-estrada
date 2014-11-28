@@ -498,8 +498,12 @@ function identifyDangerousPatch(accidentsInPatch, routeSliced){
           sinalizeMostDangerousPatch(coordinatesOfMostDangerousPatch);
         } 
         else{
-          window.alert("Não é possível exibir um trecho mais perigoso nessa rota, pois ela não possui acidentes");
+          window.alert("Não é possível exibir um trecho mais perigoso nessa rota, pois não há acidentes registrados em nossa base.");
         }    
+      });
+
+      $("#unsinalizeAccidentsInPatch").click(function(){
+        unsinalizeMostDangerousPatch();
       });
   });
 }
