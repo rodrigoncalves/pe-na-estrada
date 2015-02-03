@@ -80,6 +80,11 @@
               <%= comment.title %></div>
             <div class="panel-body">
               <%= comment.text %>
+              <div  align="left">
+              <br><i>
+                <%= "Comentário realizado em #{I18n.l comment.created_at, :format => :custom1, :locale => 'pt-br'}" %>
+              </i>
+              </div>
             </div>
           </div>
           <% highway_found = true %>

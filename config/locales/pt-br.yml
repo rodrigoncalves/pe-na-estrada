@@ -1,0 +1,14 @@
+pt-br:
+  time:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d de %B"
+      long: "%d de %B de %Y"
+      custom: "%d/%m/%Y"
+      custom1: "%d.%m.%Y"
+      only_day: "%d"
+      only_weekday: "%A"
+      month_complete: "%B"
+      month_abv: "%b"
+      header_format_date: "%B de %Y"
+      edition_format_date: "%B/%Y"  

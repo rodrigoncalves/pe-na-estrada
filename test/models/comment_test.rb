@@ -61,4 +61,12 @@ class CommentTest < ActiveSupport::TestCase
 		assert_not @comment.save, "Cannot be invalid"
 	end
 
+	test "Checking if the comments are in reverse order" do
+		@comment_reverse = Comment.getComments
+
+		assert_equal comments(:one).idBr, @comment_reverse.first.idBr, "The comments are not in reverse order"
+
+	end
+
+
 end

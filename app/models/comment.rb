@@ -3,4 +3,10 @@ class Comment < ActiveRecord::Base
 	validates_presence_of :title
 	validates_presence_of :text
 	validates_presence_of :idBr
+
+	def self.getComments
+
+		all.reverse_order
+
+	end
 end
