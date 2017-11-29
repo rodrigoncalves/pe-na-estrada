@@ -53,6 +53,7 @@ end
 
 gem 'gon'
 
+gem 'neo4j'
 # gem 'rabl-rails'
 
 

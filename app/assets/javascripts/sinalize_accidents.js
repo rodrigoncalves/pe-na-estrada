@@ -22,7 +22,7 @@ function getCurrentRoute(){
  */
 function getChoosenRoute(){
 
-  choosenRouteAsString = $("#choosen_route").val();
+  var choosenRouteAsString = $("#choosen_route").val();
 
   var choosenRoute = parseInt(choosenRouteAsString);
 
@@ -104,6 +104,7 @@ function getHighwaysFromRoute(route){
   } // End of for
 
   var totalAccidents = getCoordinatesFromRoute(highwaysInRoute, route);
+
   return totalAccidents;
 }
 
@@ -154,12 +155,11 @@ function checkIfHighwaysExist(highwayNumber, highwaysInRoute){
   return - Object with the limit coordinates
 */
 function checkCoordinate(coordinatesLimit, coordinate){
-
-  if(coordinate > coordinatesLimit.greaterLatitude){
-    coordinatesLimit.greaterLatitude = coordinate;
+  if(coordinate > coordinatesLimit.greater){
+    coordinatesLimit.greater = coordinate;
   }
-  else if(coordinate < coordinatesLimit.lowerLatitude){
-    coordinatesLimit.lowerLatitude = coordinate;
+  else if(coordinate < coordinatesLimit.lowest){
+    coordinatesLimit.lowest = coordinate;
   }
 
   return coordinatesLimit;
@@ -171,7 +171,7 @@ function checkCoordinate(coordinatesLimit, coordinate){
   param highwaysInRoute   - Array with the route highway's number
   param coordinate - Variable with the route
 */
-function getCoordinatesFromRoute(highwaysInRoute,myroute){
+function getCoordinatesFromRoute(highwaysInRoute, myroute){
 
   var coordinates = [];
   var j = 0; // Count for highways in the route
@@ -179,22 +179,22 @@ function getCoordinatesFromRoute(highwaysInRoute,myroute){
   var longitudesLimit;
 
   latitudesLimit = {
-      greaterLatitude: 0,
-      lowerLatitude: myroute.overview_path[0].lat()
+      greater: 0,
+      lowest: myroute.overview_path[0].lat()
   };
   longitudesLimit = {
-      maiorLongitude: 0,
-      menorLongitude: myroute.overview_path[0].lng()
+      greater: 0,
+      lowest: myroute.overview_path[0].lng()
   };
 
   for(j=0 ; j < myroute.overview_path.length; j++){
       coordinates[j] = myroute.overview_path[j];
-      latitudesLimit = checkCoordinate(latitudesLimit,coordinates[j].lat());
-      longitudesLimit = checkCoordinate(longitudesLimit,coordinates[j].lng());
+      latitudesLimit = checkCoordinate(latitudesLimit, coordinates[j].lat());
+      longitudesLimit = checkCoordinate(longitudesLimit, coordinates[j].lng());
   }
 
 
-  var totalAccidents = getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates, myroute);
+  var totalAccidents = getCoordinatesToMarkers(highwaysInRoute, latitudesLimit, longitudesLimit, coordinates, myroute);
   return totalAccidents;
 }
 
@@ -205,7 +205,7 @@ function getCoordinatesFromRoute(highwaysInRoute,myroute){
   param longitudesLimit - Object that contains the greater and the lower longitude in route
   param coordinates - Array that contains the coordinates from route
  */
-function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit, coordinates, route){
+function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit, longitudesLimit, coordinates, route){
 
   // Get the latitudes, longitudes and highways of accidents from database using the 'gon' gem
   var latitudeArray = gon.latitude;
@@ -225,8 +225,8 @@ function getCoordinatesToMarkers(highwaysInRoute, latitudesLimit,longitudesLimit
     lat = parseFloat(latitudeArray[position[p]]);
     lng = parseFloat(longitudeArray[position[p]]);
 
-    if(lat <= latitudesLimit.greaterLatitude && lat >= latitudesLimit.lowerLatitude){
-      if(lng <= longitudesLimit.maiorLongitude && lng >= longitudesLimit.menorLongitude){
+    if(lat <= latitudesLimit.greater && lat >= latitudesLimit.lowest){
+      if(lng <= longitudesLimit.greater && lng >= longitudesLimit.lowest){
         latitude[i]  = lat;
         longitude[i] = lng;
         i++;
@@ -269,7 +269,7 @@ function getTheAccidentsInHighway(highwaysInRoute){
  * param longitudes - array that contains the longitudes to clean
  * return an object with no repeated coordinates
  *    Properties: latitudes: An array with the no repeated latitudes
-                       longitudes: An array with no repeated longitudes 
+                       longitudes: An array with no repeated longitudes
  */
 function filterRepeatedCoordinates(latitudes, longitudes){
   var quantityOfCoordinates = latitudes.length;
@@ -312,7 +312,7 @@ function filterRepeatedCoordinates(latitudes, longitudes){
  */
 function alreadyExistsInArray(coordinate, coordinatesArray){
   var quantityOfCoordinates = coordinatesArray.latArray.length;
- 
+
   var alreadyExists = false;
   if(quantityOfCoordinates > 0){
 
@@ -338,13 +338,13 @@ function alreadyExistsInArray(coordinate, coordinatesArray){
   return alreadyExists;
 }
 
-/* 
-  This function get the coordinates of the accidentes in routete 
-  param coordinates - Array that contains the coordinates from route 
-  param latitude - Array that contains the latitudes of the accidents in route 
-  param longitude - Array that contains the longitudes of the accidents in route 
- */ 
-function markAccidents(coordinates, latitude, longitude,route){
+/*
+  This function get the coordinates of the accidentes in routete
+  param coordinates - Array that contains the coordinates from route
+  param latitude - Array that contains the latitudes of the accidents in route
+  param longitude - Array that contains the longitudes of the accidents in route
+ */
+function markAccidents(coordinates, latitude, longitude, route){
 
   var s = 0;
   var p = 0;
@@ -377,14 +377,16 @@ function markAccidents(coordinates, latitude, longitude,route){
   latitudesToMark = cleanedCoordinates.latitudes;
   longitudesToMark = cleanedCoordinates.longitudes;
 
-  countTheAccidentsByPatch(latitudesToMark, longitudesToMark,route);
+  countTheAccidentsByPatch(latitudesToMark, longitudesToMark, route);
 
   $(document).ready(function(){
     $("#sinalizeAccidents").click(function(){
+
       removeAllMarkersFromMap();
       deleteMarkersOnMap();
       // Sweeps the arrays marking on the map the accident given by it coordinates
       var quantityOfPointsToMark = latitudesToMark.length;
+
       while(quantityOfPointsToMark >= 0){
 
           markAccident(latitudesToMark[quantityOfPointsToMark],

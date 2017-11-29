@@ -10,14 +10,10 @@ class Highway < ActiveRecord::Base
 
 
   def self.search_for_highway id_to_search
-      if id_to_search.blank?
-        id_to_search = ""
-      else
-        # Nothing to do
-      end
+    id_to_search = '' if id_to_search.blank?
 
-      # Return all highways registered if id_to_search is empty
-      where("idBr LIKE ?", "%#{id_to_search}%").order(:idBr)
+    # Return all highways registered if id_to_search is empty
+    where('idBr LIKE ?', "%#{id_to_search}%").order(:idBr)
   end
 
   def self.exists_highway highway_to_check

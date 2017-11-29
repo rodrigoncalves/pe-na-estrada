@@ -8,13 +8,16 @@
     <title><%= content_for?(:title) ? yield(:title) : "Pé na estrada" %></title>
 
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pé na estrada" %>">
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXiD6hoj8mw6Hd-DrNKZc7dNn3Agu9wxY&v=3.exp&libraries=visualization"></script>
+    <script src='https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js'></script>
+
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  
-  <body background="/assets/fundo.jpg">
 
+  <body background="/assets/fundo.jpg">
     <div class="panel-heading">
       <header class="navbar navbar-fixed-top">
         <div class="navbar navbar-default ">
@@ -29,11 +32,11 @@
 
           <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
-              
+
               <li class="link"><%= link_to 'Traçar Rota', routes_path, class: "navbar-brand" %></li>
               <li class="link"><%= link_to 'Ranking', ranking_1_path, class: "navbar-brand" %></li>
               <li class="link "><%= link_to 'Rodovia', highways_path, class: "navbar-brand" %></li>
-                
+
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -45,11 +48,11 @@
       </header>
     </div>
 
-    <div id="main_panel" class="panel panel-default container" style="width: 90%;  border: 1px solid #d4d4d4;">  
+    <div id="main_panel" class="panel panel-default container" style="width: 90%;  border: 1px solid #d4d4d4;">
       <div class="panel-body">
         <div id = "content" >
           <main role="main">
-                
+
             <%= render 'layouts/messages' %>
             <%= yield %>
 
@@ -58,6 +61,5 @@
       </div>
       <!--   <div class="panel-footer">Panel footer</div> -->
     </div>
-
   </body>
 </html>

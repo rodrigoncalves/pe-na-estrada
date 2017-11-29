@@ -1,45 +1,30 @@
+var rendererOptions, directionsDisplay, directionsService, handler, map, heatmap;
 
-// Loads the map on the screen
-google.maps.event.addDomListener(window, 'load', function(){
-
+$(document).ready(function(){
+  google.maps.event.addDomListener(window, 'load', function(){
     setUpMarkersArray();
     initialize();
+  });
 
-});
-
-// (function() {
-
-//   // Receives all functions from sinalize_accidents file
-//   var sinalizeAccidentScript = document.createElement('script');
-//   sinalizeAccidentScript.type = 'text/javascript';
-//   sinalizeAccidentScript.src = 'sinalize_accidents.js';
-
-//   // Receives all functions from sinalize_patch file
-//   var sinalizePatchScript = document.createElement('script');
-//   sinalizePatchScript.type = 'text/javascript';
-//   sinalizePatchScript.src = 'sinalize_patch.js';
-
-//   document.getElementsByTagName('head')[0].appendChild(sinalizeAccidentScript);
-//   document.getElementsByTagName('head')[0].appendChild(sinalizePatchScript);
-// })();
-
-// Gives to the map the option to drag it and change the route
-  var rendererOptions = {
+  // Gives to the map the option to drag it and change the route
+  rendererOptions = {
     // Draggable is turned on when the option below is set as 'true'
     draggable: false,
     hideRouteList: true
   };
 
 
-// Global variables
-var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-var directionsService = new google.maps.DirectionsService();
+  // Global variables
+  directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+  directionsService = new google.maps.DirectionsService();
 
-var handler = Gmaps.build('Google');
-handler.buildMap({internal: {id: 'directions'}}, function(){
-  directionsDisplay.setMap(handler.getMap());
-  initialize();
+  handler = Gmaps.build('Google');
+  handler.buildMap({internal: {id: 'directions'}}, function(){
+    directionsDisplay.setMap(handler.getMap());
+    initialize();
+  });
 });
+
 
 // Compute the total distance from the origin to the destination
 function computeTotalDistance(){
@@ -117,11 +102,11 @@ function setMapOptions(){
       return mapOptions;
 }
 
-// Contains the heatmap layer
-var heatmap;
+// // Contains the heatmap layer
+// var heatmap;
 
-// Contains the map
-var map;
+// // Contains the map
+// var map;
 
 function initialize(){
 
@@ -167,21 +152,21 @@ function calculateRoute(){
                     var text = "<span class='label label-success'> Distância total: <span id='total'></span></span>";
                     $("#distance").html(text);
                     directionsDisplay.setDirections(response);
-                    
-                    $(document).ready(function(){ 
+
+                    $(document).ready(function(){
 
                       $("#chooseRoute").click(function(){
                         displayFoundRoutes(directionsDisplay.directions.routes.length);
-                    
+
                         $("#choosen_route").change(function(){
                           provideRouteAlternatives();
                         });
-                  
+
                       });
-                      
+
                       $("#safeRoute").click(function(){
 
-                        // Clean the select options 
+                        // Clean the select options
                         var htmlToInsert = "";
                         $("#routes_list").html(htmlToInsert);
 
@@ -239,7 +224,7 @@ function provideRouteAlternatives () {
   var route = getCurrentRoute();
   computeTotalDistance();
   cleanMap();
-  getHighwaysFromRoute(route); 
+  getHighwaysFromRoute(route);
 }
 
 function traceSafeRoute(){
@@ -254,9 +239,9 @@ function traceSafeRoute(){
 
     if(quantityOfAccidents < maxNumberAccidents){
       maxNumberAccidents = quantityOfAccidents;
-      indexSafeRoute = x; 
+      indexSafeRoute = x;
     }
-    
+
   }
   directionsDisplay.setRouteIndex(indexSafeRoute);
   computeTotalDistanceToSafeRoute(route[indexSafeRoute]);

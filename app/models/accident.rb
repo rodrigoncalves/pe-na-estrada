@@ -4,21 +4,21 @@ class Accident < ActiveRecord::Base
   validates_presence_of :km
   validates_presence_of :br
 
-  belongs_to :Highway
+  belongs_to :highway
 
   def self.count_accidents
     group(:br).count
   end
 
   def self.total_accidents
- 	Accident.count
+ 	  Accident.count
   end
-  
-  def self.get_accidents_latitude 
+
+  def self.get_accidents_latitude
     all.map &:latitude
   end
 
-  def self.get_accidents_longitude 
+  def self.get_accidents_longitude
     all.map &:longitude
   end
 
